@@ -1,0 +1,109 @@
+version: '3.8'
+
+services:
+  triton-server:
+    image: nvcr.io/nvidia/tritonserver:23.11-py3
+    container_name: triton-routing-ensemble
+    restart: unless-stopped
+    
+    ports:
+      - "8000:8000"    # HTTP inference endpoint
+      - "8001:8001"    # gRPC inference endpoint  
+      - "8002:8002"    # Metrics endpoint
+    
+    volumes:
+      # Model repository
+      - ./model_repository:/models:ro
+      
+      # ONNX models from project root
+      - ../../models:/onnx_models:ro
+      
+      # Logs directory
+      - ./logs:/var/log/triton
+    
+    environment:
+      # Triton configuration
+      - TRITON_LOG_VERBOSE=1
+      - TRITON_LOG_INFO=1
+      - TRITON_LOG_WARN=1
+      - TRITON_LOG_ERROR=1
+      
+      # Resource limits
+      - TRITON_SERVER_CPU_ONLY=1
+      - TRITON_BACKEND_DIRECTORY=/opt/tritonserver/backends
+      
+      # Python backend configuration
+      - TRITON_PYTHON_BACKEND_DIR=/opt/tritonserver/backends/python
+    
+    command: >
+      tritonserver
+      --model-repository=/models
+      --log-verbose=1
+      --log-info=true
+      --log-warning=true
+      --log-error=true
+      --allow-http=true
+      --allow-grpc=true
+      --allow-metrics=true
+      --http-port=8000
+      --grpc-port=8001
+      --metrics-port=8002
+      --backend-directory=/opt/tritonserver/backends
+      --model-control-mode=explicit
+      --load-model=router
+      --strict-model-config=false
+      --backend-config=python,shm-default-byte-size=67108864
+      --backend-config=python,shm-growth-byte-size=67108864
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/v2/health/ready"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '1.0'
+          memory: 2G
+
+  # Testing client service
+  triton-client:
+    image: python:3.11-slim
+    container_name: triton-client-test
+    depends_on:
+      - triton-server
+    
+    volumes:
+      - .:/workspace
+      - ../../tests:/tests:ro
+    
+    working_dir: /workspace
+    
+    command: >
+      bash -c "
+        pip install tritonclient[http] numpy requests &&
+        echo 'Triton client ready for testing...' &&
+        tail -f /dev/null
+      "
+    
+    environment:
+      - TRITON_SERVER_URL=triton-server:8000
+    
+    # Keep container running for interactive testing
+    stdin_open: true
+    tty: true
+
+volumes:
+  triton_logs:
+    driver: local
+
+networks:
+  default:
+    name: triton-network
+    driver: bridge 

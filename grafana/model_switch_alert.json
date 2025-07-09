@@ -1,0 +1,139 @@
+{
+  "alert": {
+    "uid": "model_switch_alert",
+    "title": "Excessive Model Switching",
+    "condition": "C",
+    "data": [
+      {
+        "refId": "A",
+        "queryType": "",
+        "relativeTimeRange": {
+          "from": 300,
+          "to": 0
+        },
+        "datasource": {
+          "type": "redis",
+          "uid": "redis_ds"
+        },
+        "model": {
+          "expr": "model_switch_total",
+          "intervalMs": 1000,
+          "maxDataPoints": 43200
+        }
+      },
+      {
+        "refId": "B",
+        "queryType": "",
+        "relativeTimeRange": {
+          "from": 300,
+          "to": 0
+        },
+        "datasource": {
+          "type": "__expr__",
+          "uid": "__expr__"
+        },
+        "model": {
+          "conditions": [
+            {
+              "evaluator": {
+                "params": [],
+                "type": "gt"
+              },
+              "operator": {
+                "type": "and"
+              },
+              "query": {
+                "params": ["A"]
+              },
+              "reducer": {
+                "params": [],
+                "type": "last"
+              },
+              "type": "query"
+            }
+          ],
+          "datasource": {
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "expression": "rate($A[5m])",
+          "hide": false,
+          "intervalMs": 1000,
+          "maxDataPoints": 43200,
+          "reducer": "last",
+          "refId": "B",
+          "type": "math"
+        }
+      },
+      {
+        "refId": "C",
+        "queryType": "",
+        "relativeTimeRange": {
+          "from": 300,
+          "to": 0
+        },
+        "datasource": {
+          "type": "__expr__",
+          "uid": "__expr__"
+        },
+        "model": {
+          "conditions": [
+            {
+              "evaluator": {
+                "params": [20],
+                "type": "gt"
+              },
+              "operator": {
+                "type": "and"
+              },
+              "query": {
+                "params": ["B"]
+              },
+              "reducer": {
+                "params": [],
+                "type": "last"
+              },
+              "type": "query"
+            }
+          ],
+          "datasource": {
+            "type": "__expr__",
+            "uid": "__expr__"
+          },
+          "expression": "B > 20",
+          "hide": false,
+          "intervalMs": 1000,
+          "maxDataPoints": 43200,
+          "reducer": "last",
+          "refId": "C",
+          "type": "threshold"
+        }
+      }
+    ],
+    "noDataState": "NoData",
+    "execErrState": "Alerting",
+    "for": "5m",
+    "annotations": {
+      "description": "Model switching rate has exceeded 20 switches per 5 minutes, which may indicate unstable routing behavior or excessive model volatility.",
+      "runbook_url": "https://trading-system-docs.com/runbooks/model-switching",
+      "summary": "More than 20 model switches detected in 5 minutes"
+    },
+    "labels": {
+      "severity": "warning",
+      "team": "trading",
+      "component": "model_router",
+      "alert_type": "performance"
+    }
+  },
+  "folderUID": "trading_alerts",
+  "ruleGroup": "Model Router Alerts",
+  "intervalSeconds": 60,
+  "orgID": 1,
+  "version": 1,
+  "meta": {
+    "created": "2025-01-17T12:00:00Z",
+    "updated": "2025-01-17T12:00:00Z",
+    "createdBy": "admin",
+    "updatedBy": "admin"
+  }
+} 

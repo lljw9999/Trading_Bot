@@ -1,0 +1,99 @@
+model_router:
+  # Model routing rules - evaluated in priority order (lower = higher priority)
+  rules:
+    # Crypto high-frequency (microstructure focus)
+    - match:
+        asset_class: "crypto"
+        horizon_ms: "<60000"  # < 1 minute
+      model: "tlob_tiny"
+      priority: 10
+      description: "TLOB-Tiny for crypto microstructure analysis"
+      
+    # Crypto medium-frequency (trend/momentum)  
+    - match:
+        asset_class: "crypto"
+        horizon_ms: "60000-7200000"  # 1 min - 2 hours
+      model: "patchtst_small"
+      priority: 20
+      description: "PatchTST for crypto medium-term patterns"
+      
+    # Crypto long-term (regime analysis)
+    - match:
+        asset_class: "crypto" 
+        horizon_ms: ">7200000"  # > 2 hours
+      model: "mamba_ts_small"
+      priority: 30
+      description: "MambaTS for crypto long-term regime analysis"
+      
+    # US Stocks intraday (market microstructure)
+    - match:
+        asset_class: "us_stocks"
+        horizon_ms: "<14400000"  # < 4 hours
+      model: "timesnet_base"
+      priority: 40
+      description: "TimesNet for US equity intraday patterns"
+      
+    # US Stocks overnight/swing (fundamental trends)
+    - match:
+        asset_class: "us_stocks"
+        horizon_ms: ">=14400000"  # >= 4 hours
+      model: "mamba_ts_small"
+      priority: 50
+      description: "MambaTS for US equity swing/overnight"
+      
+    # A-shares intraday (local market dynamics)
+    - match:
+        asset_class: "a_shares"
+        horizon_ms: "<14400000"  # < 4 hours
+      model: "timesnet_base"
+      priority: 60
+      description: "TimesNet for A-share intraday"
+      
+    # A-shares overnight (policy/macro sensitivity)
+    - match:
+        asset_class: "a_shares"
+        horizon_ms: ">=14400000"  # >= 4 hours
+      model: "chronos_bolt_base"
+      priority: 70
+      description: "Chronos Bolt for A-share overnight with macro factors"
+      
+    # Fallback rule (catch-all)
+    - match:
+        asset_class: "*"
+        horizon_ms: "*"
+      model: "tlob_tiny"
+      priority: 1000
+      description: "Default fallback to TLOB-Tiny"
+
+  # Router configuration
+  config:
+    default_model: "tlob_tiny"
+    cache_ttl_seconds: 300  # 5 minutes
+    redis_url: "redis://localhost:6379/0"
+    performance_logging: true
+    max_latency_us: 50  # Target latency
+    
+  # Model performance thresholds for auto-switching
+  model_thresholds:
+    tlob_tiny:
+      max_latency_ms: 3.0
+      min_accuracy: 0.52
+    patchtst_small:
+      max_latency_ms: 10.0  
+      min_accuracy: 0.54
+    timesnet_base:
+      max_latency_ms: 15.0
+      min_accuracy: 0.53
+    mamba_ts_small:
+      max_latency_ms: 20.0
+      min_accuracy: 0.55
+    chronos_bolt_base:
+      max_latency_ms: 25.0
+      min_accuracy: 0.56
+
+  # Hot-reload settings
+  reload:
+    enabled: true
+    signal: "SIGHUP"  # Unix signal for hot reload
+    validation: true  # Validate config before applying
+    backup_on_reload: true 

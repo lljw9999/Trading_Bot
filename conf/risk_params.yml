@@ -1,0 +1,101 @@
+risk_harmoniser:
+  # Edge blending parameters
+  edge_blending:
+    # Model decay factors (higher = faster decay for newer/unproven models)
+    decay_factors:
+      tlob_tiny: 0.3        # Proven high-freq model
+      patchtst_small: 0.5   # Moderately proven
+      timesnet_base: 0.4    # Established intraday model
+      mamba_ts_small: 0.6   # Less proven for short horizons
+      chronos_bolt_base: 1.5 # New model - high decay
+    
+    # Default confidence for models that don't provide one
+    default_confidence: 0.5
+    
+    # Minimum confidence threshold to use a model's edge
+    min_confidence_threshold: 0.3
+    
+    # Maximum number of models to blend simultaneously
+    max_models_to_blend: 5
+    
+    # Bayesian shrinkage parameters
+    shrinkage:
+      enabled: true
+      prior_edge_bps: 0.0    # Prior belief: no edge
+      shrinkage_strength: 0.1 # How much to shrink towards prior
+  
+  # Position sizing parameters
+  position_sizing:
+    # Kelly fraction settings
+    kelly_fraction: 0.25     # Use quarter Kelly for safety
+    
+    # Maximum position sizes by asset class
+    max_leverage:
+      crypto: 3.0           # 3:1 leverage for crypto
+      us_stocks: 4.0        # 4:1 Reg-T leverage for stocks
+      a_shares: 2.0         # Conservative for A-shares
+      forex: 10.0           # High leverage for forex
+      commodities: 5.0      # Moderate for commodities
+    
+    # Maximum position percentage per asset
+    max_position_pct:
+      crypto: 0.20          # 20% max per crypto asset
+      us_stocks: 0.25       # 25% max per stock
+      a_shares: 0.15        # 15% max per A-share
+      forex: 0.30           # 30% max per forex pair
+      commodities: 0.20     # 20% max per commodity
+  
+  # Risk limits and VaR targets
+  risk_limits:
+    # Portfolio-level VaR targets
+    var_targets:
+      daily_95pct: 0.015    # 1.5% daily VaR at 95% confidence
+      weekly_95pct: 0.035   # 3.5% weekly VaR at 95% confidence
+      monthly_95pct: 0.08   # 8% monthly VaR at 95% confidence
+    
+    # Maximum drawdown limits
+    max_drawdown: 0.05      # 5% maximum drawdown
+    
+    # Volatility circuit breakers
+    vol_multiplier_limit: 4.0  # 4x normal volatility triggers halt
+    
+    # Correlation limits
+    max_correlation_exposure: 0.60  # Max 60% in correlated positions
+    
+    # Sector/geographic concentration limits
+    concentration_limits:
+      single_asset: 0.25    # 25% max in any single asset
+      asset_class: 0.60     # 60% max in any asset class
+      sector: 0.40          # 40% max in any sector
+      geography: 0.70       # 70% max in any geography
+  
+  # Real-time monitoring settings
+  monitoring:
+    # Redis pub/sub settings
+    redis:
+      enabled: true
+      url: "redis://localhost:6379/0"
+      key_prefix: "risk"
+      publish_interval_ms: 1000  # Publish metrics every 1s
+    
+    # Performance targets
+    performance:
+      max_blend_latency_us: 20   # ≤ 20µs per blend
+      max_size_latency_us: 50    # ≤ 50µs per position size calc
+      memory_limit_mb: 100       # 100MB memory limit
+    
+    # Alerting thresholds
+    alerts:
+      var_breach_threshold: 1.1  # Alert if VaR > 110% of target
+      drawdown_warning: 0.03     # Warning at 3% drawdown
+      model_confidence_low: 0.2  # Alert if avg confidence < 20%
+      blend_latency_high_us: 50  # Alert if blend latency > 50µs
+  
+  # Param server integration
+  param_server:
+    enabled: true
+    config_path: "conf/risk_params.yml"
+    hot_reload: true
+    redis_notifications: true
+    validation_strict: true
+    backup_on_reload: true 

@@ -1,0 +1,97 @@
+### 🟢 Transition Phase — **v0.4.0-rc3 → v0.4.0 GA**
+
+With all Sprint #4 features and docs merged, our next move is *operational*: prove the stack is stable under real-time load, then cut the GA release. Below is a single work order for **Cursor**.
+
+---
+
+## 1  — Tag & Merge
+
+| Step                     | Command                                                                         | Notes                       |
+| ------------------------ | ------------------------------------------------------------------------------- | --------------------------- |
+| 1. Re-base main          | `git checkout main && git pull`<br>`git merge --ff-only develop`                | main must fast-forward only |
+| 2. Tag release-candidate | `git tag -a v0.4.0-rc3 -m "Edge-Risk dashboard & runbook"`<br>`git push --tags` | triggers Docker build in CI |
+| 3. Open *release* PR     | title: **“Promote v0.4.0-rc3 to main”**                                         | assign PM + QA reviewers    |
+
+---
+
+## 2  — Stage Deployment
+
+1. `docker-compose -f docker-compose.staging.yml pull && docker-compose up -d`
+2. `make start-services` (Redis, Prometheus, Grafana).
+3. Import dashboards (idempotent):
+
+```bash
+./scripts/grafana_import.sh \
+  --dash grafana/edge_risk.json \
+  --alert grafana/model_switch_alert.json
+```
+
+4. Verify *Edge-Risk* panels load and refresh (<2 s lag).
+
+---
+
+## 3  — 48 h Paper-Trade Dry-Run
+
+| Task                | Command                                         | Output                     |
+| ------------------- | ----------------------------------------------- | -------------------------- |
+| Start crypto feed   | `make live-crypto`                              | trades on BTC, ETH         |
+| Start US-equity SIM | `make live-stocks`                              | NVDA replay                |
+| Kick watchdog       | `scripts/healthcheck_loop.sh` (already in repo) | exit != 0 raises PagerDuty |
+
+**Metrics to watch (Grafana):**
+
+* `edge_blended_bps` (should stay within ±2σ historical)
+* `var_pct` (alert at >90 %)
+* `model_switch_total` (alert at >20/5 min)
+
+---
+
+## 4  — Automated Sanity Reports
+
+Add two cron-like tasks via `crontab -e` on the staging host:
+
+```
+# 12-hour PnL snapshot
+0 */12 * * *  docker exec trading-core python scripts/report_pnl.py >> /var/log/paper_pnl.log 2>&1
+
+# Memory footprint check
+0 */12 * * *  docker exec trading-core python scripts/report_mem.py >> /var/log/mem.log 2>&1
+```
+
+Each script already writes OK/FAIL to stdout; PagerDuty integrates via log-tail on FAIL.
+
+---
+
+## 5  — Exit Criteria for GA
+
+| Metric              | Threshold                                |
+| ------------------- | ---------------------------------------- |
+| Paper-trade runtime | ≥ 48 h continuous, no container restarts |
+| Alerts              | 0 critical, ≤ 2 warning, all resolved    |
+| PnL drift           | within ±0.5 σ of historical sim          |
+| VaR breach          | never exceeds 95 % target                |
+| Memory leak         | RSS drift < 3 % over run                 |
+
+When all pass, promote:
+
+```bash
+git tag -a v0.4.0 -m "GA – dual-horizon router & risk harmoniser"
+git push --tags
+```
+
+and execute production deploy (same compose file with live API keys).
+
+---
+
+## 6  — Parking Lot for Sprint #5 (no action yet)
+
+* **Execution latency hardening** (Rust/wasi edge blender)
+* **True L2 order-book ingestion for US equities**
+* **Auto-hyper-tune Router rules via Bayesian opt**
+* **AWS Spot-fleet orchestration for model training**
+
+We’ll scope these once GA is live.
+
+---
+
+### ☑️ Cursor—please carry out *Sections 1 → 4* in order, then post a status update in Jira **#release-v0.4.0**. Ping if the CI Docker build fails or if Grafana auth variables are missing.

@@ -1,0 +1,11 @@
+model_router:
+  rules:
+    - match:
+        asset_class: "crypto"
+        horizon_ms: "<60000"
+      model: "tlob_tiny"
+    - match:
+        asset_class: "crypto"
+        horizon_ms: ">=60000 & <7200000"
+      model: "patchtst_small"
+  default_model: "timesnet_base" 

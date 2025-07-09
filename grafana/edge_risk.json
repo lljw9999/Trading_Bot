@@ -1,0 +1,775 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "Edge Risk Dashboard",
+    "tags": ["trading", "risk", "edge", "models"],
+    "style": "dark",
+    "timezone": "utc",
+    "refresh": "5s",
+    "schemaVersion": 37,
+    "version": 1,
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": ["5s", "10s", "30s", "1m", "5m"],
+      "time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d"]
+    },
+    "templating": {
+      "list": [
+        {
+          "name": "symbol",
+          "type": "custom",
+          "label": "Symbol",
+          "multi": true,
+          "includeAll": true,
+          "allValue": null,
+          "query": "BTC-USD,ETH-USD,AAPL,MSFT,TSLA",
+          "options": [
+            {
+              "text": "All",
+              "value": "$__all",
+              "selected": true
+            },
+            {
+              "text": "BTC-USD",
+              "value": "BTC-USD",
+              "selected": false
+            },
+            {
+              "text": "ETH-USD",
+              "value": "ETH-USD",
+              "selected": false
+            },
+            {
+              "text": "AAPL",
+              "value": "AAPL",
+              "selected": false
+            },
+            {
+              "text": "MSFT",
+              "value": "MSFT",
+              "selected": false
+            },
+            {
+              "text": "TSLA",
+              "value": "TSLA",
+              "selected": false
+            }
+          ]
+        }
+      ]
+    },
+    "annotations": {
+      "list": [
+        {
+          "name": "Model Switches",
+          "datasource": "Redis",
+          "enable": true,
+          "iconColor": "rgba(255, 96, 96, 1)",
+          "query": "XRANGE model.switch.log - +",
+          "textFormat": "{{symbol}}: {{old_model}} → {{new_model}}"
+        }
+      ]
+    },
+    "panels": [
+      {
+        "id": 1,
+        "title": "Edge Risk Overview",
+        "type": "row",
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "collapsed": false
+      },
+      {
+        "id": 2,
+        "title": "Active Model",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "edge_blended_bps",
+            "refId": "A",
+            "datasource": "Redis"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 0,
+          "y": 1
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "value"
+            },
+            "custom": {
+              "displayMode": "basic",
+              "orientation": "horizontal"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "tlob_tiny": {
+                    "color": "green",
+                    "index": 0,
+                    "text": "TLOB-Tiny"
+                  },
+                  "patchtst_small": {
+                    "color": "blue", 
+                    "index": 1,
+                    "text": "PatchTST"
+                  },
+                  "timesnet_base": {
+                    "color": "yellow",
+                    "index": 2,
+                    "text": "TimesNet"
+                  },
+                  "mamba_ts_small": {
+                    "color": "purple",
+                    "index": 3,
+                    "text": "Mamba-TS"
+                  },
+                  "chronos_bolt_base": {
+                    "color": "orange",
+                    "index": 4,
+                    "text": "Chronos"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "string"
+          }
+        },
+        "options": {
+          "reduceOptions": {
+            "values": false,
+            "calcs": ["lastNotNull"],
+            "fields": "model"
+          },
+          "orientation": "auto",
+          "textMode": "auto",
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "auto"
+        },
+        "repeat": "symbol",
+        "repeatDirection": "h",
+        "maxPerRow": 4
+      },
+      {
+        "id": 3,
+        "title": "Blended Edge (bps)",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "TS.GET edge_blended_bps:${symbol}",
+            "refId": "A",
+            "datasource": "Redis"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 6,
+          "y": 1
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "custom": {
+              "orientation": "auto",
+              "textMode": "auto"
+            },
+            "decimals": 1,
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "red",
+                  "value": -10
+                },
+                {
+                  "color": "yellow",
+                  "value": -2
+                },
+                {
+                  "color": "green",
+                  "value": 2
+                },
+                {
+                  "color": "blue",
+                  "value": 10
+                }
+              ]
+            },
+            "unit": "short"
+          }
+        },
+        "options": {
+          "reduceOptions": {
+            "values": false,
+            "calcs": ["lastNotNull"],
+            "fields": ""
+          },
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "auto"
+        },
+        "repeat": "symbol",
+        "repeatDirection": "h",
+        "maxPerRow": 4
+      },
+      {
+        "id": 4,
+        "title": "Position Size (USD)",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "TS.GET position_size_usd:${symbol}",
+            "refId": "A",
+            "datasource": "Redis"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 12,
+          "y": 1
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "orientation": "auto",
+              "textMode": "auto"
+            },
+            "decimals": 0,
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 10000
+                },
+                {
+                  "color": "red",
+                  "value": 50000
+                }
+              ]
+            },
+            "unit": "currencyUSD"
+          }
+        },
+        "options": {
+          "reduceOptions": {
+            "values": false,
+            "calcs": ["lastNotNull"],
+            "fields": ""
+          },
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "auto"
+        },
+        "repeat": "symbol",
+        "repeatDirection": "h",
+        "maxPerRow": 4
+      },
+      {
+        "id": 5,
+        "title": "VaR %",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "TS.GET var_pct:${symbol}",
+            "refId": "A",
+            "datasource": "Redis"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 18,
+          "y": 1
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "orientation": "auto",
+              "textMode": "auto"
+            },
+            "decimals": 2,
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 1.0
+                },
+                {
+                  "color": "orange",
+                  "value": 1.5
+                },
+                {
+                  "color": "red",
+                  "value": 2.0
+                }
+              ]
+            },
+            "unit": "percent"
+          }
+        },
+        "options": {
+          "reduceOptions": {
+            "values": false,
+            "calcs": ["lastNotNull"],
+            "fields": ""
+          },
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "auto"
+        },
+        "repeat": "symbol",
+        "repeatDirection": "h",
+        "maxPerRow": 4
+      },
+      {
+        "id": 10,
+        "title": "Time Series",
+        "type": "row",
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 9
+        },
+        "collapsed": false
+      },
+      {
+        "id": 11,
+        "title": "Edge & Position Size Over Time",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "TS.RANGE edge_blended_bps:${symbol} - +",
+            "refId": "A",
+            "datasource": "Redis",
+            "legendFormat": "Edge (bps) - {{symbol}}"
+          },
+          {
+            "expr": "TS.RANGE position_size_usd:${symbol} - +",
+            "refId": "B",
+            "datasource": "Redis",
+            "legendFormat": "Position ($) - {{symbol}}"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 10
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "vis": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "decimals": 1,
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": "Position.*"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "right"
+                },
+                {
+                  "id": "unit",
+                  "value": "currencyUSD"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "blue"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byRegexp", 
+                "options": "Edge.*"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "short"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "green"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          },
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom"
+          }
+        },
+        "repeat": "symbol",
+        "repeatDirection": "v"
+      },
+      {
+        "id": 20,
+        "title": "Model Switch Log",
+        "type": "row",
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 18
+        },
+        "collapsed": false
+      },
+      {
+        "id": 21,
+        "title": "Recent Model Switches",
+        "type": "table",
+        "targets": [
+          {
+            "expr": "XREVRANGE model.switch.log + - COUNT 50",
+            "refId": "A",
+            "datasource": "Redis"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 19
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "displayMode": "auto",
+              "filterable": true,
+              "sortable": true
+            },
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "timestamp"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 180
+                },
+                {
+                  "id": "unit",
+                  "value": "time:YYYY-MM-DD HH:mm:ss"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "symbol"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "old_model"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 150
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "red"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "new_model"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 150
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "green"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "latency_ms"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 100
+                },
+                {
+                  "id": "unit",
+                  "value": "ms"
+                },
+                {
+                  "id": "decimals",
+                  "value": 1
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": true,
+              "displayName": "timestamp"
+            }
+          ]
+        }
+      },
+      {
+        "id": 30,
+        "title": "Alert Summary",
+        "type": "row",
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 27
+        },
+        "collapsed": false
+      },
+      {
+        "id": 31,
+        "title": "Active Alerts",
+        "type": "alertlist",
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 0,
+          "y": 28
+        },
+        "options": {
+          "showOptions": "current",
+          "maxItems": 20,
+          "sortOrder": 1,
+          "dashboardAlerts": false,
+          "alertName": "",
+          "dashboardTitle": "",
+          "folderId": null,
+          "tags": ["trading", "risk"],
+          "stateFilter": {
+            "firing": true,
+            "pending": true,
+            "noData": false,
+            "normal": false
+          },
+          "showGroupLabels": true
+        }
+      },
+      {
+        "id": 32,
+        "title": "Model Switch Rate",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "rate(model_switch_total[5m])",
+            "refId": "A",
+            "datasource": "Redis"
+          }
+        ],
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 12,
+          "y": 28
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "orientation": "auto",
+              "textMode": "auto"
+            },
+            "decimals": 1,
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 10
+                },
+                {
+                  "color": "orange",
+                  "value": 15
+                },
+                {
+                  "color": "red",
+                  "value": 20
+                }
+              ]
+            },
+            "unit": "reqps"
+          }
+        },
+        "options": {
+          "reduceOptions": {
+            "values": false,
+            "calcs": ["lastNotNull"],
+            "fields": ""
+          },
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "auto"
+        }
+      }
+    ]
+  },
+  "meta": {
+    "type": "db",
+    "canSave": true,
+    "canEdit": true,
+    "canAdmin": true,
+    "canStar": true,
+    "slug": "edge-risk-dashboard",
+    "url": "/d/edge-risk/edge-risk-dashboard",
+    "expires": "0001-01-01T00:00:00Z",
+    "created": "2025-01-17T12:00:00Z",
+    "updated": "2025-01-17T12:00:00Z",
+    "updatedBy": "admin",
+    "createdBy": "admin",
+    "version": 1,
+    "hasAcl": false,
+    "isFolder": false,
+    "folderId": 0,
+    "folderTitle": "General",
+    "folderUrl": "",
+    "provisioned": false,
+    "provisionedExternalId": ""
+  }
+} 

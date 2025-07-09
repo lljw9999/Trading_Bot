@@ -1,0 +1,207 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "title": "Portfolio Overview",
+      "type": "row",
+      "collapsed": false,
+      "panels": [
+        {
+          "title": "Portfolio Value",
+          "type": "gauge",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "trading_portfolio_value_dollars",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "red", "value": null },
+                  { "color": "yellow", "value": 90000 },
+                  { "color": "green", "value": 100000 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "title": "P&L",
+          "type": "stat",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "sum(trading_pnl_realized_dollars)",
+              "refId": "A"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Trading Activity",
+      "type": "row",
+      "collapsed": false,
+      "panels": [
+        {
+          "title": "Orders Per Minute",
+          "type": "timeseries",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "rate(trading_orders_submitted_total[1m])",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "title": "Fill Rate",
+          "type": "gauge",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "sum(trading_orders_filled_total) / sum(trading_orders_submitted_total)",
+              "refId": "A"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Alpha Models",
+      "type": "row",
+      "collapsed": false,
+      "panels": [
+        {
+          "title": "Edge Distribution",
+          "type": "heatmap",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "rate(trading_alpha_edge_bps_bucket[5m])",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "title": "Confidence Distribution",
+          "type": "heatmap",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "rate(trading_alpha_confidence_bucket[5m])",
+              "refId": "A"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Risk Management",
+      "type": "row",
+      "collapsed": false,
+      "panels": [
+        {
+          "title": "Risk Score",
+          "type": "gauge",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "trading_risk_score",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "title": "Drawdown",
+          "type": "timeseries",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "trading_drawdown_fraction * 100",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "title": "Risk Violations",
+          "type": "stat",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "sum(trading_risk_violations_total)",
+              "refId": "A"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "System Health",
+      "type": "row",
+      "collapsed": false,
+      "panels": [
+        {
+          "title": "Component Health",
+          "type": "status-history",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "trading_component_health",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "title": "Memory Usage",
+          "type": "timeseries",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "trading_memory_usage_bytes / 1024 / 1024",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "title": "CPU Usage",
+          "type": "timeseries",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "expr": "trading_cpu_usage_percent",
+              "refId": "A"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 27,
+  "style": "dark",
+  "tags": ["trading"],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Trading System Dashboard",
+  "uid": "trading-system",
+  "version": 1
+}

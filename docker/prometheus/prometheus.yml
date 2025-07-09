@@ -1,0 +1,46 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Trading System metrics
+  - job_name: 'trading-system'
+    static_configs:
+      - targets: ['host.docker.internal:8000']
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+
+  # Sentiment Enricher Service
+  - job_name: 'sentiment-svc'
+    static_configs:
+      - targets: ['host.docker.internal:8002']
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+
+  # Trade Explanation Service
+  - job_name: 'explain-svc'
+    static_configs:
+      - targets: ['host.docker.internal:8003']
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+
+  # System metrics (if needed)
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['host.docker.internal:9100']
+    scrape_interval: 30s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093 
