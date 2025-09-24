@@ -1,0 +1,81 @@
+period_days: 30
+start_date: "2025-08-14"
+end_date: "2025-09-13"
+
+okrs:
+  - id: SLO-uptime
+    title: "System Uptime & Reliability"
+    target: ">=99.5% heartbeat freshness"
+    description: "Maintain high system availability with minimal downtime"
+    metric_source: "rl_policy_heartbeat_age_seconds"
+    threshold: 600  # seconds
+    success_criteria: "heartbeat_age < 600s for 99.5% of time"
+    
+  - id: Safety-zero-incidents
+    title: "Zero Critical Incidents"
+    target: "0 unresolved page alerts >30m"
+    description: "Maintain zero critical incidents requiring manual intervention"
+    metric_source: "alerts:policy Redis list"
+    threshold: 30  # minutes
+    success_criteria: "no critical alerts unresolved for >30 minutes"
+    
+  - id: Cost-ctrl
+    title: "Infrastructure Cost Control"
+    target: "<= +20% infra cost MoM"
+    description: "Keep infrastructure cost increases within acceptable bounds"
+    metric_source: "AWS CloudWatch billing"
+    threshold: 1.2  # 20% increase
+    success_criteria: "monthly cost increase <= 20% vs baseline"
+    
+  - id: Model-health
+    title: "Model Performance Health"
+    target: "entropy in [1.0,2.0]; q-spread <= 2x 24h base"
+    description: "Maintain model performance within acceptable ranges"
+    metric_source: "rl_policy_entropy, rl_policy_q_spread"
+    thresholds:
+      entropy_min: 1.0
+      entropy_max: 2.0
+      qspread_max_ratio: 2.0
+    success_criteria: "1.0 <= entropy <= 2.0 AND qspread <= 2x baseline"
+    
+  - id: Retrain-cadence
+    title: "Model Retraining Cadence"
+    target: ">=3 retrain cycles with offline PASS"
+    description: "Maintain regular model updates with quality gates"
+    metric_source: "artifacts/validation/ offline gate results"
+    threshold: 3  # successful retrains
+    success_criteria: "minimum 3 successful retrain-validate cycles"
+
+scoring:
+  excellent: ">=90% of targets met"
+  good: ">=75% of targets met"
+  needs_improvement: ">=60% of targets met"
+  critical: "<60% of targets met"
+
+reports:
+  weekly_digest: true
+  monthly_summary: true
+  stakeholder_dashboard: true
+  slack_notifications: true
+  
+owners:
+  primary: "@oncall"
+  secondary: "@head-of-trading"
+  escalation: "@cto"
+  
+notifications:
+  slack_channels: ["#trading-ops", "#risk-management"]
+  email_list: ["trading-risk@company.com", "model-risk@company.com"]
+  
+monitoring:
+  automated_checks: true
+  alert_thresholds: true
+  dashboard_links:
+    - "http://localhost:3000/d/rl-policy"
+    - "http://localhost:9090/graph"
+  
+remediation:
+  slo_breach: "Execute incident response playbook"
+  cost_overrun: "Review infrastructure scaling and optimization"
+  model_degradation: "Trigger immediate model retraining"
+  retrain_failure: "Investigate training pipeline and data quality"

@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-08-14T08:41:08.772253+00:00",
+  "action": "gate_failure",
+  "payload": {
+    "command": "make go-nogo",
+    "return_code": 2,
+    "stdout": "\ud83d\udea6 Running Go/No-Go decision check...\npython scripts/go_nogo_check.py\n\ud83d\udea6 Running Go/No-Go Decision Check...\n\u23f0 Timestamp: 2025-08-14T08:41:08.569478+00:00\n\n\ud83d\udcca Checking validation history...\n\ud83d\udea8 Checking alerting status...\n\ud83d\udcc8 Checking SLO performance...\n\ud83d\udd27 Checking technical readiness...\n\ud83e\udde0 Checking policy health...\n\ud83d\udc65 Checking operational readiness...\n\ud83d\udcca Go/No-Go Decision Results:\n   Total Criteria: 6\n   \u2705 Passed: 1\n   \u26a0\ufe0f  Warnings: 2\n   \u274c Failed: 3\n   \ud83d\udcc8 Score: 25/85 (29%)\n\n\ud83d\udccb Audit: artifacts/audit/2025-08",
+    "stderr": "Makefile:452: warning: overriding commands for target `go-live'\nMakefile:258: warning: ignoring old commands for target `go-live'\nmake: *** [go-nogo] Error 1\n"
+  },
+  "operator": "yanzewu",
+  "session_id": "20250814_084107Z"
+}

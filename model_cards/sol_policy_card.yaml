@@ -1,0 +1,129 @@
+compliance:
+  audit_trail: WORM-compliant
+  change_management: GitOps with approval workflows
+  documentation_status: COMPLETE
+  model_risk_tier: Tier 1
+  regulatory_framework: MiFID II, MAS Guidelines
+  validation_frequency: Weekly offline, Daily KRI monitoring
+date: 2025-08-13
+deployment:
+  infrastructure:
+    environment: Kubernetes on AWS
+    persistence: Redis + InfluxDB
+    scaling: Horizontal pod autoscaling
+  rollback_criteria:
+  - KRI breach
+  - Alert severity >= critical
+  - Performance degradation > 5%
+  rollout_strategy:
+    blue_green: true
+    canary_pct: 10%
+    monitoring_period: 2 hours
+description: Reinforcement Learning policy for SOL-USD trading using SAC with LoRA
+  adaptation
+evaluation:
+  ab_test:
+    ci95: TBD
+    delta_pnl: TBD
+    sample_size: TBD
+    verdict: PENDING
+  last_validation:
+    status: PASS
+    timestamp: '2025-08-14T08:38:57.966897+00:00'
+  offline_gate:
+    entropy: "1.05 \xB1 0.15"
+    max_drawdown: 1.2%
+    pass_rate: 95%
+    return_mean: '0.0024'
+    sharpe_ratio: '1.8'
+  validation_metrics:
+    entropy_floor: 0.9
+    heartbeat_max_age: 600
+    q_spread_max: 2.0
+    slippage_max_bps: 35
+explainability:
+  attribution_methods:
+  - Gradient-based attribution
+  - Feature importance via permutation
+  - LIME for local explanations
+  documentation: docs/model_explainability.md
+  features:
+  - ob_imbalance
+  - vol
+  - returns
+  - spread
+  - depth
+  tools:
+  - ExplainMiddleware
+governance:
+  approval_chain:
+  - Model Risk Committee
+  - Trading Risk Manager
+  - Head of Technology
+  controls:
+  - kill-switch
+  - error-budget-guard
+  - watchdog
+  - alerts
+  - pilot-kri-monitor
+  - ramp-guard
+  monitoring:
+    alert_rules:
+    - RLPolicyStale
+    - RLPolicyEntropyLow
+    - RLPolicyCollapseRisk
+    dashboards:
+    - 'Grafana: RL Policy Health'
+    - 'Grafana: Trading Performance'
+    prometheus_metrics:
+    - rl_policy_entropy
+    - rl_policy_q_spread
+    - rl_policy_heartbeat_age_seconds
+    - rl_policy_influence_pct
+  worm_audit_paths:
+  - artifacts/audit/
+  - artifacts/pilot/
+  - artifacts/validation/
+metadata:
+  approved_by: trading-risk@company
+  created_by: rl-team@company
+  last_updated: '2025-08-13T13:00:00Z'
+  next_review: '2025-08-20T00:00:00Z'
+  reviewed_by: model-risk@company
+  version_history:
+  - 'v1.0.0: Initial production release'
+model: sol_rl_policy_v1
+owner: rl-team@company
+risk:
+  drawdown_day_max: 2%
+  entropy_floor: 0.9
+  influence_limits:
+    pilot_max: 25%
+    production_max: 100%
+    ramp_schedule: "10% \u2192 15% \u2192 25%"
+  kill_switch_triggers:
+  - Entropy < 0.9 for 30min
+  - Daily drawdown > 2%
+  - Q-spread > 2x baseline for 30min
+  - Manual emergency stop
+  max_position_size: 10% of daily volume
+  qspread_guard: x2 of 24h baseline
+training:
+  algo: SAC-DiF + LoRA
+  checkpoints:
+  - checkpoints/latest.pt
+  compute_resources: 8x A100 GPUs
+  data_window: "2025-05 \u2192 2025-08"
+  env: OrderBookEnv
+  hyperparameters:
+    batch_size: 256
+    gamma: 0.99
+    learning_rate: 3e-4
+    lora_alpha: 32
+    lora_rank: 16
+    replay_buffer_size: 1000000
+    tau: 0.005
+  last_training_id: dry_run_run_20250814_083857Z
+  last_update: '2025-08-14T08:38:57.966887+00:00'
+  training_duration: 72 hours
+version: 1.0.0

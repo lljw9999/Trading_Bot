@@ -1,0 +1,85 @@
+{
+  "uid": "recon_breach",
+  "title": "Position Reconciliation Breach", 
+  "condition": "C",
+  "data": [
+    {
+      "refId": "A",
+      "queryType": "",
+      "relativeTimeRange": {
+        "from": 120,
+        "to": 0
+      },
+      "datasource": {
+        "type": "prometheus", 
+        "uid": "prometheus-uid"
+      },
+      "model": {
+        "expr": "metric_recon_notional_diff_pct",
+        "interval": "",
+        "legendFormat": "",
+        "refId": "A"
+      }
+    },
+    {
+      "refId": "C",
+      "queryType": "",
+      "relativeTimeRange": {
+        "from": 0,
+        "to": 0
+      },
+      "datasource": {
+        "type": "__expr__",
+        "uid": "__expr__"
+      },
+      "model": {
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [0.25],
+              "type": "gt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": ["A"]
+            },
+            "reducer": {
+              "params": [],
+              "type": "last"
+            },
+            "type": "query"
+          }
+        ],
+        "datasource": {
+          "type": "__expr__",
+          "uid": "__expr__"
+        },
+        "expression": "A > 0.25",
+        "hide": false,
+        "intervalMs": 1000,
+        "maxDataPoints": 43200,
+        "reducer": "last",
+        "refId": "C",
+        "type": "threshold"
+      }
+    }
+  ],
+  "intervalSeconds": 30,
+  "noDataState": "NoData",
+  "execErrState": "Alerting", 
+  "for": "1m",
+  "annotations": {
+    "description": "Position reconciliation breach detected - notional difference exceeds 0.25% threshold for more than 1 minute. This indicates potential position drift or execution failures.",
+    "runbook_url": "https://github.com/your-org/trading-runbooks/blob/main/alerts/reconciliation.md",
+    "summary": "Position Reconciliation Breach"
+  },
+  "labels": {
+    "team": "trading",
+    "severity": "critical",
+    "component": "reconciliation",
+    "slo": "position_accuracy"
+  },
+  "folderUID": "trading-alerts"
+}

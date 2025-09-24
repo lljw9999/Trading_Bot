@@ -1,0 +1,29 @@
+[Unit]
+Description=Slack Panic Button Webhook Service
+After=network.target
+Requires=redis.service
+
+[Service]
+Type=simple
+User=trading
+Group=trading
+WorkingDirectory=/opt/trading-system
+Environment=PYTHONPATH=/opt/trading-system
+Environment=PANIC_WEBHOOK_PORT=8080
+Environment=SLACK_SIGNING_SECRET=your_slack_signing_secret_here
+Environment=AUTHORIZED_PANIC_USERS=trading_ops,risk_manager,cto
+ExecStart=/opt/trading-system/venv/bin/python api/slack_panic_webhook.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+# Security settings
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/tmp /var/log
+
+[Install]
+WantedBy=multi-user.target

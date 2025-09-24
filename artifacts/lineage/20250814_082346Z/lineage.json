@@ -1,0 +1,473 @@
+{
+  "timestamp": "2025-08-14T08:23:46.146947+00:00",
+  "lineage_version": "1.0",
+  "summary": {
+    "data_sources": 43,
+    "feature_artifacts": 4,
+    "model_artifacts": 5,
+    "training_runs": 25
+  },
+  "data_sources": [
+    {
+      "path": "data/policy_shadow_metrics.csv",
+      "name": "policy_shadow_metrics.csv",
+      "size_bytes": 271,
+      "modified_time": "2025-08-14T08:22:59.477136+00:00",
+      "hash": "c2a1aa6f1b06b82d484a369d203ddf5db7590356e826d02cc13b8eb1719ee8ea",
+      "type": "dataset"
+    },
+    {
+      "path": "data/baseline_metrics.csv",
+      "name": "baseline_metrics.csv",
+      "size_bytes": 269,
+      "modified_time": "2025-08-14T08:22:59.477045+00:00",
+      "hash": "1b03f7f932534883b4b5e0d616c7002ab895ba1da831109212dd6996221231c8",
+      "type": "dataset"
+    },
+    {
+      "path": "data/slo_history.db",
+      "name": "slo_history.db",
+      "size_bytes": 12288,
+      "modified_time": "2025-08-09T15:51:29.441501+00:00",
+      "hash": "ac3dbba70fb9a9e69eacc199c1a88c2b11686e22c8aeaa14b6c66ec5b294dd8e",
+      "type": "other"
+    },
+    {
+      "path": "data/ab_history.db",
+      "name": "ab_history.db",
+      "size_bytes": 40960,
+      "modified_time": "2025-08-09T01:22:07.456986+00:00",
+      "hash": "5cff802254d9b00031122d31e242f423f6cde966587144a927a2e2fa5539018e",
+      "type": "other"
+    },
+    {
+      "path": "data/baseline_state_sample.parquet",
+      "name": "baseline_state_sample.parquet",
+      "size_bytes": 689332,
+      "modified_time": "2025-08-08T13:36:31.577550+00:00",
+      "hash": "afe5d2b754e2a4c0ba19641d1462772e38639ca5a5642deae1256a4310a7b1ec",
+      "type": "dataset"
+    },
+    {
+      "path": "data/wal/checkpoint.00000005/00000000",
+      "name": "00000000",
+      "size_bytes": 32768,
+      "modified_time": "2025-07-09T09:23:44.688308+00:00",
+      "hash": "7a821c70809cdadff804ff79354f5cb5ed88c6a0370b4955785a31b5440299e0",
+      "type": "other"
+    },
+    {
+      "path": "data/wal/00000008",
+      "name": "00000008",
+      "size_bytes": 32768,
+      "modified_time": "2025-07-09T09:23:44.688135+00:00",
+      "hash": "1802a34ab1e3df472d00879c8da5954bc16348d5a5fa3f4fb3b2477e92d02b06",
+      "type": "other"
+    },
+    {
+      "path": "data/wal/00000007",
+      "name": "00000007",
+      "size_bytes": 32768,
+      "modified_time": "2025-07-09T09:23:44.688033+00:00",
+      "hash": "6493880310040a35e52ab7662fd3a436caaf281cc0d7798105439ee2a7ef95e3",
+      "type": "other"
+    },
+    {
+      "path": "data/wal/00000006",
+      "name": "00000006",
+      "size_bytes": 32768,
+      "modified_time": "2025-07-09T09:23:44.687919+00:00",
+      "hash": "0c4516f649622641f5eb505598acb30bbc75729b080a05bbed88bab228d0bb44",
+      "type": "other"
+    },
+    {
+      "path": "data/stocks/2025-07-17/NVDA.csv",
+      "name": "NVDA.csv",
+      "size_bytes": 1773,
+      "modified_time": "2025-07-09T09:23:44.687775+00:00",
+      "hash": "d6ec976dc6431ec6bc4d337ff417ead3f317da6178ad4219045c5d9c35cfff53",
+      "type": "dataset"
+    },
+    {
+      "path": "data/stocks/2025-07-02/NVDA.csv",
+      "name": "NVDA.csv",
+      "size_bytes": 3307,
+      "modified_time": "2025-07-09T09:23:44.687632+00:00",
+      "hash": "1460ee4a51714d5a7a10d80c7b2a09520538a54dda2e67ae9ae1c01f21c17008",
+      "type": "dataset"
+    },
+    {
+      "path": "data/stocks/2025-07-02/AAPL.csv",
+      "name": "AAPL.csv",
+      "size_bytes": 42,
+      "modified_time": "2025-07-09T09:23:44.687559+00:00",
+      "hash": "4bf957317ccc9bebbbc1687d049360e744827f2fc9d7da6911944594d8add579",
+      "type": "dataset"
+    },
+    {
+      "path": "data/queries.active",
+      "name": "queries.active",
+      "size_bytes": 20001,
+      "modified_time": "2025-07-09T09:23:44.687407+00:00",
+      "hash": "4d53b2cb8f39eaa2434c0c213d53ac997b1075226374d30a40504f33caf8d8f7",
+      "type": "other"
+    },
+    {
+      "path": "data/crypto/2025-07-02/SOLUSDT.csv",
+      "name": "SOLUSDT.csv",
+      "size_bytes": 33067,
+      "modified_time": "2025-07-09T09:23:44.687328+00:00",
+      "hash": "9b440e494678c0f70e69a833bfb3153861f78b05c177dba7d93e235a03af6f7d",
+      "type": "dataset"
+    },
+    {
+      "path": "data/crypto/2025-07-02/ETHUSDT.csv",
+      "name": "ETHUSDT.csv",
+      "size_bytes": 33710,
+      "modified_time": "2025-07-09T09:23:44.687202+00:00",
+      "hash": "80792e24bea93bed1b8ea623408119259a317d0f836c29669d0636bbb92650bd",
+      "type": "dataset"
+    },
+    {
+      "path": "data/crypto/2025-07-02/BTCUSDT.csv",
+      "name": "BTCUSDT.csv",
+      "size_bytes": 33255,
+      "modified_time": "2025-07-09T09:23:44.687061+00:00",
+      "hash": "25d95ded08369f4c77e83d8148fead88b6ab48bd266e6efc0cd1961b57a9f661",
+      "type": "dataset"
+    },
+    {
+      "path": "data/chunks_head/000007",
+      "name": "000007",
+      "size_bytes": 131072,
+      "modified_time": "2025-07-09T09:23:44.686745+00:00",
+      "hash": "978839fe71e963cc71fdbe6ef07ece6c99c0e7ad5604a78b11c6e1faabef6d29",
+      "type": "other"
+    },
+    {
+      "path": "data/chunks_head/000006",
+      "name": "000006",
+      "size_bytes": 131072,
+      "modified_time": "2025-07-09T09:23:44.686581+00:00",
+      "hash": "d9bf2855aa1eb75444097a12c09635fdc3e0a72074e9897f3f81a217968d0286",
+      "type": "other"
+    },
+    {
+      "path": "data/astocks/2025-01-17/600519.SH.csv",
+      "name": "600519.SH.csv",
+      "size_bytes": 3553,
+      "modified_time": "2025-07-09T09:23:44.686319+00:00",
+      "hash": "82ef6fbaf41b030b7f9338c54b62f192b5e88199aeb57b32d922cf453e417311",
+      "type": "dataset"
+    },
+    {
+      "path": "data/01JZM1PG1TA2MX70JSQEMERZTR/tombstones",
+      "name": "tombstones",
+      "size_bytes": 9,
+      "modified_time": "2025-07-09T09:23:44.686125+00:00",
+      "hash": "abef5b6f54ecd8bf74c648edd3fd3f3044587f7f4539ad7eb283571b209914fb",
+      "type": "other"
+    }
+  ],
+  "feature_engineering": [
+    {
+      "path": "src/layers/layer0_feature_engineering/funding_basis_features.py",
+      "name": "funding_basis_features.py",
+      "size_bytes": 6912,
+      "modified_time": "2025-08-09T01:56:49.855549+00:00",
+      "hash": "e4d4ab70d3d09ef980383c086146b1f9eb9396c8c3c87f995680f569fbae7d95",
+      "type": "feature_code"
+    },
+    {
+      "path": "src/layers/layer0_feature_engineering/feature_builder.py",
+      "name": "feature_builder.py",
+      "size_bytes": 7780,
+      "modified_time": "2025-08-08T13:27:32.565344+00:00",
+      "hash": "2b8b9f4f99641ad34408021331660a2a9df4b7163e002bf67ce616a8fb34092f",
+      "type": "feature_code"
+    },
+    {
+      "path": "src/layers/layer2_feature_engineering/graph_neural_networks.py",
+      "name": "graph_neural_networks.py",
+      "size_bytes": 26744,
+      "modified_time": "2025-07-19T13:24:19.214604+00:00",
+      "hash": "8ec5e45e43d0f6de93e5d796f693037a00a8d4ad78a91825bd0e9fc35d0fd96c",
+      "type": "feature_code"
+    },
+    {
+      "path": "src/layers/layer2_feature_engineering/temporal_fusion_transformer.py",
+      "name": "temporal_fusion_transformer.py",
+      "size_bytes": 35629,
+      "modified_time": "2025-07-19T13:07:49.464181+00:00",
+      "hash": "f38bb2173fabcdc5737dc78512ab897ca1f944c313434c83aa3b2c3342b38446",
+      "type": "feature_code"
+    }
+  ],
+  "model_artifacts": [
+    {
+      "path": "checkpoints/latest.pt",
+      "name": "latest.pt",
+      "size_bytes": 51,
+      "modified_time": "2025-08-13T07:52:23.037925+00:00",
+      "hash": "e8b8070e36587212fdd654e75330a2049467ff27e86a8d9cc3bcd4ae5921fe15",
+      "type": "model_checkpoint"
+    },
+    {
+      "path": "models/tlob_tiny_int8.onnx",
+      "name": "tlob_tiny_int8.onnx",
+      "size_bytes": 133020,
+      "modified_time": "2025-07-09T09:23:44.701235+00:00",
+      "hash": "44d6b656882cfd1c966d1700e5c44305e4e1cf6d9645ee991397d94f23f31ec0",
+      "type": "model_checkpoint"
+    },
+    {
+      "path": "models/tlob_tiny.onnx",
+      "name": "tlob_tiny.onnx",
+      "size_bytes": 309827,
+      "modified_time": "2025-07-09T09:23:44.700627+00:00",
+      "hash": "bf4b78f6b19488f6a415218f8227d8879c0f79fa327d9115412a129723aeaec8",
+      "type": "model_checkpoint"
+    },
+    {
+      "path": "models/patchtst_small_int8.onnx",
+      "name": "patchtst_small_int8.onnx",
+      "size_bytes": 135800,
+      "modified_time": "2025-07-09T09:23:44.699461+00:00",
+      "hash": "49e5086ead6340040ffce9d01ad053bd3f47fe245eca545262836ff868079264",
+      "type": "model_checkpoint"
+    },
+    {
+      "path": "models/patchtst_small.onnx",
+      "name": "patchtst_small.onnx",
+      "size_bytes": 331648,
+      "modified_time": "2025-07-09T09:23:44.699003+00:00",
+      "hash": "274b2353e85f96835d133cfe2f2fc2cbbccac156ca796ad7280b7171f4e70eb5",
+      "type": "model_checkpoint"
+    }
+  ],
+  "training_runs": [
+    {
+      "path": "logs/trading.log",
+      "name": "trading.log",
+      "size_bytes": 66083027,
+      "modified_time": "2025-08-14T08:23:46.044204+00:00",
+      "hash": "a330613c3d805b514f17049e3881cf95338dbe5d47d8a4e88d35684aff2af785",
+      "type": "training_log"
+    },
+    {
+      "path": "logs/binance_live.2025-08-07_2312.log",
+      "name": "binance_live.2025-08-07_2312.log",
+      "size_bytes": 2307499857,
+      "modified_time": "2025-08-14T08:23:43.044742+00:00",
+      "hash": "33ca6bdaef84ba623b877ec48920eba4037d99d0303b478bc39284cc9e994237",
+      "type": "training_log"
+    },
+    {
+      "path": "logs/news_daemon.log",
+      "name": "news_daemon.log",
+      "size_bytes": 1724,
+      "modified_time": "2025-08-07T15:52:25.864815+00:00",
+      "hash": "771324b4eac502f4c5881347bfcaa619ae27c765f9ebb40a0739b1367c9cffa8",
+      "type": "training_log"
+    },
+    {
+      "path": "logs/binance_live.2025-08-07_2311.log",
+      "name": "binance_live.2025-08-07_2311.log",
+      "size_bytes": 85959,
+      "modified_time": "2025-08-07T15:11:35.576819+00:00",
+      "hash": "4efd3ee3bec4d6df2cb0a832f55847087e1b4841a04ea2d1829e1e160c94a596",
+      "type": "training_log"
+    },
+    {
+      "path": "logs/crypto_session_20250720_0751.log",
+      "name": "crypto_session_20250720_0751.log",
+      "size_bytes": 0,
+      "modified_time": "2025-07-19T23:51:35.361651+00:00",
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "type": "training_log"
+    },
+    {
+      "path": "logs/binance_live.2025-07-17_1857.log",
+      "name": "binance_live.2025-07-17_1857.log",
+      "size_bytes": 536423415,
+      "modified_time": "2025-07-18T01:40:42.688908+00:00",
+      "hash": "4077ac75edb596441500f6246c4c354ae0281829d8f06a089074c3bf5dd45d66",
+      "type": "training_log"
+    },
+    {
+      "path": "logs/redpanda.log",
+      "name": "redpanda.log",
+      "size_bytes": 949,
+      "modified_time": "2025-07-17T11:02:37.706443+00:00",
+      "hash": "fc42cf706cbef6f2c2912f433510f62acbab85e712936077704bd76e33b6f358",
+      "type": "training_log"
+    },
+    {
+      "path": "logs/mem_probe_startup.log",
+      "name": "mem_probe_startup.log",
+      "size_bytes": 104198,
+      "modified_time": "2025-07-10T10:30:02.635806+00:00",
+      "hash": "a9c2239d0eeb482b9ad54813df9faf1172074264ae14d5435fdadaa957242883",
+      "type": "training_log"
+    },
+    {
+      "path": "logs/mem_snap.log",
+      "name": "mem_snap.log",
+      "size_bytes": 205701,
+      "modified_time": "2025-07-10T10:30:02.635707+00:00",
+      "hash": "6dcd72208d5c920723fc147be5f03020b8c92e003eb3d86f73f258e6394ef6a0",
+      "type": "training_log"
+    },
+    {
+      "path": "logs/hourly_validation.log",
+      "name": "hourly_validation.log",
+      "size_bytes": 3685,
+      "modified_time": "2025-07-10T05:24:00.008504+00:00",
+      "hash": "5e1777caea8a4e981258824dc34752eb97db549deaf1242d324bd20a56c466e7",
+      "type": "training_log"
+    }
+  ],
+  "dependencies": {
+    "python_packages": [
+      "numpy==2.3.1",
+      "pandas==2.3.1",
+      "pydantic==2.11.7",
+      "redis==6.2.0",
+      "PyYAML==6.0.2",
+      "torch==2.7.1",
+      "transformers==4.53.1",
+      "scikit-learn",
+      "lightgbm==4.6.0",
+      "huggingface-hub>=0.33.2",
+      "fastapi==0.116.0",
+      "uvicorn==0.35.0",
+      "httpx==0.28.1",
+      "sqlalchemy==1.4.54",
+      "alembic==1.16.3",
+      "TA-Lib",
+      "yfinance",
+      "tushare==1.4.21",
+      "websockets==15.0.1",
+      "aiokafka==0.12.0",
+      "orjson==3.10.15",
+      "ccxt",
+      "requests==2.32.4",
+      "beautifulsoup4==4.13.4",
+      "vaderSentiment==3.3.2",
+      "prometheus_client==0.22.1",
+      "structlog==25.4.0",
+      "pytest==8.4.1",
+      "pytest-asyncio",
+      "pytest-benchmark",
+      "black",
+      "flake8",
+      "isort",
+      "python-dotenv==1.1.1",
+      "click==8.2.1",
+      "aiohttp==3.12.13",
+      "python-dateutil==2.9.0.post0",
+      "watchdog>=3.0.0",
+      "airflow==3.0.2",
+      "onnx==1.18.0",
+      "onnxruntime==1.22.0",
+      "scipy==1.16.0",
+      "celery",
+      "croniter==6.0.0",
+      "marshmallow",
+      "asyncio-mqtt",
+      "aiofiles",
+      "joblib==1.5.1",
+      "pendulum==3.1.0",
+      "typer==0.16.0",
+      "tqdm==4.67.1",
+      "tabulate==0.9.0",
+      "boto3==1.39.3",
+      "cryptography==45.0.5",
+      "colorlog==6.9.0",
+      "freezegun",
+      "responses",
+      "sphinx",
+      "sphinx-rtd-theme",
+      "mypy",
+      "coverage",
+      "pytest-cov",
+      "psutil==7.0.0",
+      "memory-profiler",
+      "PyYAML>=6.0.0",
+      "redis>=4.0.0",
+      "psutil>=5.9.0",
+      "pytest>=7.0.0"
+    ],
+    "internal_modules": [],
+    "data_dependencies": []
+  },
+  "lineage_graph": {
+    "nodes": [
+      {
+        "id": "raw_market_data",
+        "type": "data_source",
+        "description": "Raw market data feed"
+      },
+      {
+        "id": "order_book_data",
+        "type": "data_source",
+        "description": "Order book snapshots"
+      },
+      {
+        "id": "feature_engineering",
+        "type": "process",
+        "description": "Feature extraction and engineering"
+      },
+      {
+        "id": "model_training",
+        "type": "process",
+        "description": "RL model training process"
+      },
+      {
+        "id": "trained_model",
+        "type": "model",
+        "description": "Trained RL policy"
+      },
+      {
+        "id": "validation_results",
+        "type": "output",
+        "description": "Model validation outputs"
+      },
+      {
+        "id": "deployment",
+        "type": "process",
+        "description": "Model deployment to production"
+      }
+    ],
+    "edges": [
+      {
+        "from": "raw_market_data",
+        "to": "feature_engineering"
+      },
+      {
+        "from": "order_book_data",
+        "to": "feature_engineering"
+      },
+      {
+        "from": "feature_engineering",
+        "to": "model_training"
+      },
+      {
+        "from": "model_training",
+        "to": "trained_model"
+      },
+      {
+        "from": "trained_model",
+        "to": "validation_results"
+      },
+      {
+        "from": "trained_model",
+        "to": "deployment"
+      }
+    ]
+  },
+  "integrity": {
+    "total_files_scanned": 77,
+    "scan_timestamp": "2025-08-14T08:23:46.146952+00:00"
+  }
+}

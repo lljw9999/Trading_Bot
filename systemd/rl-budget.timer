@@ -1,0 +1,11 @@
+[Unit]
+Description=RL Policy Error Budget Guard Timer
+Requires=rl-budget.service
+
+[Timer]
+OnCalendar=daily
+RandomizedDelaySec=300
+Persistent=true
+
+[Install]
+WantedBy=timers.target

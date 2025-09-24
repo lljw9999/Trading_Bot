@@ -1,0 +1,53 @@
+service: rl-policy
+period: 30d
+slos:
+  - name: policy_heartbeat_fresh
+    objective: 0.995     # 99.5% of minutes age < 600s
+    sli: rl_policy_heartbeat_age_seconds < 600
+    description: "Policy heartbeat must be fresh within 10 minutes"
+    
+  - name: exporter_uptime
+    objective: 0.999     # 99.9% uptime
+    sli: exporter_up == 1
+    description: "RL Redis exporter must be available"
+    
+  - name: validation_cadence
+    objective: 0.95      # 95% of days have a validation artifact
+    sli: has_validation_artifact_today == 1
+    description: "Daily validation artifacts must be generated"
+
+guardrails:
+  - name: entropy_floor
+    rule: rl_policy_entropy >= 0.9
+    description: "Policy entropy must maintain exploration above threshold"
+    
+  - name: qspread_cap
+    rule: rl_policy_q_spread <= 2 * q_spread_24h_baseline
+    description: "Q-value spread must not exceed 2x baseline"
+    
+  - name: influence_cap
+    rule: rl_policy_influence_pct <= 100
+    description: "Policy influence must not exceed 100%"
+    
+  - name: heartbeat_staleness
+    rule: rl_policy_heartbeat_age_seconds <= 1800
+    description: "Policy heartbeat must not be stale beyond 30 minutes"
+
+error_budget:
+  policy: 30d-rolling
+  exhaustion_threshold: 1.0
+  warning_threshold: 0.75
+  actions:
+    on_warning:
+      - alert: ErrorBudgetWarning
+      - action: log_audit
+    on_exhaustion:
+      - alert: ErrorBudgetExhausted
+      - action: set_influence_zero
+      - action: log_audit
+      - action: page_oncall
+
+monitoring:
+  prometheus_rules: grafana/alerts/slo_rules.yml
+  dashboard: grafana/dashboards/slo_dashboard.json
+  check_interval: 300s  # 5 minutes

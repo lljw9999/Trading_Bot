@@ -1,0 +1,24 @@
+experiment:
+  name: "m11_econ_uplift_v1"
+  assets: ["SOL-USD","BTC-USD","ETH-USD","NVDA"]
+  design: "switchback"          # alternate treatment/control by time blocks
+  block_minutes: 60             # 1h blocks; randomized start per asset
+  horizon_days: 14              # run 7–14 days; stop early if sequential PASS
+  min_days: 7
+  metrics:
+    primary: "net_pnl_usd_per_hour"
+    secondaries: ["slip_bps_p95","is_bps","fill_ratio","cost_ratio"]
+  cuped_covariates: ["pre_pnl","vol_5m","spread_bps","volume"]
+  met_uplift_usd_per_day: 50    # Minimal Effect Threshold for uplift
+  alpha: 0.05                   # family-wise error rate
+  power_target: 0.80
+  exclude_windows:
+    - {"tz":"UTC","dow":[6,0],"hours":[0,6]}   # optional: thin liquidity hours
+governance:
+  require_go_flag: true
+  require_clean_alert_hours: 48
+  kri_guards:
+    entropy_floor: 0.90
+    qspread_ratio_max: 2.0
+  cost_gate_ratio_max: 0.30
+artifacts_dir: "artifacts/experiments/m11_econ_uplift_v1"

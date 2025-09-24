@@ -1,0 +1,13 @@
+{
+  "timestamp": "2025-08-14T09:04:59.825676+00:00",
+  "action": "budget_tripwire_triggered",
+  "trip_type": "daily_loss",
+  "breach_data": {
+    "limit": 1000,
+    "current_loss": 1500,
+    "breach": true
+  },
+  "kill_switch_executed": true,
+  "operator": "budget_tripwire_daemon",
+  "severity": "CRITICAL"
+}

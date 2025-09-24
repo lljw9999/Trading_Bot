@@ -1,97 +1,125 @@
-### 🟢 Transition Phase — **v0.4.0-rc3 → v0.4.0 GA**
-
-With all Sprint #4 features and docs merged, our next move is *operational*: prove the stack is stable under real-time load, then cut the GA release. Below is a single work order for **Cursor**.
+Amazing work — unit profile is 🔵 green. Let’s drive this home: **clean up warnings, pass integration, ship RC1, and kick off the pilot.** Here’s a crisp PM plan with owners + acceptance criteria.
 
 ---
 
-## 1  — Tag & Merge
+# 1) Kill the warning noise (quick wins, high leverage)
 
-| Step                     | Command                                                                         | Notes                       |
-| ------------------------ | ------------------------------------------------------------------------------- | --------------------------- |
-| 1. Re-base main          | `git checkout main && git pull`<br>`git merge --ff-only develop`                | main must fast-forward only |
-| 2. Tag release-candidate | `git tag -a v0.4.0-rc3 -m "Edge-Risk dashboard & runbook"`<br>`git push --tags` | triggers Docker build in CI |
-| 3. Open *release* PR     | title: **“Promote v0.4.0-rc3 to main”**                                         | assign PM + QA reviewers    |
+**Owner:** You
+**Why:** Clean CI, future-proofing before RC.
+
+* **Timezone:** replace `datetime.utcnow()` → `datetime.now(timezone.utc)` across risk/watchdog modules.
+  *Done when:* `grep -R "utcnow()"` returns 0; CI warnings drop.
+* **FastAPI lifespan:** migrate `@app.on_event("startup"/"shutdown")` → lifespan context.
+  *Done when:* no FastAPI deprecation warnings; `/healthz` still OK.
+* **Pydantic v2:** `ModelRouterRules.dict()` → `model_dump()`.
+  *Done when:* param-server serializers pass tests; no Pydantic deprecations.
+* **pytest-asyncio:** set `asyncio_default_fixture_loop_scope=function` in `pytest.ini`.
+  *Done when:* warning disappears; async tests still pass.
 
 ---
 
-## 2  — Stage Deployment
+# 2) Integration suite → green
 
-1. `docker-compose -f docker-compose.staging.yml pull && docker-compose up -d`
-2. `make start-services` (Redis, Prometheus, Grafana).
-3. Import dashboards (idempotent):
+**Owner:** You
+**Why:** Confidence for RC + pilot.
+
+Run:
 
 ```bash
-./scripts/grafana_import.sh \
-  --dash grafana/edge_risk.json \
-  --alert grafana/model_switch_alert.json
+export DRY_RUN=1 OPENAI_MOCK=1 REDIS_MOCK=0 FAST_REPLAY=1
+pytest -m "integration and not soak" --maxfail=2
 ```
 
-4. Verify *Edge-Risk* panels load and refresh (<2 s lag).
+Fix any reds:
+
+* **Redis connectivity:** ensure docker-compose.ci.yml exposes Redis health + retries.
+* **Alpaca executor:** confirm dry-run fills + position reconcilers behave in integration too.
+* **Compliance/WORM path:** verify async write path with mocks enabled.
+
+*Done when:* integration job passes in CI.
 
 ---
 
-## 3  — 48 h Paper-Trade Dry-Run
+# 3) Performance sanity & memory cap
 
-| Task                | Command                                         | Output                     |
-| ------------------- | ----------------------------------------------- | -------------------------- |
-| Start crypto feed   | `make live-crypto`                              | trades on BTC, ETH         |
-| Start US-equity SIM | `make live-stocks`                              | NVDA replay                |
-| Kick watchdog       | `scripts/healthcheck_loop.sh` (already in repo) | exit != 0 raises PagerDuty |
+**Owner:** You
+**Why:** Prevent regressions before real pilots.
 
-**Metrics to watch (Grafana):**
-
-* `edge_blended_bps` (should stay within ±2σ historical)
-* `var_pct` (alert at >90 %)
-* `model_switch_total` (alert at >20/5 min)
+* **Replay fast mode** is default (✅). Add a **budget guard**: assert end-to-end replay in < N seconds on CI hardware.
+* **Param server** bounded deque is in (✅). Add a metric + unit test asserting memory < 50 MB after 1k reloads.
+  *Done when:* new perf tests pass and metrics visible in logs.
 
 ---
 
-## 4  — Automated Sanity Reports
+# 4) Release mechanics — v0.9.0-rc1
 
-Add two cron-like tasks via `crontab -e` on the staging host:
+**Owner:** You
+**Why:** Freeze a candidate we can demo + pilot.
 
-```
-# 12-hour PnL snapshot
-0 */12 * * *  docker exec trading-core python scripts/report_pnl.py >> /var/log/paper_pnl.log 2>&1
-
-# Memory footprint check
-0 */12 * * *  docker exec trading-core python scripts/report_mem.py >> /var/log/mem.log 2>&1
-```
-
-Each script already writes OK/FAIL to stdout; PagerDuty integrates via log-tail on FAIL.
-
----
-
-## 5  — Exit Criteria for GA
-
-| Metric              | Threshold                                |
-| ------------------- | ---------------------------------------- |
-| Paper-trade runtime | ≥ 48 h continuous, no container restarts |
-| Alerts              | 0 critical, ≤ 2 warning, all resolved    |
-| PnL drift           | within ±0.5 σ of historical sim          |
-| VaR breach          | never exceeds 95 % target                |
-| Memory leak         | RSS drift < 3 % over run                 |
-
-When all pass, promote:
+* Ensure **unit + integration** green in CI.
+* Tag + release notes:
 
 ```bash
-git tag -a v0.4.0 -m "GA – dual-horizon router & risk harmoniser"
-git push --tags
+git tag -a v0.9.0-rc1 -m "RC1: unit+integration green; warnings reduced; fast replay; safety guards"
+git push origin v0.9.0-rc1
 ```
 
-and execute production deploy (same compose file with live API keys).
+* Publish:
+
+  * CHANGELOG excerpt
+  * Coverage report
+  * Docker image SHA(s)
+  * Pilot checklist link (below)
+
+*Done when:* GH Release page is live with artifacts.
 
 ---
 
-## 6  — Parking Lot for Sprint #5 (no action yet)
+# 5) Pilot RC checklist (execute & attach evidence)
 
-* **Execution latency hardening** (Rust/wasi edge blender)
-* **True L2 order-book ingestion for US equities**
-* **Auto-hyper-tune Router rules via Bayesian opt**
-* **AWS Spot-fleet orchestration for model training**
+**Owner:** You (10–15 min)
+**Why:** Prove the golden path end-to-end.
 
-We’ll scope these once GA is live.
+1. **Start dry-run session** (integration profile).
+2. L1 alphas emit signals on synthetic ticks (screens).
+3. Ensemble outputs pos/neg correctly; Redis publish observed.
+4. Position sizer returns non-zero notional on borderline case.
+5. Alpaca `execute()` simulates fills; positions reconcile.
+6. Compliance writer called (mock WORM); event visible.
+
+*Done when:* screenshots/logs attached to the RC release.
 
 ---
 
-### ☑️ Cursor—please carry out *Sections 1 → 4* in order, then post a status update in Jira **#release-v0.4.0**. Ping if the CI Docker build fails or if Grafana auth variables are missing.
+# 6) Open small follow-up tickets (post-RC)
+
+**Owner:** PM to file tickets, you to pick up
+
+* **FastAPI lifespan migration** – complete across all services.
+* **Timezone audit** – ensure all persisted timestamps are tz-aware UTC.
+* **Docs:** note FAST\_REPLAY default, dev\_env mirror fixture, and dry-run expectations.
+* **Remove compat flags** in next sprint; update tests to assert new behavior.
+
+---
+
+# 7) Schedule the soak/nightly
+
+**Owner:** You/CI
+**Why:** Catch slow leaks.
+
+* Enable nightly job: `pytest -m soak` with longer timeouts, memory trend scrape, and a threshold alert.
+  *Done when:* first nightly completes; results stored as CI artifact.
+
+---
+
+## TL;DR — Do these now
+
+1. Replace `utcnow()`; switch FastAPI to lifespan; `model_dump()`; pytest-asyncio config.
+2. Make **integration** suite pass in CI.
+3. Add replay perf/memory assertions.
+4. Tag **v0.9.0-rc1**, publish release notes.
+5. Run **pilot checklist**, attach evidence to release.
+6. File post-RC cleanup tickets.
+7. Turn on **soak nightly**.
+
+Ping me when integration is green, and I’ll hand you a short customer-facing “What’s new in RC1” blurb for the pilot email.

@@ -1,0 +1,64 @@
+{
+  "timestamp": "2025-08-15T03:46:05.397448+00:00",
+  "lookback_minutes": 30,
+  "assets_scanned": 4,
+  "tokens_created": 0,
+  "dry_run": false,
+  "thresholds": {
+    "event_score": 0.6,
+    "sentiment": 0.7,
+    "volume_spike": 3.0,
+    "volatility_spike": 2.5,
+    "whale_alert": 1000000,
+    "max_tca_slippage_bps": 25.0,
+    "max_cost_hourly": 15.0
+  },
+  "signal_summary": {
+    "sentiment_assets": 0,
+    "volume_spikes": 0,
+    "volatility_spikes": 0,
+    "whale_movements": 0
+  },
+  "event_results": {
+    "SOL-USD": {
+      "asset": "SOL-USD",
+      "event_score": 0.0,
+      "score_threshold": 0.6,
+      "tca_acceptable": true,
+      "cost_acceptable": true,
+      "should_trigger": false,
+      "token_created": false,
+      "token_file": null
+    },
+    "BTC-USD": {
+      "asset": "BTC-USD",
+      "event_score": 0.0,
+      "score_threshold": 0.6,
+      "tca_acceptable": true,
+      "cost_acceptable": true,
+      "should_trigger": false,
+      "token_created": false,
+      "token_file": null
+    },
+    "ETH-USD": {
+      "asset": "ETH-USD",
+      "event_score": 0.0,
+      "score_threshold": 0.6,
+      "tca_acceptable": true,
+      "cost_acceptable": true,
+      "should_trigger": false,
+      "token_created": false,
+      "token_file": null
+    },
+    "NVDA": {
+      "asset": "NVDA",
+      "event_score": 0.0,
+      "score_threshold": 0.6,
+      "tca_acceptable": true,
+      "cost_acceptable": true,
+      "should_trigger": false,
+      "token_created": false,
+      "token_file": null
+    }
+  }
+}

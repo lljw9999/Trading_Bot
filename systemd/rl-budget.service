@@ -1,0 +1,17 @@
+[Unit]
+Description=RL Policy Error Budget Guard
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=yanzewu
+WorkingDirectory=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D
+Environment=PATH=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D/venv/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D/venv/bin/python scripts/error_budget_guard.py
+StandardOutput=journal
+StandardError=journal
+TimeoutSec=300
+
+[Install]
+WantedBy=multi-user.target

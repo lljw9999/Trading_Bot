@@ -1,0 +1,609 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "expr": "alpha_pnl_contribution{model=\"ob_pressure\"}",
+          "legendFormat": "Order Book Pressure",
+          "refId": "A"
+        },
+        {
+          "expr": "alpha_pnl_contribution{model=\"ma_momentum\"}",
+          "legendFormat": "MA Momentum",
+          "refId": "B"
+        },
+        {
+          "expr": "alpha_pnl_contribution{model=\"lstm_alpha\"}",
+          "legendFormat": "LSTM Alpha",
+          "refId": "C"
+        },
+        {
+          "expr": "alpha_pnl_contribution{model=\"news_alpha\"}",
+          "legendFormat": "News Sentiment",
+          "refId": "D"
+        },
+        {
+          "expr": "alpha_pnl_contribution{model=\"onchain_alpha\"}",
+          "legendFormat": "On-Chain Alpha",
+          "refId": "E"
+        },
+        {
+          "expr": "alpha_pnl_contribution{model=\"bandit_ensemble\"}",
+          "legendFormat": "Bandit Ensemble",
+          "refId": "F"
+        },
+        {
+          "expr": "alpha_pnl_contribution{model=\"funding\"}",
+          "legendFormat": "Funding/Basis Alpha",
+          "refId": "G"
+        }
+      ],
+      "title": "Alpha Model P&L Contribution",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "expr": "alpha_hit_rate{model=\"ob_pressure\"}",
+          "legendFormat": "Order Book Pressure",
+          "refId": "A"
+        },
+        {
+          "expr": "alpha_hit_rate{model=\"ma_momentum\"}",
+          "legendFormat": "MA Momentum",
+          "refId": "B"
+        },
+        {
+          "expr": "alpha_hit_rate{model=\"lstm_alpha\"}",
+          "legendFormat": "LSTM Alpha",
+          "refId": "C"
+        },
+        {
+          "expr": "alpha_hit_rate{model=\"news_alpha\"}",
+          "legendFormat": "News Sentiment",
+          "refId": "D"
+        },
+        {
+          "expr": "alpha_hit_rate{model=\"onchain_alpha\"}",
+          "legendFormat": "On-Chain Alpha",
+          "refId": "E"
+        },
+        {
+          "expr": "alpha_hit_rate{model=\"bandit_ensemble\"}",
+          "legendFormat": "Bandit Ensemble",
+          "refId": "F"
+        },
+        {
+          "expr": "alpha_hit_rate{model=\"funding\"}",
+          "legendFormat": "Funding/Basis Alpha",
+          "refId": "G"
+        }
+      ],
+      "title": "Alpha Model Hit Rates",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Shadow Slippage"
+            },
+            "properties": [
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [10, 10],
+                  "fill": "dash"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "expr": "slippage_live_bps",
+          "legendFormat": "Live Slippage",
+          "refId": "A"
+        },
+        {
+          "expr": "slippage_shadow_bps",
+          "legendFormat": "Shadow Slippage",
+          "refId": "B"
+        }
+      ],
+      "title": "Execution Costs",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "expr": "venue_fill_rate{venue=\"binance\"}",
+          "legendFormat": "Binance",
+          "refId": "A"
+        },
+        {
+          "expr": "venue_fill_rate{venue=\"coinbase\"}",
+          "legendFormat": "Coinbase",
+          "refId": "B"
+        },
+        {
+          "expr": "venue_fill_rate{venue=\"kraken\"}",
+          "legendFormat": "Kraken",
+          "refId": "C"
+        },
+        {
+          "expr": "venue_fill_rate{venue=\"deribit\"}",
+          "legendFormat": "Deribit",
+          "refId": "D"
+        }
+      ],
+      "title": "Venue Fill Rates",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "displayMode": "table",
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "T-Stat"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 80
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Signals"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 80
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 5,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "P&L ($)"
+          }
+        ]
+      },
+      "pluginVersion": "9.0.0",
+      "targets": [
+        {
+          "expr": "alpha_pnl_contribution",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "{{model}}",
+          "refId": "A"
+        },
+        {
+          "expr": "alpha_hit_rate",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "{{model}}",
+          "refId": "B"
+        },
+        {
+          "expr": "alpha_t_stat",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "{{model}}",
+          "refId": "C"
+        },
+        {
+          "expr": "alpha_signal_count",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "{{model}}",
+          "refId": "D"
+        }
+      ],
+      "title": "Alpha Model Performance Summary",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "instance": true,
+              "job": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Value #A": "P&L ($)",
+              "Value #B": "Hit Rate",
+              "Value #C": "T-Stat",
+              "Value #D": "Signals",
+              "model": "Alpha Model"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": [
+    "trading",
+    "alpha-attribution"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Alpha Attribution Dashboard",
+  "uid": "alpha-attribution-dashboard",
+  "version": 1,
+  "weekStart": ""
+}

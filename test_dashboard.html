@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Debug Test</title>
+</head>
+<body>
+    <div>BTC Price: <span id="btcPrice">$0.00</span></div>
+    <div>Status: <span id="status">Loading...</span></div>
+    
+    <script>
+        async function fetchData() {
+            try {
+                console.log('Fetching portfolio data...');
+                const response = await fetch('http://localhost:8000/api/portfolio');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Portfolio data received:', data);
+                    
+                    // Update BTC price
+                    const btc = data.BTCUSDT;
+                    if (btc) {
+                        document.getElementById('btcPrice').textContent = `$${btc.current_price.toFixed(2)}`;
+                        document.getElementById('status').textContent = 'Updated!';
+                    }
+                } else {
+                    console.error('Failed to fetch data:', response.status);
+                    document.getElementById('status').textContent = `Error: ${response.status}`;
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('status').textContent = `Error: ${error.message}`;
+            }
+        }
+        
+        // Test immediately
+        fetchData();
+    </script>
+</body>
+</html>

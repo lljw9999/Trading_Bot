@@ -1,0 +1,48 @@
+{
+  "timestamp": "2025-08-14T22:23:47.642683Z",
+  "experiment": "m11_econ_uplift_v1",
+  "decision": "EXTEND",
+  "reasons": [
+    "cost_ratio_high (58.0% > 30.0%)",
+    "exp_extend_duration"
+  ],
+  "checks": {
+    "data_available": true,
+    "cost_gate": {
+      "current_cost_ratio": 0.58,
+      "cost_gate_max": 0.3,
+      "cost_gate_pass": false,
+      "cost_ratio_pct": 57.99999999999999
+    },
+    "kri_guards": {
+      "entropy": {
+        "current": 1.15,
+        "floor": 0.9,
+        "pass": true
+      },
+      "qspread_ratio": {
+        "current": 1.6,
+        "max": 2.0,
+        "pass": true
+      },
+      "kri_pass": true
+    },
+    "alerts_clean": {
+      "required_clean_hours": 48,
+      "recent_alerts": [],
+      "alerts_clean": true
+    },
+    "sequential_test": {
+      "verdict": "EXTEND",
+      "reason": "Effect significant but min days not reached (1.0 < 7)",
+      "effect": 7.806526360424061,
+      "ci_95": [
+        3.9465671985776534,
+        11.666485522270468
+      ],
+      "meets_met": true
+    }
+  },
+  "final_recommendation": "Continue experiment - gates not yet satisfied",
+  "go_token_created": false
+}

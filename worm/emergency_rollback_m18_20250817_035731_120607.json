@@ -1,0 +1,33 @@
+{
+  "event_type": "emergency_rollback_m18",
+  "trigger_time": "2025-08-17T03:57:31.120607",
+  "completion_time": "2025-08-17T03:57:31.124327",
+  "violations": [
+    {
+      "metric": "slip_p95_rolling_30m_bps",
+      "current": 13.859483465674018,
+      "threshold": 12.0,
+      "severity": "critical"
+    },
+    {
+      "metric": "impact_p95_bp_per_1k",
+      "current": 8.295447243479229,
+      "threshold": 8.0,
+      "severity": "critical"
+    },
+    {
+      "metric": "decision_to_ack_p95_ms",
+      "current": 122.0475147082048,
+      "threshold": 110.0,
+      "severity": "critical"
+    }
+  ],
+  "rollback_reason": "m18_guard_breach",
+  "assets_affected": [
+    "BTC-USD",
+    "ETH-USD",
+    "NVDA"
+  ],
+  "user": "yanzewu",
+  "guard_version": "m18_20pct"
+}

@@ -1,0 +1,23 @@
+[Unit]
+Description=Prometheus GPU/CPU Exporter for SAC-DiF Trading Bot
+After=network.target
+
+[Service]
+Type=simple
+User=yanzewu
+WorkingDirectory=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D
+ExecStart=/usr/bin/python3 monitor/exporter.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Environment variables
+Environment=PYTHONPATH=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D
+
+# Resource limits
+LimitNOFILE=1024
+MemoryLimit=128M
+
+[Install]
+WantedBy=multi-user.target

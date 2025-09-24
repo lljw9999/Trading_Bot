@@ -1,0 +1,73 @@
+groups:
+  - name: api_quotas
+    rules:
+      - alert: APIQuotaUsageHigh
+        expr: api_quota_usage_rate > 0.8
+        for: 2m
+        labels:
+          severity: warning
+          component: api_quotas
+        annotations:
+          summary: "High API quota usage detected"
+          description: "{{ $labels.exchange }} {{ $labels.endpoint }} API usage is {{ $value | humanizePercentage }}, exceeding 80% threshold"
+          runbook_url: "https://wiki.trading.com/runbooks/api_quota_management"
+      
+      - alert: APIQuotaUsageCritical
+        expr: api_quota_usage_rate > 0.9
+        for: 1m
+        labels:
+          severity: critical
+          component: api_quotas
+        annotations:
+          summary: "Critical API quota usage"
+          description: "{{ $labels.exchange }} {{ $labels.endpoint }} API usage is {{ $value | humanizePercentage }}, exceeding 90% threshold. Rate limiting active."
+      
+      - alert: APIQuotaLimitReached
+        expr: api_quota_remaining < 5
+        for: 30s
+        labels:
+          severity: critical
+          component: api_quotas
+        annotations:
+          summary: "API quota limit nearly reached"
+          description: "{{ $labels.exchange }} {{ $labels.endpoint }} has only {{ $value }} requests remaining in current window"
+      
+      - alert: WebSocketReconnectsHigh
+        expr: websocket_hourly_reconnects > websocket_reconnect_threshold
+        for: 1m
+        labels:
+          severity: warning
+          component: websocket
+        annotations:
+          summary: "High WebSocket reconnection rate"
+          description: "{{ $labels.exchange }} WebSocket reconnections ({{ $value }}) exceed threshold ({{ websocket_reconnect_threshold }})"
+      
+      - alert: WebSocketReconnectsCritical
+        expr: websocket_hourly_reconnects > (websocket_reconnect_threshold * 2)
+        for: 2m
+        labels:
+          severity: critical
+          component: websocket
+        annotations:
+          summary: "Critical WebSocket reconnection rate"
+          description: "{{ $labels.exchange }} WebSocket reconnections ({{ $value }}) far exceed safe threshold"
+      
+      - alert: APIQuotaMonitorDown
+        expr: up{job="api_quota_monitor"} == 0
+        for: 1m
+        labels:
+          severity: warning
+          component: monitoring
+        annotations:
+          summary: "API quota monitor is down"
+          description: "API quota monitoring service is not running"
+      
+      - alert: MultipleExchangeQuotaIssues
+        expr: api_quota_critical_alerts > 2
+        for: 5m
+        labels:
+          severity: critical
+          component: api_quotas
+        annotations:
+          summary: "Multiple exchange quota issues"
+          description: "{{ $value }} exchanges have critical API quota issues. Consider reducing trading activity."

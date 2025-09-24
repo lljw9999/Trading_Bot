@@ -1,0 +1,94 @@
+{
+  "timestamp": "2025-08-14T13:41:41.981583Z",
+  "analysis_metadata": {
+    "summary": {
+      "analysis_window_days": 14,
+      "total_alphas": 6,
+      "actions": {
+        "boost": 2,
+        "fade": 3,
+        "pause": 0,
+        "hold": 1
+      },
+      "avg_marginal_sharpe": 2.1846664255150907,
+      "avg_hit_rate": 0.9057539682539683,
+      "avg_decay_days": 17.411309132460413
+    },
+    "param_hints": {
+      "ma_momentum": 2.25,
+      "mean_rev": 1.0461688397427107,
+      "momo_fast": 1.6540451018842504,
+      "news_sent_alpha": 0.25,
+      "ob_pressure": 0.39897308925878416,
+      "big_bet_flag": 0.25
+    }
+  },
+  "alpha_metrics": [
+    {
+      "name": "ma_momentum",
+      "pnl_contribution_pct": 104.53,
+      "hit_rate": 1.0,
+      "turnover": 0.095674,
+      "decay_half_life_days": 3.55,
+      "marginal_sharpe": 15.6865,
+      "signal_mass_pct": 38.13,
+      "action": "boost",
+      "reason": "High Sharpe (15.686)"
+    },
+    {
+      "name": "mean_rev",
+      "pnl_contribution_pct": 6.15,
+      "hit_rate": 1.0,
+      "turnover": 0.024436,
+      "decay_half_life_days": 9.0,
+      "marginal_sharpe": 0.0462,
+      "signal_mass_pct": 11.31,
+      "action": "hold",
+      "reason": "Marginal performance"
+    },
+    {
+      "name": "momo_fast",
+      "pnl_contribution_pct": -9.12,
+      "hit_rate": 1.0,
+      "turnover": 0.018308,
+      "decay_half_life_days": 27.76,
+      "marginal_sharpe": 0.1027,
+      "signal_mass_pct": 7.46,
+      "action": "boost",
+      "reason": "High Sharpe (0.103)"
+    },
+    {
+      "name": "news_sent_alpha",
+      "pnl_contribution_pct": 7.41,
+      "hit_rate": 1.0,
+      "turnover": 0.051817,
+      "decay_half_life_days": 28.85,
+      "marginal_sharpe": -1.321,
+      "signal_mass_pct": 21.52,
+      "action": "fade",
+      "reason": "Low Sharpe (-1.321)"
+    },
+    {
+      "name": "ob_pressure",
+      "pnl_contribution_pct": -4.23,
+      "hit_rate": 1.0,
+      "turnover": 0.034244,
+      "decay_half_life_days": 6.45,
+      "marginal_sharpe": -0.2021,
+      "signal_mass_pct": 13.81,
+      "action": "fade",
+      "reason": "Low Sharpe (-0.202)"
+    },
+    {
+      "name": "big_bet_flag",
+      "pnl_contribution_pct": -4.73,
+      "hit_rate": 0.4345,
+      "turnover": 0.020375,
+      "decay_half_life_days": 28.85,
+      "marginal_sharpe": -1.2042,
+      "signal_mass_pct": 7.77,
+      "action": "fade",
+      "reason": "Low Sharpe (-1.204); Low hit rate (43.5%)"
+    }
+  ]
+}

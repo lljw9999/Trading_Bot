@@ -1,0 +1,105 @@
+{
+  "uid": "cost_spike",
+  "title": "AWS Daily Cost Spike",
+  "condition": "C",
+  "data": [
+    {
+      "refId": "A", 
+      "queryType": "",
+      "relativeTimeRange": {
+        "from": 3600,
+        "to": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-uid"
+      },
+      "model": {
+        "expr": "metric_aws_daily_cost_usd",
+        "interval": "",
+        "legendFormat": "",
+        "refId": "A"
+      }
+    },
+    {
+      "refId": "B",
+      "queryType": "",
+      "relativeTimeRange": {
+        "from": 0,
+        "to": 0
+      },
+      "datasource": {
+        "type": "__expr__",
+        "uid": "__expr__"
+      },
+      "model": {
+        "expression": "500",
+        "hide": false,
+        "intervalMs": 1000,
+        "maxDataPoints": 43200,
+        "refId": "B",
+        "type": "math"
+      }
+    },
+    {
+      "refId": "C",
+      "queryType": "",
+      "relativeTimeRange": {
+        "from": 0,
+        "to": 0
+      },
+      "datasource": {
+        "type": "__expr__",
+        "uid": "__expr__"
+      },
+      "model": {
+        "conditions": [
+          {
+            "evaluator": {
+              "params": ["B"],
+              "type": "gt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": ["A"]
+            },
+            "reducer": {
+              "params": [],
+              "type": "last"
+            },
+            "type": "query"
+          }
+        ],
+        "datasource": {
+          "type": "__expr__",
+          "uid": "__expr__"
+        },
+        "expression": "A > B",
+        "hide": false,
+        "intervalMs": 1000,
+        "maxDataPoints": 43200,
+        "reducer": "last",
+        "refId": "C",
+        "type": "threshold"
+      }
+    }
+  ],
+  "intervalSeconds": 300,
+  "noDataState": "NoData",
+  "execErrState": "NoData",
+  "for": "5m",
+  "annotations": {
+    "description": "AWS daily costs have exceeded the configured threshold ($500/day), indicating potential resource usage anomalies or cost optimization opportunities",
+    "runbook_url": "https://github.com/your-org/trading-runbooks/blob/main/alerts/cost-optimization.md",
+    "summary": "AWS Cost Threshold Exceeded"
+  },
+  "labels": {
+    "team": "trading",
+    "severity": "warning", 
+    "component": "infrastructure",
+    "slo": "cost_efficiency"
+  },
+  "folderUID": "trading-alerts"
+}

@@ -1,0 +1,127 @@
+# M17: 15% Green-Window Ramp Policy
+# Tightened thresholds for guarded promotion within profitable windows only
+
+# Legacy ramp configuration (M1-M10)
+ramp:
+  steps:
+    - {pct: 10, hold_h: 24,  min_net_pnl_usd: 0,   max_dd_day_pct: 2.0,  max_cost_ratio: 0.30}
+    - {pct: 15, hold_h: 48,  min_net_pnl_usd: 200, max_dd_day_pct: 2.0,  max_cost_ratio: 0.30}
+    - {pct: 20, hold_h: 72,  min_net_pnl_usd: 400, max_dd_day_pct: 2.0,  max_cost_ratio: 0.28}
+    - {pct: 25, hold_h: 120, min_net_pnl_usd: 800, max_dd_day_pct: 1.8,  max_cost_ratio: 0.25}
+
+confidence:
+  bootstrap_samples: 2000
+  ci: 0.90  # require lower CI bound >= 0 at current step
+
+budgets:
+  daily_loss_usd: 1000
+  weekly_loss_usd: 3000
+  monthly_cost_usd: 2500
+
+# M17: Step 15 - Green Windows Only (NEW)
+step_15:
+  influence_pct: 15
+  scope: green_windows_only
+  min_green_minutes: 10
+  
+  # Economic thresholds (tightened)
+  econ:
+    net_pnl_usd_green_48h: ">= 300"      # Must be profitable in green windows
+    cost_ratio_green_48h: "<= 0.30"      # Cost efficiency maintained
+    green_day_streak: ">= 7"             # OR 7/7 green days
+    
+  # Execution quality (tighter than M16.1)
+  execution:
+    slip_p95_48h: "<= 12bps"             # 12 bps (tighter than 15 for headroom)
+    maker_ratio_48h: ">= 0.75"           # Maintain spread capture
+    cancel_ratio_48h: "<= 0.40"          # Execution efficiency
+    latency_decision_to_ack_p95_ms: "<= 120"  # Crypto latency budget
+    
+  # Risk controls
+  risk:
+    drawdown_24h: "<= 0.8%"              # Max 80 bps daily drawdown
+    impact_bp_per_notional_p95: "<= 8"   # Market impact control
+    
+  # Compliance requirements
+  compliance:
+    audits_required: 
+      - "slip_gate_ok"              # M16.1 slippage verification
+      - "m12_go_token"              # Go-live readiness
+      - "m15_green_summary"         # Green economics verified
+    
+  # Hard rollback triggers
+  rollback:
+    on_alert_page: true                 # Any production alert
+    on_slip_p95_over: "15bps"           # Slippage breach
+    on_drawdown_over: "1.0%"            # Drawdown breach
+    
+  # Micro-gradient promotion schedule  
+  promotion:
+    steps: [10, 12, 13.5, 15]          # Gradual ramp
+    step_duration_minutes: 3            # 3 minutes per step
+    total_ramp_minutes: 12              # 12 minutes to full 15%
+
+# M18: Step 20 - Enhanced Capacity Controls (NEW)
+step_20:
+  influence_pct: 20
+  scope: green_windows_only
+  micro_steps: [15, 17, 18.5, 20]
+  step_minutes: 3
+  min_green_minutes: 15
+  ceilings:
+    by_ev: true
+    respect_venue_saturation: true
+    respect_impact_budget: true
+  
+  # Economic thresholds (tightened for 20%)
+  econ:
+    net_pnl_green_72h: ">= 900"         # 72h green P&L
+    cost_ratio_green_72h: "<= 0.28"     # Tighter cost control
+    green_day_streak: ">= 5"            # Recent green streak
+    
+  # Execution quality (more stringent)
+  execution:
+    slip_p95_48h: "<= 12bps"            # Maintain 12 bps
+    maker_ratio_48h: ">= 0.78"          # Higher maker ratio
+    cancel_ratio_48h: "<= 0.38"         # Lower cancel ratio
+    impact_bp_per_$1k_p95: "<= 7"       # Stricter impact limit
+    latency_decision_to_ack_p95_ms: "<= 110"  # Tighter latency
+    
+  # Risk controls (enhanced)
+  risk:
+    drawdown_24h: "<= 0.9%"             # Tighter drawdown limit
+    max_position_concentration: "<= 0.35"  # 35% max single asset
+    venue_pov_5m: "<= 10%"              # Venue participation limit
+    
+  # Compliance requirements (additional gates)
+  compliance:
+    audits_required:
+      - "slip_gate_ok"              # M16.1 slippage verification
+      - "m12_go_token"              # Go-live readiness
+      - "soak15_ok"                 # 48h soak verification (NEW)
+    capacity_controls_active:
+      - "impact_budget"             # Impact budget system active
+      - "venue_saturation_guard"    # Venue saturation monitoring
+      - "ev_influence_ceiling"      # EV ceiling enforcement
+    
+  # Hard rollback triggers (enhanced)
+  rollback:
+    on_alert_page: true                 # Any production alert
+    on_slip_p95_over: "15bps"           # Slippage breach  
+    on_impact_p95_over: "8bp_per_$1k"   # Impact breach (NEW)
+    on_drawdown_over: "1.0%"            # Drawdown breach
+    on_venue_saturation: true           # Venue saturation breach (NEW)
+    
+  # Micro-gradient promotion schedule (20% specific)
+  promotion:
+    steps: [15, 17, 18.5, 20]          # More gradual from 15%
+    step_duration_minutes: 3            # 3 minutes per step
+    total_ramp_minutes: 12              # 12 minutes to full 20%
+    respect_ev_ceilings: true           # Enforce EV ceilings
+    
+  # Capacity control integration
+  capacity_controls:
+    impact_budget_enforcement: true     # Use impact budget caps
+    venue_saturation_adjustments: true # Apply venue adjustments
+    ev_ceiling_enforcement: true        # Respect EV ceilings
+    dynamic_slice_sizing: true          # Dynamic slice adjustment

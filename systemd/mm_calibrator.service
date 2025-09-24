@@ -1,0 +1,30 @@
+[Unit]
+Description=MM Online Calibrator
+After=network.target
+Wants=redis.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /opt/trader/src/strategies/mm_online_calibrator.py --run
+Restart=always
+RestartSec=5
+User=trader
+Group=trader
+Environment=PYTHONPATH=/opt/trader
+Environment=REDIS_URL=redis://localhost:6379
+StandardOutput=journal
+StandardError=journal
+
+# Resource limits
+MemoryMax=256M
+CPUQuota=25%
+
+# Security
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/opt/trader/logs /opt/trader/data
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

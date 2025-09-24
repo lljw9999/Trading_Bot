@@ -1,0 +1,10 @@
+[Unit]
+Description=RL Staleness Watchdog
+After=network.target
+
+[Service]
+Type=oneshot
+Environment=REDIS_URL=redis://localhost:6379/0
+ExecStart=/usr/bin/python3 /Users/yanzewu/PycharmProjects/NLP_Final_Project_D/scripts/rl_staleness_watchdog.py --threshold-sec=86400 --service=rl-policy --out=/tmp/rl_watchdog/$(date +%%Y%%m%%d_%%H%%M%%S).json
+User=yanzewu
+WorkingDirectory=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D

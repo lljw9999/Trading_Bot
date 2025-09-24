@@ -1,0 +1,120 @@
+{
+  "uid": "hedge_inactive_high_es",
+  "title": "Hedge Inactive During High Expected Shortfall",
+  "condition": "C",
+  "data": [
+    {
+      "refId": "A",
+      "queryType": "",
+      "relativeTimeRange": {
+        "from": 300,
+        "to": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-uid"
+      },
+      "model": {
+        "expr": "metric_es_evt_95",
+        "interval": "",
+        "legendFormat": "ES_EVT_95",
+        "refId": "A"
+      }
+    },
+    {
+      "refId": "B",
+      "queryType": "",
+      "relativeTimeRange": {
+        "from": 300,
+        "to": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-uid"
+      },
+      "model": {
+        "expr": "metric_hedge_active",
+        "interval": "",
+        "legendFormat": "hedge_active",
+        "refId": "B"
+      }
+    },
+    {
+      "refId": "C",
+      "queryType": "",
+      "relativeTimeRange": {
+        "from": 0,
+        "to": 0
+      },
+      "datasource": {
+        "type": "__expr__",
+        "uid": "__expr__"
+      },
+      "model": {
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [0.03, 0],
+              "type": "within_range"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": ["A"]
+            },
+            "reducer": {
+              "params": [],
+              "type": "last"
+            },
+            "type": "query"
+          },
+          {
+            "evaluator": {
+              "params": [0.5],
+              "type": "lt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": ["B"]
+            },
+            "reducer": {
+              "params": [],
+              "type": "last"
+            },
+            "type": "query"
+          }
+        ],
+        "datasource": {
+          "type": "__expr__",
+          "uid": "__expr__"
+        },
+        "expression": "A > 0.03 AND B < 0.5",
+        "hide": false,
+        "intervalMs": 1000,
+        "maxDataPoints": 43200,
+        "reducer": "last",
+        "refId": "C",
+        "type": "threshold"
+      }
+    }
+  ],
+  "intervalSeconds": 60,
+  "noDataState": "NoData",
+  "execErrState": "Alerting",
+  "for": "2m",
+  "annotations": {
+    "description": "Expected Shortfall (EVT 95%) is above 3% while hedging is inactive for more than 2 minutes. This indicates high tail risk exposure without protective hedging.",
+    "runbook_url": "https://github.com/your-org/trading-runbooks/blob/main/alerts/risk-hedging.md",
+    "summary": "High Risk Exposure Without Hedging"
+  },
+  "labels": {
+    "team": "trading",
+    "severity": "critical",
+    "component": "risk_management",
+    "slo": "risk_coverage"
+  },
+  "folderUID": "trading-alerts"
+}

@@ -1,0 +1,32 @@
+{
+  "timestamp": "2025-08-15T11:33:10.942137Z",
+  "analysis_window_days": 14,
+  "margin_usd": 5.0,
+  "cost_structure": {
+    "gpu_cost_per_hour": 2.1,
+    "infrastructure_cost_per_hour": 1.2,
+    "data_cost_per_hour": 0.8,
+    "execution_cost_per_hour": 1.5,
+    "monitoring_cost_per_hour": 0.3
+  },
+  "performance_data": {
+    "total_hours_active": 24,
+    "total_gross_pnl_usd": 158.0,
+    "total_net_pnl_usd": 0,
+    "avg_hourly_volume_usd": 6.583333333333333,
+    "cost_ratio_current": 0.58
+  },
+  "cost_per_active_hour_usd": 4.400197499999999,
+  "ev_threshold_usd": 9.400197499999999,
+  "validation": {
+    "threshold_reasonable": true,
+    "historical_beat_rate": 0.39303047468354435,
+    "expected_green_hours_per_day": 9.432731392405064,
+    "cost_ratio_projection": 0.40397883765822784
+  },
+  "recommendations": [
+    "Threshold is reasonable based on historical performance",
+    "Expected 9.4 green hours/day",
+    "\u26a0\ufe0f Projected cost ratio 40.4% still above 30%"
+  ]
+}

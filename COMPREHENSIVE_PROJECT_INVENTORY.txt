@@ -1,0 +1,1815 @@
+# COMPREHENSIVE TRADING BOT PROJECT INVENTORY
+# Complete Function, Class, and Component Reference
+# Generated: August 25, 2025
+# Project: Advanced Multi-Layer Algorithmic Trading System with Full Compliance
+
+===============================================================================
+PROJECT OVERVIEW
+===============================================================================
+
+This is a sophisticated 6-layer algorithmic trading system supporting both 
+cryptocurrency and stock trading with real-time processing, multiple alpha 
+models, ensemble learning, advanced position sizing, comprehensive risk 
+management, and full regulatory compliance infrastructure.
+
+ARCHITECTURE LAYERS:
+- Layer 0: Data Ingestion (Real-time market data)
+- Layer 1: Alpha Models (Signal generation) 
+- Layer 2: Ensemble Learning (Signal combination)
+- Layer 3: Position Sizing (Risk-aware sizing)
+- Layer 4: Execution (Order management)
+- Layer 5: Monitoring & Risk (Real-time oversight)
+
+COMPLIANCE INFRASTRUCTURE:
+- FIFO Tax-Lot Ledger (First-In-First-Out accounting)
+- WORM Archive System (Write-Once-Read-Many compliance storage)
+- Transaction Audit Trail (Immutable audit logging)
+- Tax Reporting Engine (1099-B, Schedule D generation)
+- Regulatory APIs (RESTful compliance data access)
+
+===============================================================================
+1. MAIN ENTRY POINTS & SESSION MANAGEMENT
+===============================================================================
+
+/src/main.py - Main System Orchestrator
+--------------------------------------------
+CLASS: TradingSystemOrchestrator
+- __init__() - Initialize all system components
+- initialize() - Setup all 6 layers
+- start() - Launch trading system
+- run_trading_loop() - Main trading cycle
+- trading_cycle() - Execute one complete trading cycle
+- shutdown() - Graceful system shutdown
+- signal_handler() - Handle shutdown signals
+
+/run_crypto_session.py - Real-time Crypto Trading
+--------------------------------------------------
+CLASS: CryptoTradingSession
+- __init__() - Initialize Coinbase connector, alpha models, ensemble, sizing, risk
+- run() - Execute complete 30-minute trading session
+- _run_data_feed() - Stream real-time Coinbase WebSocket data
+- _process_tick() - Process market ticks through all 6 layers
+- _shutdown() - Generate session statistics and cleanup
+
+/run_stocks_session.py - End-to-end Stocks Trading  
+--------------------------------------------------
+CLASS: StocksSession
+- __init__() - Initialize Alpaca connector, alphas, ensemble, sizing, executor, risk
+- run_session() - Execute trading session with specified duration
+- _process_tick() - Process market data through all layers
+- _execute_order() - Execute orders via Alpaca
+- _print_session_summary() - Generate comprehensive session report
+
+===============================================================================
+2. CORE SYSTEM COMPONENTS
+===============================================================================
+
+/src/core/router.py - Dynamic Model Selection Router
+----------------------------------------------------
+CLASS: ModelRouter
+- select_model() - Sub-50μs model selection based on asset class and horizon
+- _compile_rules() - Pre-compile routing rules for performance
+- _get_instrument_info() - Cached instrument metadata lookup
+- publish_selection() - Publish model selections to Redis
+- get_performance_stats() - Router performance metrics
+
+ENUMS & DATA STRUCTURES:
+- AssetClass - Asset classification enum
+- ModelFamily - Available model families enum  
+- RoutingRule - Model routing rule structure
+- InstrumentInfo - Instrument metadata structure
+
+/src/core/signal_mux.py - Signal Multiplexer
+--------------------------------------------
+CLASS: SignalMux
+- process_tick() - Route ticks to appropriate models with switching events
+- _execute_model_prediction() - Execute model predictions
+- _publish_tagged_signal() - Publish signals with model tags
+- _publish_switching_event() - Log model switching events
+- get_performance_stats() - Performance statistics
+
+SUPPORTING CLASSES:
+- ModelRegistry - Registry for available models
+- ModelPrediction - Prediction with metadata structure
+- TickData - Standardized tick data structure
+- DummyModel - Testing model implementation
+
+/src/core/param_server/ - Hot-reloading Parameter Server
+--------------------------------------------------------
+CLASS: ParamServer
+- get_rules() - Zero-allocation rule access
+- watch() - Start file watching for hot reloads
+- reload_config() - Manual configuration reload
+- _load_config() - Load and validate configuration
+- get_performance_stats() - Performance metrics
+
+SUPPORTING:
+- ConfigFileHandler - File system event handler
+- ReloadEvent - Configuration reload event structure
+- ValidationError - Configuration validation errors
+
+/src/core/param_server/schemas.py - Configuration Schemas
+--------------------------------------------------------
+- RiskParams - Risk management parameters
+- ModelParams - Model configuration parameters  
+- ExecutionParams - Execution configuration
+
+/src/core/param_server/server.py - Parameter Server Implementation
+-----------------------------------------------------------------
+- FastAPI application for parameter management
+- RESTful endpoints for parameter updates
+- Real-time configuration management
+
+===============================================================================
+3. LAYER 0: DATA INGESTION
+===============================================================================
+
+/src/layers/layer0_data_ingestion/base_connector.py
+--------------------------------------------------
+ABSTRACT CLASS: BaseDataConnector
+- connect() - Establish data connection
+- disconnect() - Close data connection
+- subscribe() - Subscribe to symbol feeds
+- start_data_stream() - Unified data streaming interface
+
+/src/layers/layer0_data_ingestion/crypto_connector.py
+----------------------------------------------------
+CLASS: CryptoConnector
+- _connect_impl() - WebSocket connection implementation
+- _subscribe_impl() - Subscribe to ticker channels
+- _stream_data() - Stream real-time market data
+- _parse_tick() - Parse and normalize tick data
+
+/src/layers/layer0_data_ingestion/coinbase_connector.py
+------------------------------------------------------
+CLASS: CoinbaseConnector  
+- _connect_impl() - Coinbase WebSocket with simulation fallback
+- _subscribe_impl() - Subscribe to ticker + order book channels
+- _stream_data() - Stream real-time or simulated data
+- _parse_tick() - Parse Coinbase data and publish to Kafka
+- _simulate_data_stream() - Generate realistic test data
+- _handle_message() - Process incoming WebSocket messages
+
+/src/layers/layer0_data_ingestion/binance_connector.py  
+-----------------------------------------------------
+CLASS: BinanceConnector
+- connect() - Binance Spot bookTicker stream (≥10 msg/s)
+- _handle_message() - Process combined stream messages
+- _update_prometheus_metrics() - Latency histograms
+- _reconnect() - Resilient reconnection logic
+
+TARGET SYMBOLS: BTCUSDT, ETHUSDT, SOLUSDT
+
+/src/layers/layer0_data_ingestion/binance_ws.py
+-----------------------------------------------
+CLASS: BinanceWebSocketClient
+- start_stream() - Start WebSocket stream
+- _on_message() - Message handler
+- _on_error() - Error handler
+- _reconnect() - Connection recovery
+
+/src/layers/layer0_data_ingestion/alpaca_connector.py
+----------------------------------------------------
+CLASS: AlpacaConnector
+- connect() - Connect to Alpaca market data API
+- subscribe() - Subscribe to stock symbols
+- _handle_trade() - Process trade messages
+- _handle_quote() - Process quote messages
+
+/src/layers/layer0_data_ingestion/stock_connector.py
+---------------------------------------------------
+CLASS: StockConnector
+- Generic stock market data connector
+- Standardized interface for multiple stock data providers
+
+/src/layers/layer0_data_ingestion/nownodes_connector.py
+------------------------------------------------------
+CLASS: NowNodesConnector
+- Blockchain data connector
+- WebSocket support for real-time blockchain data
+
+/src/layers/layer0_data_ingestion/nownodes_ws.py
+-----------------------------------------------
+CLASS: NowNodesWebSocket
+- WebSocket client for blockchain data
+- Real-time transaction monitoring
+
+/src/layers/layer0_data_ingestion/twitter_stream.py
+--------------------------------------------------
+CLASS: TwitterStreamConnector
+- Real-time Twitter feed integration
+- Sentiment-relevant tweet filtering
+- Social media signal generation
+
+/src/layers/layer0_data_ingestion/feature_bus.py - Real-time Feature Engine
+--------------------------------------------------------------------------
+CLASS: FeatureBus
+- process_tick() - Compute technical features from market ticks (<300μs)
+- _compute_features() - Calculate returns, volatility, order book features
+- _compute_return() - Price return calculations
+- _compute_volatility() - Rolling volatility estimation
+- _compute_sma() - Simple moving averages
+- _compute_rsi() - Relative Strength Index
+- update_sentiment() - Integrate sentiment data
+- update_fundamental() - Integrate fundamental data
+- get_feature_snapshot() - Complete feature vector
+
+CLASS: FeatureBusManager
+- Multi-topic Kafka consumption (Coinbase + Binance)
+- Feature publishing with sub-5ms latency
+- Parallel processing pipeline
+
+/src/layers/layer0_data_ingestion/schemas.py - Data Schemas
+----------------------------------------------------------
+DATACLASSES:
+- MarketTick - Standardized market tick structure
+- FeatureSnapshot - Complete feature vector with technical and soft information
+- OrderBookSnapshot - Order book state
+- TradeData - Individual trade information
+
+/src/layers/layer0_data_ingestion/__init__.py - Layer Initialization
+-------------------------------------------------------------------
+- Layer 0 package initialization
+- Component exports and imports
+
+===============================================================================
+4. LAYER 1: ALPHA MODELS & SIGNAL GENERATION
+===============================================================================
+
+/src/layers/layer1_alpha_models/ma_momentum.py - Moving Average Momentum
+-----------------------------------------------------------------------
+CLASS: MovingAverageMomentumAlpha
+- update_price() - Process price updates and generate signals
+- _generate_signal() - Calculate z-score and edge (±40bp cap)
+- update_from_feature_snapshot() - Process FeatureBus data
+- get_stats() - Performance tracking and hit rates
+- _calculate_momentum() - Momentum calculation
+- _update_moving_averages() - MA maintenance
+
+/src/layers/layer1_alpha_models/ob_pressure.py - Order Book Pressure
+-------------------------------------------------------------------
+CLASS: OrderBookPressureAlpha
+- analyze_pressure() - Analyze bid/ask imbalance
+- calculate_imbalance() - Order book imbalance metrics
+- generate_pressure_signal() - Pressure-based signals
+
+/src/layers/layer1_alpha_models/order_book_pressure.py - Enhanced OBP
+--------------------------------------------------------------------
+CLASS: EnhancedOrderBookPressure
+- process_order_book() - Advanced order book analysis
+- calculate_flow_imbalance() - Flow-based imbalance
+- detect_large_orders() - Large order detection
+
+/src/layers/layer1_alpha_models/big_bet_flag.py - Large Order Detection
+----------------------------------------------------------------------
+CLASS: BigBetFlagAlpha
+- detect_big_bet() - Large order/trade detection
+- flag_unusual_activity() - Unusual activity flagging
+- calculate_size_percentile() - Order size analysis
+
+/src/layers/layer1_alpha_models/mean_rev.py - Mean Reversion
+----------------------------------------------------------
+CLASS: MeanReversionAlpha
+- calculate_mean_reversion() - Mean reversion signals
+- detect_oversold_overbought() - Extreme condition detection
+- generate_reversal_signal() - Reversal signal generation
+
+/src/layers/layer1_alpha_models/momo_fast.py - Fast Momentum
+----------------------------------------------------------
+CLASS: FastMomentumAlpha
+- fast_momentum_calculation() - High-frequency momentum
+- short_term_trend_detection() - Intraday trend analysis
+
+/src/layers/layer1_alpha_models/news_sent_alpha.py - News Sentiment
+------------------------------------------------------------------
+CLASS: NewsSentimentAlpha
+- process_news() - News processing pipeline
+- calculate_sentiment_score() - Sentiment scoring
+- generate_sentiment_signal() - Sentiment-based signals
+- integrate_multiple_sources() - Multi-source aggregation
+
+/src/layers/layer1_alpha_models/lstm_transformer_alpha.py - Deep Learning
+------------------------------------------------------------------------
+CLASS: LSTMTransformerAlpha
+- forward() - Neural network forward pass
+- predict() - Generate predictions
+- train_model() - Model training
+- update_weights() - Weight updates
+
+/src/layers/layer1_alpha_models/onchain_alpha.py - Blockchain Metrics
+--------------------------------------------------------------------
+CLASS: OnChainAlpha
+- analyze_blockchain_metrics() - On-chain analysis
+- track_whale_movements() - Large holder tracking
+- calculate_network_health() - Network metrics
+
+/src/layers/layer1_alpha_models/regime_detector.py - Market Regime
+-----------------------------------------------------------------
+CLASS: RegimeDetector
+- detect_regime() - Market regime classification
+- calculate_regime_probability() - Regime probabilities
+- update_regime_model() - Regime model updates
+
+/src/layers/layer1_signal_generation/ - Signal Generation Framework
+------------------------------------------------------------------
+
+/src/layers/layer1_signal_generation/whale_alert_client.py
+CLASS: WhaleAlertClient
+- fetch_whale_transactions() - Large transaction monitoring
+- filter_relevant_transactions() - Transaction filtering
+- push_events() - Event stream publishing
+
+/src/layers/layer1_signal_generation/options_flow.py
+CLASS: UnusualWhalesClient  
+- get_current_flow() - Options flow data
+- process_options_data() - Options analysis
+- detect_unusual_activity() - Unusual options activity
+
+/src/layers/layer1_signal_generation/cryptopanic_client.py
+CLASS: CryptoPanicClient
+- fetch_crypto_news() - Cryptocurrency news aggregation
+- analyze_sentiment() - News sentiment analysis
+- generate_news_signals() - News-based alpha signals
+
+/src/layers/layer1_signal_generation/funding_basis.py
+CLASS: FundingBasisAnalyzer
+- calculate_funding_rate() - Perpetual funding rate analysis
+- detect_funding_arbitrage() - Funding arbitrage opportunities
+- generate_basis_signals() - Basis trading signals
+
+/src/layers/layer1_signal_generation/iv_surface.py
+CLASS: ImpliedVolatilitySurface
+- build_iv_surface() - Options implied volatility surface
+- detect_iv_skew() - Volatility skew detection
+- generate_vol_signals() - Volatility-based signals
+
+/src/layers/layer1_signal_generation/news_sentiment.py
+CLASS: NewsSentimentAnalyzer
+- process_news_feed() - Real-time news processing
+- calculate_sentiment_score() - Multi-source sentiment scoring
+- generate_sentiment_alpha() - Sentiment-based alpha generation
+
+SUPPORTING STRUCTURES:
+- AlphaSignal - Standardized alpha signal structure
+- SignalMetadata - Signal metadata and attribution
+- ModelPerformanceTracker - Performance tracking utilities
+
+===============================================================================
+5. LAYER 2: ENSEMBLE LEARNING & FEATURE ENGINEERING
+===============================================================================
+
+/src/layers/layer2_ensemble/meta_learner.py - Meta-Learning Ensemble
+-------------------------------------------------------------------
+CLASS: MetaLearner
+- predict() - Generate ensemble predictions with confidence
+- predict_simple() - Backward compatibility prediction method
+- _logistic_blend() - Logistic blending for OBP + MAM (per Future_instruction.txt A2-1)
+- train() - Train meta-learner on historical signal data
+- get_feature_importance() - Analyze feature importance
+- update_model() - Online model updates
+- cross_validate() - Cross-validation pipeline
+
+CLASS: LogisticMetaLearner
+- fit() - Fit logistic regression meta-model
+- predict_proba() - Probability predictions
+- get_coefficients() - Model coefficients
+
+/src/layers/layer2_ensemble/advanced_ensemble.py - Advanced Ensemble
+-------------------------------------------------------------------
+CLASS: AdvancedEnsemble
+- dynamic_weighting() - Dynamic model weighting
+- adaptive_combination() - Adaptive signal combination
+- regime_aware_blending() - Regime-specific blending
+- performance_tracking() - Ensemble performance metrics
+
+/src/layers/layer2_ensemble/bandit_blender.py - Multi-Armed Bandit
+---------------------------------------------------------------
+CLASS: BanditBlender
+- select_arm() - Bandit arm selection (ε-greedy, UCB1)
+- update_rewards() - Reward signal updates
+- get_arm_statistics() - Bandit performance statistics
+- thompson_sampling() - Thompson sampling strategy
+
+/src/layers/layer2_ensemble/ensemble_integrator.py - Integration
+---------------------------------------------------------------
+CLASS: EnsembleIntegrator
+- integrate_signals() - Signal integration pipeline
+- calibrate_ensemble() - Ensemble calibration
+- validate_ensemble() - Ensemble validation
+
+/src/layers/layer2_feature_engineering/ - Advanced Feature Engineering
+---------------------------------------------------------------------
+
+/src/layers/layer2_feature_engineering/temporal_fusion_transformer.py
+CLASS: TemporalFusionTransformer
+- Multi-horizon temporal modeling
+- Attention-based feature selection
+- Variable selection networks
+- Interpretable time series forecasting
+
+/src/layers/layer2_feature_engineering/graph_neural_networks.py
+CLASS: GraphNeuralNetworks
+- Graph-based market modeling
+- Relationship modeling between assets
+- Graph attention networks
+- Dynamic graph construction
+
+/src/layers/layer0_feature_engineering/ - Core Feature Engineering
+----------------------------------------------------------------
+
+/src/layers/layer0_feature_engineering/feature_builder.py
+CLASS: FeatureBuilder
+- build_technical_features() - Technical indicator construction
+- build_market_microstructure_features() - Microstructure features
+- build_cross_asset_features() - Cross-asset correlations
+- build_regime_features() - Regime-aware features
+
+/src/layers/layer0_feature_engineering/funding_basis_features.py
+CLASS: FundingBasisFeatures
+- extract_funding_features() - Funding rate feature extraction
+- calculate_basis_spreads() - Basis spread calculations
+- build_carry_features() - Carry trade features
+
+/src/layers/layer2_ensemble/__init__.py - Layer Initialization
+-------------------------------------------------------------
+- Layer 2 package initialization
+- Ensemble component exports
+
+===============================================================================
+6. LAYER 3: POSITION SIZING & RISK MANAGEMENT
+===============================================================================
+
+/src/layers/layer3_position_sizing/enhanced_position_sizing.py
+-------------------------------------------------------------
+CLASS: EnhancedPositionSizing
+- kelly_criterion_extension() - Dynamic Kelly for flexible markets (KCE)
+- hierarchical_risk_parity() - ML-Enhanced HRP (20-30% vol reduction)
+- dynamic_black_litterman() - AI-Hybrid BL (10-20% Sharpe improvement)
+- optimize_portfolio() - Comprehensive portfolio optimization
+- _combined_optimization() - Regime-aware method blending
+- _detect_market_regime() - Market regime classification
+- calculate_position_size() - Primary position sizing interface
+- update_market_conditions() - Market condition updates
+- get_sizing_analytics() - Sizing analytics and metrics
+
+ENUMS & STRUCTURES:
+- OptimizationMethod - Portfolio optimization methods
+- MarketRegime - Market regime classifications  
+- PositionSizingResult - Detailed sizing results
+- PortfolioOptimizationResult - Complete optimization output
+
+/src/layers/layer3_position_sizing/kelly_sizing.py - Kelly Criterion
+-------------------------------------------------------------------
+CLASS: KellySizing
+- calculate_kelly_fraction() - Traditional Kelly calculation
+- adjust_for_uncertainty() - Uncertainty adjustments
+- apply_risk_limits() - Risk limit application
+
+/src/layers/layer3_risk_management/ - Advanced Risk Management
+------------------------------------------------------------
+
+/src/layers/layer3_risk_management/enhanced_risk_harmonizer.py
+CLASS: EnhancedRiskHarmonizer
+- harmonize_risk_models() - Multi-model risk integration
+- aggregate_risk_metrics() - Risk metric aggregation
+- detect_risk_regime_changes() - Risk regime monitoring
+
+/src/layers/layer3_risk_management/expected_shortfall_evt.py
+CLASS: ExpectedShortfallEVT
+- calculate_es_evt() - ES using Extreme Value Theory
+- fit_extreme_distributions() - Extreme distribution fitting
+- estimate_tail_risk() - Tail risk estimation
+
+/src/layers/layer3_risk_management/copula_correlation_modeling.py
+CLASS: CopulaCorrelationModeling
+- fit_copula() - Copula model fitting
+- generate_scenarios() - Scenario generation
+- calculate_tail_dependence() - Tail dependence analysis
+
+/src/layers/layer5_risk/basic_risk_manager.py - Basic Risk Controls
+-----------------------------------------------------------------
+CLASS: BasicRiskManager
+- check_position_risk() - Position size and drawdown limits
+- update_volatility() - Volatility-based circuit breakers
+- get_stats() - Risk management statistics
+- validate_order() - Pre-trade risk validation
+- update_portfolio_metrics() - Portfolio metric updates
+
+/src/layers/layer5_risk/risk_monitor.py - Real-time Risk Monitoring
+------------------------------------------------------------------
+CLASS: RiskMonitor
+- monitor_real_time_risk() - Continuous risk monitoring
+- trigger_alerts() - Risk alert system
+- generate_risk_report() - Risk reporting
+
+/src/layers/layer5_risk/advanced_risk_manager.py - Advanced Risk Systems
+----------------------------------------------------------------------
+CLASS: AdvancedRiskManager
+- assess_portfolio_risk() - Comprehensive risk assessment
+- calculate_var() - Value at Risk calculation
+- calculate_expected_shortfall() - Expected Shortfall (ES)
+- stress_test() - Stress testing scenarios
+
+/src/layers/layer5_risk/hedge_executor_deribit.py - Derivatives Hedging
+---------------------------------------------------------------------
+CLASS: HedgeExecutorDeribit
+- execute_hedge_trade() - Derivatives hedging execution
+- calculate_hedge_ratio() - Optimal hedge ratio calculation
+- monitor_hedge_performance() - Hedge performance tracking
+
+/src/layers/layer5_risk/hedge_overlay.py - Hedge Management
+---------------------------------------------------------
+CLASS: HedgeOverlay
+- manage_portfolio_hedges() - Portfolio-level hedge management
+- dynamic_hedge_adjustment() - Dynamic hedge rebalancing
+- hedge_effectiveness_analysis() - Hedge effectiveness measurement
+
+/src/risk/ - Centralized Risk Management
+---------------------------------------
+
+/src/risk/strategy_allocator.py
+CLASS: StrategyAllocator
+- allocate_capital() - Capital allocation across strategies
+- rebalance_strategies() - Dynamic strategy rebalancing
+- monitor_strategy_performance() - Strategy performance tracking
+
+/src/risk/capital_cap_enforcer.py
+CLASS: CapitalCapEnforcer
+- enforce_position_limits() - Position limit enforcement
+- monitor_leverage() - Leverage monitoring and control
+- execute_risk_reduction() - Automated risk reduction
+
+/src/risk/capital_autoramp.py
+CLASS: CapitalAutoRamp
+- auto_scale_positions() - Automatic position scaling
+- detect_performance_trends() - Performance trend analysis
+- adjust_risk_appetite() - Risk appetite adjustments
+
+/src/risk/kelly_vol_sizer.py
+CLASS: KellyVolSizer
+- calculate_volatility_adjusted_size() - Vol-adjusted Kelly sizing
+- update_volatility_estimates() - Rolling volatility updates
+- apply_vol_targeting() - Volatility targeting implementation
+
+/src/risk/risk_budgeter.py
+CLASS: RiskBudgeter
+- allocate_risk_budget() - Risk budget allocation
+- monitor_risk_utilization() - Risk utilization tracking
+- rebalance_risk_exposure() - Risk exposure rebalancing
+
+===============================================================================
+7. LAYER 4: EXECUTION & SMART ORDER ROUTING
+===============================================================================
+
+/src/layers/layer4_execution/alpaca_executor.py - Alpaca Trading
+---------------------------------------------------------------
+CLASS: AlpacaExecutor
+- submit_order() - Submit orders with validation
+- get_order() - Order status tracking
+- cancel_order() - Order cancellation
+- get_account() - Account information retrieval
+- get_positions() - Position tracking
+- _validate_order() - Pre-submission validation
+- _handle_order_response() - Order response processing
+
+/src/layers/layer4_execution/coinbase_executor.py - Coinbase Trading
+-------------------------------------------------------------------
+CLASS: CoinbaseExecutor
+- place_market_order() - Market order placement
+- place_limit_order() - Limit order placement
+- cancel_order() - Order cancellation
+- get_order_book() - Order book retrieval
+- get_account_balance() - Balance checking
+
+/src/layers/layer4_execution/market_order_executor.py - Generic Execution
+------------------------------------------------------------------------
+CLASS: MarketOrderExecutor
+- execute_market_order() - Generic market order execution
+- validate_execution() - Execution validation
+- track_slippage() - Slippage monitoring
+
+/src/layers/layer4_execution/smart_order_router.py - Smart Routing
+-----------------------------------------------------------------
+CLASS: SmartOrderRouter
+- route_order() - Intelligent order routing
+- select_optimal_venue() - Venue selection
+- minimize_market_impact() - Impact minimization
+- track_execution_quality() - Quality metrics
+
+/src/layers/layer4_execution/smart_routing_integrator.py - Routing Integration
+-----------------------------------------------------------------------------
+CLASS: SmartRoutingIntegrator
+- integrate_routing() - Routing integration
+- optimize_execution() - Execution optimization
+- analyze_routing_performance() - Routing analytics
+
+/src/layers/layer4_execution/ttl_watchdog.py - Order Time Management
+------------------------------------------------------------------
+CLASS: TTLWatchdog
+- monitor_order_ttl() - Order time-to-live monitoring
+- auto_cancel_expired_orders() - Expired order management
+- update_order_timeouts() - Timeout management
+
+/execution/ - Centralized Execution Services
+-------------------------------------------
+
+/execution/router.py
+CLASS: ExecutionRouter
+- route_execution_request() - Execution request routing
+- select_execution_algorithm() - Algorithm selection
+- monitor_execution_progress() - Execution monitoring
+
+/execution/sor_latency.py
+CLASS: SORLatency
+- measure_venue_latency() - Real-time latency measurement
+- optimize_routing_latency() - Latency-optimized routing
+- benchmark_execution_speed() - Execution speed benchmarking
+
+/execution/spread_optimizer.py
+CLASS: SpreadOptimizer
+- optimize_bid_ask_crossing() - Spread crossing optimization
+- minimize_crossing_costs() - Cost minimization
+- dynamic_spread_analysis() - Real-time spread analysis
+
+/src/layers/layer4_strategies/ - Advanced Trading Strategies
+----------------------------------------------------------
+
+/src/layers/layer4_strategies/statistical_arbitrage.py
+CLASS: StatisticalArbitrage
+- identify_pairs() - Statistical pairs identification
+- calculate_spread() - Spread calculation
+- generate_trade_signals() - Arbitrage signals
+
+/src/layers/layer4_strategies/smart_order_routing.py
+CLASS: SmartOrderRoutingStrategy
+- implement_twap() - Time-Weighted Average Price
+- implement_vwap() - Volume-Weighted Average Price
+- implement_pov() - Percentage of Volume strategy
+
+/src/strategies/ - Production Trading Strategies
+-----------------------------------------------
+
+/src/strategies/basis_carry.py
+CLASS: BasisCarry
+- identify_carry_opportunities() - Carry trade identification
+- calculate_carry_returns() - Carry return calculation
+- execute_carry_trades() - Carry trade execution
+
+/src/strategies/basis_hedge_calibrator.py
+CLASS: BasisHedgeCalibrator
+- calibrate_hedge_ratios() - Hedge ratio calibration
+- update_hedge_parameters() - Dynamic hedge updates
+- validate_hedge_effectiveness() - Hedge validation
+
+/src/strategies/market_maker_as.py
+CLASS: MarketMakerAS (Anti-Selection)
+- detect_adverse_selection() - Adverse selection detection
+- adjust_spreads() - Dynamic spread adjustment
+- manage_inventory() - Inventory management
+
+/src/strategies/mm_online_calibrator.py
+CLASS: MMOnlineCalibrator
+- calibrate_mm_parameters() - Market making calibration
+- update_pricing_models() - Pricing model updates
+- optimize_spread_skew() - Spread skew optimization
+
+SUPPORTING STRUCTURES:
+- OrderRequest - Standardized order request
+- OrderResponse - Standardized order response
+- ExecutionReport - Execution quality report
+- VenueMetrics - Venue performance metrics
+
+===============================================================================
+8. LAYER 5: MONITORING, RISK & SYSTEM HEALTH
+===============================================================================
+
+/src/layers/layer5_monitoring/ - Real-time Monitoring
+----------------------------------------------------
+CLASS: SlippageMonitor
+- monitor_execution_quality() - Real-time slippage monitoring
+- calculate_implementation_shortfall() - Implementation shortfall
+- generate_execution_report() - Execution quality reports
+
+/src/monitoring/metrics_server.py - Metrics Server
+-------------------------------------------------
+CLASS: MetricsServer
+- start_server() - Start Prometheus metrics server
+- register_metrics() - Register custom metrics
+- update_metrics() - Metric updates
+
+/src/monitoring/write_timeseries.py - Time Series Storage
+--------------------------------------------------------
+FUNCTIONS:
+- write_tick_data() - Write market tick data
+- write_signal_data() - Write alpha signal data
+- write_execution_data() - Write execution data
+- query_historical_data() - Historical data queries
+
+/src/utils/metrics.py - Comprehensive Trading Metrics
+-----------------------------------------------------
+CLASS: TradingMetrics
+- Market tick metrics (latency, throughput)
+- Alpha model performance metrics
+- Ensemble prediction metrics  
+- Execution quality metrics
+- Portfolio and risk metrics
+- System health metrics
+- Soft information metrics
+
+METRIC CATEGORIES:
+- tick_processing_latency_histogram
+- alpha_signal_generation_time
+- ensemble_prediction_accuracy
+- execution_slippage_basis_points
+- portfolio_drawdown_percent
+- system_memory_usage_bytes
+- news_sentiment_score
+
+/src/optimization/ - Performance Optimization
+--------------------------------------------
+
+/src/optimization/onnx_policy_server.py
+CLASS: ONNXPolicyServer
+- load_onnx_models() - ONNX model loading
+- serve_model_predictions() - Model serving
+- optimize_inference_latency() - Inference optimization
+
+/src/optimization/feature_cache.py
+CLASS: FeatureCache
+- cache_feature_vectors() - Feature caching system
+- invalidate_stale_features() - Cache invalidation
+- optimize_feature_access() - Feature access optimization
+
+===============================================================================
+9. REINFORCEMENT LEARNING & POLICY SYSTEMS
+===============================================================================
+
+/src/rl/policy_daemon_lora.py - LoRA Policy System
+--------------------------------------------------
+CLASS: PolicyDaemonWithLora
+- __init__() - Initialize LoRA-enabled policy
+- _setup_gpu_allocator() - Adaptive GPU memory allocation
+- save_delta_checkpoint() - Save LoRA delta checkpoints (<200kB)
+- load_delta_checkpoint() - Load delta checkpoints
+- get_model_info() - Model information and statistics
+- sigstore_sign_delta() - Model security signing
+- train_step() - Single training step with LoRA
+- get_action() - Policy action inference
+
+CLASS: ActorModel
+- forward() - Neural network forward pass
+- Actor network for SAC-DiF implementation
+
+FACTORY FUNCTION:
+- create_policy_daemon_with_lora() - LoRA policy daemon factory
+
+/rl/exec_agent.py - RL Execution Agent
+-------------------------------------
+CLASS: ExecutionAgentTrainer
+- create_env() - Training environment creation
+- create_training_env() - Vectorized environment setup
+- create_model() - PPO model creation with optimized hyperparameters
+- setup_callbacks() - Training callbacks (checkpoint, evaluation)
+- train() - Complete agent training pipeline
+- test_trained_model() - Model evaluation and testing
+
+FEATURES:
+- PPO-based optimal execution
+- Order book environment integration
+- 4M timestep training capacity
+- Parallel environment support (4+ envs)
+- Tensorboard logging
+- Checkpoint management
+
+/src/rl/replay/ - Experience Replay Systems
+------------------------------------------
+/src/rl/replay/per_buffer.py
+CLASS: PERBuffer
+- add_experience() - Experience storage
+- sample_batch() - Priority-based sampling
+- update_priorities() - Priority updates
+- get_buffer_stats() - Buffer statistics
+
+RL MONITORING & DATA GENERATION:
+- rl_policy_data_generator.py - Policy metrics simulation
+- policy_heartbeat_simulator.py - Policy health simulation
+- production_rl_health_checker.py - RL system health monitoring
+
+RL STATUS (Current):
+- Policy Entropy: 1.40 (healthy)
+- Q-Spread: 34.49 (normal) 
+- Collapse Risk: LOW
+- Last Update: 288+ hours ago (STALE - requires attention)
+- GPU Memory: 85% allocated
+- NaN Guard: ✅ ACTIVE (protects against corrupted training data)
+- Alert System: ✅ REDIS INTEGRATION (publishes alerts:policy)
+
+===============================================================================
+10. COMPLIANCE & REGULATORY INFRASTRUCTURE
+===============================================================================
+
+/accounting/fifo_ledger.py - FIFO Tax-Lot Ledger
+-------------------------------------------------
+CLASS: FIFOLedger
+- create_tax_lot() - Create FIFO tax lots from fills
+- dispose_fifo() - FIFO disposal methodology
+- process_fill() - Complete fill processing pipeline
+- get_position_summary() - Real-time position reporting
+- get_realized_pnl_report() - Tax-compliant P&L reporting
+- verify_integrity() - Ledger integrity verification
+
+CLASS: TaxLot
+- Immutable tax lot structure
+- Cost basis and acquisition tracking
+- FIFO disposal methodology
+
+CLASS: Disposition
+- Tax lot disposal records
+- Realized gain/loss calculation
+- Short-term vs long-term classification
+
+/accounting/worm_archive.py - Write-Once-Read-Many Archive
+---------------------------------------------------------
+CLASS: WORMArchive
+- store_record() - Immutable record storage
+- retrieve_record() - Verified record retrieval
+- verify_archive_integrity() - Cryptographic verification
+- get_retention_report() - Compliance retention reporting
+
+FEATURES:
+- RSA-2048 digital signatures
+- SHA-256 content verification
+- Configurable retention periods (3-10 years)
+- Tamper detection and prevention
+- Automatic compression and deduplication
+
+/accounting/fee_engine.py - Trading Cost Engine
+----------------------------------------------
+CLASS: FeeEngine
+- compute_fill_cost() - Comprehensive cost calculation
+- process_fills_batch() - Batch cost processing
+- calculate_net_pnl() - Net P&L with all costs
+- get_venue_config() - Venue-specific fee schedules
+
+VENUE SUPPORT:
+- Binance (0.1% maker/taker)
+- Coinbase Pro (0.5% maker/taker)
+- FTX (0.02% maker, 0.07% taker)
+- dYdX (-0.025% maker rebate, 0.05% taker)
+
+/accounting/tax_reporting.py - Tax Reporting Engine
+--------------------------------------------------
+CLASS: TaxReportingEngine
+- generate_1099b_equivalent() - 1099-B form generation
+- generate_schedule_d() - Schedule D generation
+- generate_trader_tax_summary() - Comprehensive tax analysis
+- export_tax_package() - Complete tax package export
+- _calculate_wash_sales() - Wash sale detection framework
+- _analyze_mtm_election() - Mark-to-market election analysis
+
+SUPPORTED FORMS:
+- 1099-B equivalent (broker reporting)
+- Schedule D (capital gains/losses)
+- Trader tax summary with optimization suggestions
+- Quarterly P&L breakdown
+- Wash sale analysis
+
+/audit/transaction_audit.py - Transaction Audit Trail
+----------------------------------------------------
+CLASS: TransactionAuditTrail
+- log_event() - Immutable audit event logging
+- log_trade_execution() - Trade-specific audit logging
+- log_order_event() - Order lifecycle auditing
+- log_position_update() - Position change auditing
+- log_risk_check() - Risk validation auditing
+- verify_integrity() - Blockchain-inspired integrity verification
+- get_audit_trail() - Filtered audit trail retrieval
+- get_entity_history() - Complete entity change history
+
+AUDIT EVENT TYPES:
+- Trade executions
+- Order submissions/cancellations
+- Position updates
+- Risk checks
+- Parameter changes
+- System events
+- User access events
+
+/audit/ipfs_watchdog.py - IPFS Content Monitoring
+------------------------------------------------
+CLASS: IPFSWatchdog
+- monitor_ipfs_content() - IPFS content monitoring
+- verify_content_integrity() - Content verification
+- detect_content_changes() - Change detection
+- run_once() - Single monitoring cycle
+
+/audit/ledger.py - General Audit Ledger
+--------------------------------------
+CLASS: AuditLedger
+- record_transaction() - Transaction recording
+- verify_ledger_integrity() - Ledger verification
+- generate_audit_report() - Audit reporting
+
+/api/compliance_api.py - Compliance RESTful API
+----------------------------------------------
+ENDPOINTS:
+- GET /api/v1/positions - Current trading positions
+- GET /api/v1/realized-pnl - Realized P&L for tax periods
+- GET /api/v1/net-pnl - Net P&L including all costs
+- GET /api/v1/audit-trail - Transaction audit trail
+- GET /api/v1/tax-forms - Generate tax forms
+- GET /api/v1/archive/retrieve/{id} - Retrieve archived records
+- GET /api/v1/compliance/status - System integrity status
+
+FEATURES:
+- Full request/response audit logging
+- Automatic archival of all API access
+- Compliance context tracking
+- CORS support and comprehensive error handling
+
+===============================================================================
+11. UTILITIES & INFRASTRUCTURE
+===============================================================================
+
+/src/utils/config_manager.py - Configuration Management
+------------------------------------------------------
+CLASS: ConfigManager
+- load_config() - Load configuration files
+- get_config_value() - Retrieve configuration values
+- update_config() - Update configuration
+- validate_config() - Configuration validation
+
+/src/utils/logger.py - Centralized Logging
+------------------------------------------
+CLASS: Logger
+- setup_logging() - Initialize logging system
+- get_logger() - Get named logger instances
+- log_trade() - Trade-specific logging
+- log_error() - Error logging with context
+
+/src/services/sent_enricher.py - Sentiment Enrichment
+-----------------------------------------------------
+CLASS: SentimentEnricher
+- enrich_with_sentiment() - Add sentiment data
+- process_news_feed() - News processing
+- calculate_sentiment_scores() - Sentiment scoring
+
+/src/services/explain_middleware.py - Explainability Service
+-----------------------------------------------------------
+CLASS: ExplainMiddleware
+- explain_prediction() - Model explainability
+- generate_attribution() - Attribution analysis
+- create_explanation_report() - Explanation reporting
+
+/src/services/llm_sentiment_service.py - LLM Sentiment Analysis
+--------------------------------------------------------------
+CLASS: LLMSentimentService
+- analyze_text_sentiment() - LLM-powered sentiment analysis
+- batch_process_news() - Batch sentiment processing
+- calibrate_sentiment_model() - Model calibration
+
+/src/services/recon_daemon.py - Reconciliation Service
+-----------------------------------------------------
+CLASS: ReconDaemon
+- reconcile_positions() - Position reconciliation
+- detect_discrepancies() - Discrepancy detection
+- generate_recon_report() - Reconciliation reporting
+
+/src/services/feature_quality_gate.py - Feature Quality Control
+--------------------------------------------------------------
+CLASS: FeatureQualityGate
+- validate_feature_quality() - Feature validation
+- detect_feature_drift() - Feature drift detection
+- enforce_quality_standards() - Quality enforcement
+
+/src/services/strategy_guard.py - Strategy Protection
+---------------------------------------------------
+CLASS: StrategyGuard
+- monitor_strategy_performance() - Performance monitoring
+- detect_strategy_degradation() - Performance degradation
+- implement_circuit_breakers() - Strategy circuit breakers
+
+/src/services/alpha_impact_learner.py - Alpha Impact Analysis
+-----------------------------------------------------------
+CLASS: AlphaImpactLearner
+- learn_alpha_impact() - Impact learning
+- optimize_alpha_allocation() - Allocation optimization
+- measure_alpha_effectiveness() - Effectiveness measurement
+
+/src/portfolio/signals.py - Signal Management
+---------------------------------------------
+CLASS: SignalManager
+- aggregate_signals() - Signal aggregation
+- validate_signals() - Signal validation
+- route_signals() - Signal routing
+
+/src/portfolio/lgb_sharpe.py - LightGBM Sharpe Optimization
+----------------------------------------------------------
+CLASS: LGBSharpe
+- optimize_sharpe() - Sharpe ratio optimization using LightGBM
+- feature_importance() - Feature importance analysis
+- backtest_strategy() - Strategy backtesting
+
+/src/models/onnx_runner.py - ONNX Model Execution
+-------------------------------------------------
+CLASS: ONNXRunner
+- load_model() - Load ONNX model
+- predict() - Run inference
+- batch_predict() - Batch inference
+- get_model_info() - Model metadata
+
+===============================================================================
+12. DISASTER RECOVERY & OPERATIONS
+===============================================================================
+
+/scripts/backup_to_s3.py - Automated S3 Backup System
+-----------------------------------------------------
+CLASS: TradingBotBackup
+- ensure_bucket_exists() - S3 bucket management
+- backup_model_deltas() - Backup LoRA model deltas
+- backup_redis_data() - Backup Redis RDB snapshots
+- backup_configuration() - Backup config files
+- list_recent_backups() - Backup inventory
+- run_full_backup() - Complete backup execution
+
+/scripts/restore_from_s3.py - S3 Restore System
+----------------------------------------------
+CLASS: TradingBotRestore
+- restore_model_deltas() - LoRA model restoration
+- restore_redis_data() - Redis data restoration
+- restore_configuration() - Configuration restoration
+- list_available_backups() - Available backup inventory
+- run_full_restore() - Complete system restoration
+
+/scripts/chaos_monkey.py - Chaos Engineering
+--------------------------------------------
+CLASS: ChaosMonkey
+- is_chaos_enabled() - Chaos testing toggle
+- get_service_status() - Service health checking
+- kill_service() - Service termination (TERM, KILL, systemctl)
+- log_chaos_event() - Chaos event logging
+- wait_random_interval() - Random wait intervals (1-2 hours)
+- select_victim() - Random service selection
+- run_chaos_cycle() - Single chaos testing cycle
+- run_forever() - Continuous chaos testing
+- get_stats() - Chaos testing statistics
+
+TARGET SERVICES: policy-blue, policy-green, price-ws, risk, whale_stream, ops_bot, redis-server
+
+/scripts/canary_switch.py - Blue/Green Deployment
+-------------------------------------------------
+CLASS: CanarySwitch
+- get_current_color() - Get active deployment color
+- validate_target() - Validate deployment target
+- check_service_status() - Service status checking
+- switch_services() - Service switching (blue/green)
+- update_redis_state() - Redis state management
+- health_check() - Post-switch health validation
+- switch() - Complete canary deployment
+- rollback() - Rollback to previous deployment
+- status() - Deployment status information
+
+/scripts/dr_game_day.py - Disaster Recovery Testing
+--------------------------------------------------
+CLASS: DRGameDay
+- simulate_disaster() - Disaster simulation
+- test_recovery_procedures() - Recovery testing
+- validate_backup_integrity() - Backup validation
+- generate_dr_report() - DR testing report
+
+/scripts/weekly_dr_drill.py - Weekly DR Drills
+---------------------------------------------
+CLASS: WeeklyDRDrill
+- execute_weekly_drill() - Weekly DR execution
+- test_backup_restore() - Backup/restore testing
+- validate_system_recovery() - Recovery validation
+- log_drill_results() - Drill result logging
+
+/scripts/exchange_failover_drill.py - Exchange Failover Testing
+--------------------------------------------------------------
+CLASS: ExchangeFailoverDrill
+- simulate_exchange_outage() - Exchange outage simulation
+- test_failover_logic() - Failover testing
+- validate_backup_routes() - Backup route validation
+- measure_failover_time() - Failover time measurement
+
+/ops_bot/bot.py - Slack Operations Bot
+-------------------------------------
+CLASS: OpsBot
+- get_system_status() - System status collection
+- format_status_message() - Slack message formatting
+- set_mode() - Trading mode management
+- trigger_canary_switch() - Canary deployment triggering
+
+SLACK COMMANDS:
+- /status - Full system status
+- /mode [auto|manual|paper|halt] - Set trading mode
+- /canary [blue|green] - Deploy switching
+- /health - Quick health check
+- /backup - Trigger backup
+- /restore - Initiate restore
+
+/scripts/ssm_pull.py - AWS Parameter Store
+------------------------------------------
+CLASS: SSMParameterPuller
+- get_parameter() - Single parameter retrieval
+- get_parameters_by_path() - Bulk parameter retrieval
+- save_to_env_files() - Environment file creation
+- save_to_dotenv() - .env file creation
+- test_connection() - SSM connectivity test
+
+/scripts/ssm_rotate_keys.py - Key Rotation
+-----------------------------------------
+CLASS: SSMKeyRotator
+- rotate_api_keys() - API key rotation
+- update_encrypted_parameters() - Parameter updates
+- validate_key_rotation() - Rotation validation
+- log_rotation_events() - Rotation logging
+
+/monitor/aws_cost_exporter.py - AWS Cost Monitoring
+---------------------------------------------------
+CLASS: AWSCostExporter
+- get_cost_and_usage() - Cost Explorer integration
+- get_daily_cost() - Daily cost retrieval
+- get_monthly_cost() - Monthly cost tracking
+- get_service_costs() - Service-level cost breakdown
+- get_quota_usage() - Service quota monitoring
+- update_metrics() - Prometheus metric updates
+- run_forever() - Continuous cost monitoring
+
+/monitor/exporter.py - System Metrics Exporter
+----------------------------------------------
+PROMETHEUS GAUGES:
+- gpu_mem_used_mb - GPU memory usage
+- gpu_mem_frac - GPU memory fraction (PyTorch allocation)
+- active_color - Active deployment color (blue=0, green=1)
+- cpu_pct - CPU utilization percentage
+- policy_entropy - RL policy entropy
+- compliance_status - Compliance system health
+
+===============================================================================
+13. SCRIPTS & AUTOMATION
+===============================================================================
+
+DEVELOPMENT & TESTING SCRIPTS:
+/scripts/hotreload_demo.py - Hot reload demonstration
+/scripts/stress_test_config.py - Configuration stress testing
+/scripts/optuna_search.py - Hyperparameter optimization
+/scripts/drift_watcher.py - Model drift monitoring
+/scripts/fine_tune_dl.py - Deep learning fine-tuning
+
+DATA FETCHING SCRIPTS:
+/scripts/download_nvda.py - NVIDIA stock data download
+/scripts/get_binance_minute.py - Binance minute data
+/scripts/get_itick_minute.py - iTick minute data
+/scripts/crypto_replay_demo.py - Crypto data replay
+/scripts/stock_replay_demo.py - Stock data replay
+/scripts/demo_l0_connector.py - Layer 0 connector demo
+
+MONITORING & REPORTING SCRIPTS:
+/scripts/report_pnl.py - P&L reporting
+/scripts/report_mem.py - Memory usage reporting  
+/scripts/report_midrun.py - Mid-session reporting
+/scripts/mem_probe.py - Memory profiling
+/scripts/leak_sim.py - Memory leak simulation
+/scripts/daily_pnl_close.py - Daily P&L closing
+/scripts/daily_alpha_report.py - Daily alpha performance
+
+VALIDATION SCRIPTS:
+/scripts/validate_exit_criteria.py - Exit criteria validation
+/scripts/smoke_backtest.py - Smoke testing
+/scripts/smoke_grafana.sh - Grafana smoke testing
+/scripts/smoke_grafana_simple.sh - Simple Grafana test
+/scripts/healthcheck_loop.sh - Health check loop
+/scripts/hourly_validator.sh - Hourly validation
+/scripts/preflight_supercheck.py - Pre-flight validation
+/scripts/morning_greenlight.py - Morning validation suite
+/scripts/weekly_slo_gate.py - Weekly SLO validation
+
+STREAM DAEMONS:
+/scripts/news_stream_daemon.py - News stream processing
+/scripts/whale_stream_daemon.py - Whale transaction stream
+/scripts/exec_shadow_daemon.py - Shadow execution daemon
+
+MODEL MANAGEMENT:
+/scripts/fetch_models.py - Model fetching
+/scripts/export_models.py - Model export
+/scripts/backtest_risk.py - Risk backtesting
+/scripts/test_alpha_learner.py - Alpha learner testing
+/scripts/publish_model_card.py - Model card publishing
+/scripts/llm_signal_eval.py - LLM signal evaluation
+
+LIVE TRADING AUTOMATION:
+/scripts/full_trading_bot.py - Complete live trading bot implementation
+/scripts/live_promotion_controller.py - Live promotion automation
+/scripts/cutover_canary.py - Canary cutover automation
+/scripts/capital_ramp_guard.py - Capital ramping protection
+/scripts/ab_eval_gate.py - A/B testing evaluation
+/scripts/eval_shadow.py - Shadow evaluation
+/scripts/ramp_15_orchestrator.py - 15% capital ramp orchestration
+/scripts/ramp_20_orchestrator.py - 20% capital ramp orchestration
+/scripts/green_window_ramp.py - Green window ramp controller
+/scripts/deep_sleep_orchestrator.py - System sleep orchestration
+/scripts/slippage_gate.py - Slippage monitoring gate
+/scripts/budget_tripwire.py - Budget monitoring tripwire
+
+ENHANCED PERFORMANCE & INTEGRATION:
+/src/utils/aredis.py - High-Performance Async Redis
+----------------------------------------------------
+CLASS: AsyncBatchWriter
+- publish_batch() - Batched Redis publishing (2-10x throughput improvement)
+- get_batch_stats() - Batch performance metrics
+
+FUNCTIONS:
+- get_redis() - Connection pool with fallback (aioredis → sync redis)
+- publish_metrics_batch() - Async metrics batching
+- test_redis_performance() - Performance validation
+
+/src/models/onnx_runtime_runner.py - ONNX Runtime Integration
+-------------------------------------------------------------
+CLASS: ONNXModelRunner
+- load_model() - ONNX model loading with PyTorch fallback
+- run_inference() - Sub-millisecond inference (<1ms target)
+- get_model_info() - Model metadata and performance stats
+- benchmark_inference() - Inference speed benchmarking
+
+/src/strategies/basis_carry_async.py - Enhanced Async Basis Carry
+------------------------------------------------------------------
+CLASS: AsyncSpotPerpBasisCarryStrategy
+- analyze_basis() - Enhanced basis analysis with expected edge sizing
+- calculate_expected_edge() - Kelly-based edge calculation
+- get_markout_metrics() - Short-horizon markout monitoring
+- async_risk_check() - Async risk validation
+- execute_trades_async() - High-throughput async execution
+
+/src/strategies/basis_beta_ogl.py - Online GLS Hedge Calculator
+---------------------------------------------------------------
+CLASS: OnlineGLSHedgeCalculator
+- update_online() - Real-time GLS parameter updates
+- calculate_beta() - Dynamic hedge ratio with Kalman fallback
+- get_confidence_intervals() - Statistical confidence bounds
+- validate_regression() - Regression quality metrics
+
+/src/strategies/markout_guard.py - Markout Monitoring
+----------------------------------------------------
+CLASS: MarkoutCalculator
+- calculate_short_horizon() - 30s/1min/5min markout calculation
+- adjust_thresholds() - Dynamic threshold adjustment
+- get_performance_attribution() - Attribution analysis
+
+CLASS: MarkoutGuard
+- monitor_execution() - Real-time execution quality monitoring
+- trigger_alerts() - Quality degradation alerts
+
+/src/strategies/arb_scanner.py - Cross-Exchange Arbitrage
+--------------------------------------------------------
+CLASS: ArbitrageScanner
+- scan_opportunities() - Real-time arbitrage detection
+- calculate_risk_adjusted_spread() - Risk-adjusted opportunity sizing
+- validate_liquidity() - Liquidity depth validation
+- estimate_execution_costs() - Cost-aware opportunity filtering
+
+/src/strategies/arb_shadow_exec.py - Shadow Execution Engine
+-----------------------------------------------------------
+CLASS: ShadowExecutionEngine
+- execute_shadow_trades() - Reduced-size shadow execution
+- compare_performance() - Shadow vs production comparison
+- promote_strategy() - Automated promotion based on A/B testing
+- collect_ab_metrics() - A/B testing metric collection
+
+/integrations/nautilus/ - NautilusTrader Integration
+---------------------------------------------------
+CLASS: NautilusRedisBridge
+- convert_events() - Bidirectional event conversion
+- publish_to_redis() - Redis event publishing
+- handle_nautilus_events() - Event handling pipeline
+- maintain_compatibility() - Backward compatibility layer
+
+CLASS: NautilusBasisCarryStrategy
+- on_start() - Strategy initialization in Nautilus
+- on_trade_tick() - Tick processing with feature parity
+- on_order_filled() - Fill processing
+- calculate_signals() - Signal generation (identical to original)
+
+CLASS: NautilusBacktestRunner
+- setup_backtest() - Deterministic backtest configuration
+- run_acceptance_test() - Acceptance testing with tolerance checks
+- compare_results() - Result comparison with baseline
+- generate_report() - Backtest performance report
+
+INTEGRATION FEATURES:
+- 10-100x faster backtesting with Nautilus
+- Sub-millisecond order processing
+- Nanosecond timestamp resolution
+- Feature parity validation (±0.05% P&L tolerance)
+- Redis monitoring compatibility
+- Grafana dashboard integration
+
+OPERATIONAL GOVERNANCE & GO-LIVE AUTOMATION:
+/scripts/pilot_governance.py - Pilot Governance Manager
+--------------------------------------------------------
+CLASS: PilotGovernanceManager
+- check_success_metrics() - Success metric tracking (Net P&L ≥0, Max DD ≤1.5%, slippage ≤4bps)
+- check_stop_conditions() - Automated halt conditions (recon breach, RL entropy collapse)
+- execute_halt_procedure() - Emergency halt execution
+- run_checkpoint() - 30-minute governance checkpoints
+- _get_mock_success_metrics() - Testing framework
+
+SUCCESS METRICS:
+- Net P&L ≥ $0 after fees by Day-2
+- Intraday max drawdown ≤ 1.5% 
+- Median slippage ≤ 4 bps, P95 ≤ 12 bps
+- Recon breaches = 0, feature halts ≤ 1/day
+
+STOP CONDITIONS:
+- Any reconciliation breach → immediate halt
+- RL entropy < 0.05 for 2+ minutes → halt
+- Hedge inactive while ES95 > 3% → halt  
+- 2+ feature halts in 60 minutes → halt
+
+/scripts/incident_sop.py - Incident Standard Operating Procedure
+---------------------------------------------------------------
+CLASS: IncidentSOPManager
+- step1_stabilize() - Emergency stabilization (halt, freeze capital, snapshot)
+- step2_triage() - Incident classification (P0: funds at risk, P1: live degradation, P2: shadow only)
+- step3_recover() - System recovery (canary rollback, recon verification, preflight)
+- step4_report() - Post-mortem filing (60-minute SLA)
+- step5_prevent() - Prevention measures implementation
+- run_full_sop() - Complete 5-step SOP execution
+
+INCIDENT SEVERITY LEVELS:
+- P0: Funds at risk (15-minute SLA)
+- P1: Live trading degraded (30-minute SLA)  
+- P2: Shadow/monitoring only (120-minute SLA)
+
+/scripts/capacity_latency_proof.py - Performance Validation
+----------------------------------------------------------
+CLASS: CapitalLatencyProof
+- run_throughput_soak() - 60-minute soak at 2x live rate
+- run_latency_budget_test() - E2E latency validation
+- run_failover_timing_test() - Exchange failover testing (<30s recovery)
+- run_full_proof() - Complete capacity proof
+
+CLASS: PerformanceMonitor
+- monitor_performance() - CPU <70%, GC <50ms, no queue growth
+- record_latency() - E2E p50 <20ms, p95 <60ms
+- get_performance_summary() - Performance analytics
+
+THRESHOLDS:
+- CPU utilization < 70%
+- GC pauses < 50ms  
+- E2E latency p50 < 20ms, p95 < 60ms
+- Policy inference p95 < 5ms
+- Redis round-trip p95 < 3ms
+- Exchange failover < 30s
+
+/scripts/cost_guardrails.py - Cost Monitoring & Control
+------------------------------------------------------
+CLASS: CostGuardrailsManager
+- check_aws_budget() - Daily AWS budget monitoring
+- monitor_egress_traffic() - P95 egress >baseline×2 alerts
+- monitor_gpu_utilization() - Idle GPU detection (>40% for 30min)
+- check_cost_attribution() - Training vs inference cost tagging
+- run_cost_analysis() - Complete cost analysis with recommendations
+
+COST THRESHOLDS:
+- Daily AWS budget alerts
+- Network egress >200% baseline
+- GPU idle >40% memory for 30+ minutes
+- Training/inference cost attribution tracking
+
+/scripts/compliance_eod.py - End-of-Day Compliance
+--------------------------------------------------
+CLASS: ComplianceEODManager
+- run_fifo_ledger_close() - FIFO ledger day-close procedures
+- append_worm_records() - Write-Once-Read-Many archival
+- reconcile_fees() - Trading fee reconciliation across venues
+- rollforward_pnl() - Realized/unrealized P&L roll-forward
+- check_tax_lot_integrity() - Tax lot integrity verification
+- archive_compliance_artifacts() - S3 + IPFS archival
+- run_full_eod_procedure() - Complete EOD compliance workflow
+
+COMPLIANCE PROCEDURES:
+- FIFO ledger close with trade matching
+- WORM append with cryptographic hashing
+- Fee reconciliation (≤$0.01 tolerance)
+- P&L roll-forward to next trading day
+- Tax lot integrity and wash sale compliance
+- Automated archival to S3 and IPFS
+
+/scripts/capital_ramp_policy.py - Capital Ramp Governance
+--------------------------------------------------------
+CLASS: CapitalRampManager
+- detect_green_windows() - 4 consecutive 15-min green windows
+- execute_capital_ramp() - Ladder progression: 10%→15%→20%→30%
+- revert_capital_ramp() - Automatic reversion on stop conditions
+- manage_strategy_allocations() - RL≤40%, MM≤35%, Basis≤40% caps
+- run_capital_ramp_governance() - Complete ramp governance cycle
+
+GREEN WINDOW CRITERIA:
+- Sharpe > 0
+- Slippage improving
+- No alerts during window
+- 4 consecutive windows required
+
+RAMP POLICY:
+- 10% → 15% → 20% → 30% progression
+- ≥1 trading day between ramps
+- Automatic reversion on stop conditions
+- Strategy caps until proven (10+ days)
+
+/scripts/model_governance.py - Model Lifecycle Management
+--------------------------------------------------------
+CLASS: ModelGovernanceManager
+- create_model_checkpoint() - Daily checkpoint with metrics bundle
+- evaluate_promotion_candidate() - +0.10 Sharpe, -10% maxDD validation
+- promote_model() - Safe model promotion with backup
+- quarantine_model() - 14-day quarantine for poor performers
+- run_model_governance_cycle() - Complete lifecycle management
+
+PROMOTION THRESHOLDS:
+- Minimum +0.10 Sharpe improvement
+- Maximum -10% drawdown reduction  
+- 5-day out-of-sample validation
+- Entropy variance within 20% (stability)
+
+ROLLBACK CONDITIONS:
+- 2+ P1 incidents in 7 days → 14-day quarantine
+- Performance regression → automatic demotion
+
+/scripts/slo_monitoring.py - Service Level Objectives
+----------------------------------------------------
+CLASS: SLOMonitoringManager
+- measure_uptime_slos() - 99.9% uptime for price ingestion & routing
+- measure_freshness_slos() - Feature staleness <2× sampling interval (99.5% compliance)
+- measure_alert_hygiene_slos() - <2 false positives/week
+- measure_incident_response_slos() - Median MTTR <10 minutes for P1
+- measure_data_quality_slas() - NaN/Inf rate <0.01%
+- generate_slo_report() - Comprehensive SLO compliance reporting
+- publish_slo_metrics() - Grafana/Prometheus integration
+
+SLO TARGETS:
+- Uptime: 99.9% (price ingestion, order routing)
+- Freshness: 99.5% compliance with staleness thresholds
+- Alert hygiene: <2 false positives/week (critical alerts)
+- MTTR: Median <10 minutes for P1 incidents
+- Data quality: NaN/Inf rate <0.01% of feature vectors
+- Drift detection: KL divergence auto-tuned thresholds
+
+COMMUNICATION & ALERTS:
+/scripts/send_slack.sh - Slack notifications
+/scripts/grafana_push.py - Grafana dashboard updates
+/scripts/grafana_alerts_push.py - Alert configuration updates
+
+FEATURE TESTING:
+/scripts/test_feature_bus.py - Feature bus testing
+/scripts/test_rationale.py - Rationale testing
+/scripts/test_next_alpha.py - Next-generation alpha testing
+/scripts/test_golive_pipeline.py - Go-live pipeline testing
+/scripts/replay_acceptance.py - Replay acceptance testing
+
+CRON JOB MANAGEMENT:
+/scripts/setup_backup_cron.py - Automated backup scheduling
+/scripts/weekly_retro.py - Weekly retrospective automation
+
+ASSET ONBOARDING:
+/scripts/onboard_sol_asset.py - SOL asset onboarding
+/scripts/capture_state.py - State capture for analysis
+
+===============================================================================
+14. TESTING & VALIDATION
+===============================================================================
+
+UNIT TESTS (/tests/):
+/tests/test_alpha_models.py - Alpha model testing
+/tests/test_advanced_ensemble.py - Ensemble testing
+/tests/test_basic_risk_manager.py - Risk management testing
+/tests/test_binance_ws.py - Binance WebSocket testing
+/tests/test_kelly.py - Kelly criterion testing
+
+INTEGRATION TESTS:
+/tests/test_session_pipeline.py - End-to-end pipeline testing
+/tests/test_enhanced_integration.py - Enhanced integration testing
+/tests/test_replay_acceptance.py - Replay system testing
+
+PERFORMANCE TESTS:
+/tests/benchmarks/test_latency.py - Latency benchmarking
+
+INFRASTRUCTURE TESTS:
+/tests/test_nownodes_reliability.py - NowNodes reliability testing
+/tests/test_nownodes_simple.py - Simple NowNodes testing
+
+MODEL TESTS:
+/tests/test_onnx_runner.py - ONNX runner testing
+/tests/test_model_fetch.py - Model fetching testing
+/tests/test_ci_model_cache.py - CI model caching
+/tests/test_docker_model_registry.py - Docker model registry testing
+
+API TESTS:
+/tests/test_explain_api.py - Explainability API testing
+
+PORTFOLIO TESTS:
+/tests/test_lgb_portfolio.py - LightGBM portfolio testing
+
+COMPONENT TESTS:
+/tests/test_router.py - Router testing
+/tests/test_edge_blender.py - Edge blender testing
+/tests/test_param_server.py - Parameter server testing
+/tests/test_triton_router.py - Triton router testing
+/tests/test_signal_mux.py - Signal multiplexer testing
+/tests/test_sent_bus.py - Sentiment bus testing
+
+COMPLIANCE TESTS:
+/scripts/test_compliance_system.py - Comprehensive compliance testing
+- FIFO ledger testing
+- WORM archive integrity
+- Tax reporting validation
+- Audit trail verification
+
+ROOT-LEVEL TEST FILES:
+test_enhanced_dashboard.py - Enhanced dashboard testing
+test_real_time_dashboard.py - Real-time dashboard testing
+test_complete_dashboard.py - Complete dashboard testing
+test_dashboard_data.py - Dashboard data testing
+test_charts_visible.py - Chart visibility testing
+test_enhanced_position_sizing.py - Enhanced position sizing testing
+test_ensemble_minimal.py - Minimal ensemble testing
+test_ensemble_simple.py - Simple ensemble testing
+test_gcn.py - Graph neural network testing
+test_tft.py - Temporal Fusion Transformer testing
+test_es_evt.py - Expected Shortfall EVT testing
+test_copula.py - Copula testing
+test_stat_arb.py - Statistical arbitrage testing
+test_news_integration.py - News integration testing
+test_advanced_risk.py - Advanced risk testing
+
+SYSTEM VALIDATION:
+validate_stocks_system.py - Stock trading system validation
+validate_crypto_system.py - Crypto trading system validation
+verify_implementation.py - Implementation verification
+final_system_validation.py - Final system validation
+
+===============================================================================
+15. DASHBOARD & VISUALIZATION
+===============================================================================
+
+MAIN DASHBOARDS:
+trading_dashboard.py - Main trading dashboard application
+enhanced_dashboard.py - Advanced dashboard with additional metrics
+simple_working_dashboard.py - Lightweight dashboard (localhost:8000)
+quick_dashboard_test.py - Quick dashboard testing
+final_dashboard_test.py - Final dashboard testing
+policy_monitor_dashboard.html - RL policy monitoring dashboard
+
+DASHBOARD FEATURES:
+- Real-time P&L visualization
+- Risk monitoring displays
+- Portfolio allocation charts
+- Alpha signal visualization
+- Execution quality metrics
+- System health monitoring
+- Mode indicator with role-based gating
+- PDF export functionality
+- Kill-switch controls
+- Policy entropy monitoring
+- Compliance status display
+
+SPECIALIZED DASHBOARDS:
+- BTC/ETH prediction charts (btc_prediction.html, eth_prediction.html)
+- P&L curve analysis (pnl_curve_24h.html, pnl_curve_7d.html, pnl_curve_30d.html)
+- Multi-timeframe P&L (pnl_multi_timeframe.html)
+- Residual analysis (residual_distribution.html, residual_histogram.html, residual_qq_plot.html)
+- Policy health monitoring (policy_health_gauge.html)
+- Entropy and Q-spread sparklines (entropy_sparkline.html, qspread_sparkline.html)
+
+SUPPORTING FILES:
+simple_dashboard_test.html - HTML dashboard test
+debug_charts.py - Chart debugging utilities
+debug_dashboard.py - Dashboard debugging
+model_drift_monitor.py - Model drift visualization
+
+FRONTEND COMPONENTS:
+/frontend/ops-dashboard.html - Operations dashboard interface
+
+===============================================================================
+16. CONFIGURATION & DATA MANAGEMENT
+===============================================================================
+
+CONFIGURATION FILES:
+.env - Environment variables
+.pre-commit-config.yaml - Pre-commit hook configuration
+requirements.txt - Python dependencies
+requirements-dev.txt - Development dependencies
+requirements-docker.txt - Docker dependencies
+Makefile - Build and deployment automation
+docker-compose.yml - Docker composition
+
+SYSTEMD SERVICE FILES:
+/systemd/basis_carry.service - Basis carry strategy service
+/systemd/mm_as.service - Market making anti-selection service
+/systemd/mm_calibrator.service - Market making calibrator service
+/systemd/strategy_guard.service - Strategy guard service
+
+Additional services (various locations):
+- policy-blue.service, policy-green.service
+- ops_bot.service, prom_cost.service
+- ipfs.service, whale_stream.service
+- options_stream.service, sor_latency.service
+- iv_surface.service, prom_exporter.service
+
+DATA MANAGEMENT:
+Future_instruction.txt - Task specifications and instructions
+TRANSITION_STATUS_REPORT.md - Project status tracking
+dashboard_summary.md - Dashboard summary documentation
+COMPLIANCE_SUMMARY.md - Compliance system documentation
+RUNBOOK.md - Operational runbook
+
+MODEL MANAGEMENT:
+/model_cards/ - Model documentation and performance cards
+/models/ - ONNX model storage (patchtst_small.onnx, tlob_tiny.onnx)
+model_registry.json - Model registry configuration
+
+GRAFANA CONFIGURATION:
+/grafana/dashboards/ - Grafana dashboard JSON configurations
+/grafana/alerts/ - Alert rule configurations
+- rl_entropy_collapse.json - RL entropy monitoring
+- hedge_inactive_high_es.json - Hedge inactivity alerts
+- cost_spike.json - Cost spike detection
+- feature_gate_halt.json - Feature gate halt alerts
+- model_switch_alert.json - Model switching alerts
+
+DOCKER CONFIGURATION:
+/docker/triton/ - Triton Inference Server configuration
+/docker/grafana/ - Grafana container configuration
+/docker/prometheus/ - Prometheus configuration
+
+===============================================================================
+17. TRANSACTION COST ANALYSIS & EXECUTION QUALITY
+===============================================================================
+
+/tca/tca_report.py - Transaction Cost Analysis
+---------------------------------------------
+CLASS: TCAReport
+- calculate_implementation_shortfall() - IS calculation
+- measure_market_impact() - Market impact analysis
+- benchmark_execution_quality() - Quality benchmarking
+- generate_tca_report() - Comprehensive TCA reporting
+
+===============================================================================
+18. ENVIRONMENTS & SIMULATION
+===============================================================================
+
+/envs/orderbook_env.py - Order Book Trading Environment
+------------------------------------------------------
+CLASS: OrderBookEnv
+- reset() - Environment reset
+- step() - Environment step function
+- render() - Environment visualization
+- calculate_reward() - Reward function
+- simulate_market_impact() - Impact simulation
+
+/envs/execution/ - Execution Environment Components
+-------------------------------------------------
+- Execution-focused RL environments
+- Market simulation capabilities
+- Order book replay functionality
+
+===============================================================================
+19. KEY FEATURES SUMMARY
+===============================================================================
+
+MULTI-ASSET SUPPORT:
+- Cryptocurrency: Coinbase Pro, Binance Spot
+- Stocks: Alpaca Markets (paper and live trading)
+- Options: Deribit derivatives support
+- Blockchain: On-chain transaction monitoring
+
+REAL-TIME PROCESSING:
+- Sub-millisecond tick processing with Kafka
+- WebSocket data feeds with fallback mechanisms
+- High-frequency feature computation (<300μs)
+- Real-time risk monitoring and alerts
+
+ADVANCED ALPHA MODELS:
+- Moving Average Momentum with z-score normalization
+- Order Book Pressure analysis
+- LSTM Transformer deep learning
+- News Sentiment integration (LLM-powered)
+- On-chain whale transaction monitoring
+- Options flow analysis
+- Regime detection and adaptation
+
+SOPHISTICATED ENSEMBLE:
+- RandomForest meta-learning
+- Logistic blending for signal combination
+- Dynamic model weighting
+- Regime-aware signal processing
+- Multi-armed bandit optimization
+
+ADVANCED POSITION SIZING:
+- Kelly Criterion Extension (KCE) for dynamic markets
+- Hierarchical Risk Parity (20-30% volatility reduction)
+- Dynamic Black-Litterman (10-20% Sharpe improvement)
+- Multi-method optimization with regime detection
+
+COMPREHENSIVE RISK MANAGEMENT:
+- Real-time drawdown monitoring
+- Volatility-based circuit breakers
+- Position size limits
+- Advanced risk models (EVT, Copula)
+- Kill-switch functionality
+- Tail risk management
+
+PROFESSIONAL EXECUTION:
+- Multi-venue support (Alpaca, Coinbase, Deribit)
+- Smart order routing with latency optimization
+- Execution quality monitoring
+- Slippage tracking
+- TWAP/VWAP/POV strategies
+
+REINFORCEMENT LEARNING:
+- LoRA-based policy optimization
+- SAC-DiF implementation
+- Delta checkpoint system (<200kB)
+- GPU memory auto-allocation
+- Policy health monitoring (entropy, Q-spread)
+- PPO execution agent training
+
+COMPLIANCE & REGULATORY:
+- FIFO tax-lot accounting
+- WORM immutable archive (RSA-2048 signatures)
+- Complete transaction audit trail
+- Automated tax form generation (1099-B, Schedule D)
+- Regulatory reporting APIs
+- Wash sale detection framework
+
+REAL-TIME MONITORING:
+- Prometheus metrics (50+ metrics)
+- Grafana dashboards
+- Health monitoring
+- Performance tracking
+- Cost monitoring
+- Policy entropy monitoring
+
+OPERATIONAL EXCELLENCE:
+- Hot configuration reloading (sub-100ms)
+- Blue/green deployments with <1s rollback
+- Slack operations bot
+- Automated S3 backups
+- Chaos engineering testing
+- Parameter security (AWS SSM)
+- Disaster recovery automation
+
+TESTING & VALIDATION:
+- Comprehensive unit test suite (50+ test files)
+- Integration testing
+- Performance benchmarking
+- Chaos testing
+- System validation
+- Compliance system testing
+
+PRODUCTION READINESS:
+- Systemd service management (10+ services)
+- Docker containerization support
+- CI/CD pipeline integration
+- Monitoring and alerting
+- Disaster recovery
+- Security compliance
+- Full audit trail
+
+===============================================================================
+CONCLUSION
+===============================================================================
+
+This is a production-ready, institutional-grade algorithmic trading system with:
+
+- 300+ functions and methods across 6 architectural layers
+- Complete compliance and regulatory infrastructure
+- Real-time processing capabilities with microsecond latencies
+- Sophisticated risk management and position sizing
+- Advanced machine learning and ensemble techniques
+- Reinforcement learning with policy optimization
+- Comprehensive monitoring and operational tooling
+- Enterprise-grade reliability and disaster recovery
+- Professional execution and multi-asset support
+- Full regulatory compliance (FIFO, WORM, audit trails)
+
+The system is designed for professional trading operations with institutional-
+quality features including governance, compliance, security, operational
+durability, and regulatory adherence. Total lines of code: ~20,000+ across 
+Python, configuration, automation scripts, and compliance infrastructure.
+
+CURRENT STATUS NOTES:
+- Compliance system: ✅ FULLY IMPLEMENTED (August 13, 2025)
+- RL system: ⚠️ OPERATIONAL BUT STALE (policy not updated in 12+ days)
+- Core trading system: ✅ PRODUCTION READY
+- Monitoring: ✅ FULLY OPERATIONAL
+- Disaster recovery: ✅ TESTED AND VALIDATED
+- Live trading bot: ✅ IMPLEMENTED (scripts/full_trading_bot.py)
+- Go-live automation: ✅ COMPLETE OPERATIONAL FRAMEWORK (September 8, 2025)
+- Performance enhancements: ✅ NAUTILUS INTEGRATION & ASYNC REDIS (2-10x throughput)
+- Governance framework: ✅ PILOT, INCIDENT, CAPITAL RAMP, MODEL LIFECYCLE
+- SLO monitoring: ✅ COMPREHENSIVE SLA TRACKING & ALERTING
+
+Generated: September 8, 2025
+Project Status: PRODUCTION READY with FULL COMPLIANCE ✅

@@ -1,0 +1,28 @@
+{
+  "verdict": "EXTEND",
+  "reason": "Effect significant but min days not reached (1.0 < 7)",
+  "analysis_type": "cuped",
+  "effect": 7.806526360424061,
+  "effect_se": 1.9693669193093917,
+  "z_score": 3.9639776030977596,
+  "always_valid_p_value": 0.0,
+  "information_fraction": 0.07126948775055679,
+  "current_sample_size": 96,
+  "required_sample_size": 1347,
+  "current_day_estimate": 1,
+  "min_days": 7,
+  "max_days": 14,
+  "confidence_interval": [
+    -6.651918939839621,
+    22.264971660687742
+  ],
+  "meets_met": true,
+  "met_threshold": 2.0833333333333335,
+  "alpha_spent": 2.1094237467877974e-13,
+  "power_estimate": 0.0353598100686855,
+  "analysis_timestamp": "2025-08-14T22:21:30.644451Z",
+  "experiment": "m11_econ_uplift_v1",
+  "data_available": true,
+  "alpha": 0.05,
+  "power_target": 0.8
+}

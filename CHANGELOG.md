@@ -5,6 +5,82 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0-rc1] – 2025-09-23
+
+### Added
+- **GitHub Actions test matrix** (`.github/workflows/tests.yml`) with staged jobs:
+  - `unit`: `pytest -m "not integration and not soak"`
+  - `integration`: spins up `docker-compose.ci.yml` services (Redis, API mock)
+  - `soak` (scheduled cron): installs extras via `pip install .[ml,onnx,bandits]` and runs `pytest -m "soak"`
+- `docker-compose.ci.yml` to provision CI redis + mock API services.
+- `pyproject.toml` with optional dependency groups (`ml`, `onnx`, `bandits`).
+
+### Changed
+- **Executor safety**: `AlpacaExecutor` defaults to `dry_run=True` and refuses live mode unless `DRY_RUN=0` is explicitly set.
+- **NOWNodes connector**: gated by `USE_NOWNODES=1` and silences legacy `websockets` warnings (pinned to `websockets==11.0.3`).
+- **Layer 0 package init** tolerates disabled NOWNodes without import explosions.
+- Updated core version constants and README badge to `v0.9.0-rc1`.
+- Refreshed RUNBOOK with staged test matrix, environment toggles (`DRY_RUN`, `OPENAI_MOCK`, `REDIS_MOCK`, `USE_NOWNODES`).
+
+### Fixed
+- Clean CI logs by suppressing legacy `websockets` deprecation noise when NOWNodes is disabled.
+- Extras install job prevents `ImportError` for optional ML/bandit/onnx modules.
+
+---
+
+## [0.4.1] – 2025-09-23
+
+### Added - Stabilization Sprint (Future_instruction.txt Phase 2)
+
+#### 🛡️ Safety & Reliability Improvements
+- **Websockets Deprecation Handling**: Added `USE_NOWNODES` environment flag to gate websockets imports
+  - Graceful fallback to simulation mode when websockets disabled
+  - Pytest markers for NOWNodes tests with conditional skipping  
+  - Eliminated deprecation warnings in local/CI runs by default
+- **Executor Safety Audit**: Enhanced AlpacaExecutor with explicit prod guards
+  - **BREAKING**: Now defaults to `dry_run=True` to prevent accidental real orders
+  - Requires explicit `DRY_RUN=0` environment variable for live trading
+  - Added warning messages for live trading mode activation
+
+#### 🧪 CI Test Strategy Enhancement  
+- Implemented staged pytest matrix as specified in Future_instruction.txt:
+  - **Stage 1**: Unit tests only (`pytest -m "not integration"`)
+  - **Stage 2**: Full integration suite (Redis, API, connectors)  
+  - **Stage 3**: Soak/long-running tests (nightly builds)
+- Added timeout tuning and coverage thresholds to `pytest.ini`
+- Created `run_ci_tests.sh` script for automated CI execution
+- Enhanced pytest configuration with `--maxfail=5`, `--durations=20`, `--tb=short`
+
+#### 📚 Documentation Updates
+- Updated **RUNBOOK.md** with comprehensive safety controls section
+- Added testing strategy documentation with staged test matrix
+- Documented environment toggles (`USE_NOWNODES`, `DRY_RUN`)
+- Added coverage testing instructions and pytest markers reference
+
+### Technical Implementation Details
+
+#### New Environment Variables
+- `USE_NOWNODES=1`: Enable NOWNodes websocket connections (default: 0)
+- `DRY_RUN=0`: Enable live trading (default: 1, requires explicit setting)
+
+#### New Pytest Markers  
+- `nownodes`: Tests requiring USE_NOWNODES=1 and websockets library
+- Enhanced existing markers for better CI categorization
+
+#### Safety Features
+- Prevents accidental real money orders in tests/dev environments
+- Clear warnings for live trading mode activation
+- Isolated test execution from live trading functionality
+
+### Previous Sprint Achievements (Phase 1)
+- ✅ External service hardening with OpenAI/Redis mocks
+- ✅ Dependency gating for ML libraries (xgboost/lightgbm/onnx)
+- ✅ L2 order book depth with VWAP calculations and Kafka schema
+- ✅ Advanced risk management (VaR/CVaR + exchange haircuts + WORM audit)
+- ✅ Real prometheus metrics with proper histogram buckets and SLO monitoring
+
+---
+
 ## [0.4.0-rc3] – 2025-01-17
 
 ### Added

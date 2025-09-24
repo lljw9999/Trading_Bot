@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "generated_at": "2025-08-14T08:23:51.328015+00:00",
+    "cadence": "weekly",
+    "min_replay_size": 100000,
+    "plan_version": "1.0"
+  },
+  "current_state": {
+    "data_availability": {
+      "total_size_mb": 0.7635183334350586,
+      "file_count": 16,
+      "date_range": {
+        "earliest": "2025-07-09T17:23:44.683880",
+        "latest": "2025-08-14T16:22:59.477136"
+      },
+      "data_types": {
+        ".csv": 9,
+        ".parquet": 1,
+        ".json": 6
+      }
+    },
+    "drift_assessment": {
+      "validation_trend": "stable",
+      "performance_degradation": false,
+      "data_distribution_shift": "unknown",
+      "recommendation": "monitor"
+    },
+    "training_requirements": {
+      "min_data_size_mb": 100.0,
+      "estimated_training_time_hours": 8,
+      "compute_requirements": "8x GPUs",
+      "storage_requirements_gb": 50,
+      "prerequisites": [
+        "Data quality monitoring",
+        "Model performance tracking",
+        "Automated validation suite",
+        "Blue-green deployment"
+      ]
+    }
+  },
+  "recommendations": [
+    "\u26a0\ufe0f Insufficient data: 0.8MB < 100.0MB required"
+  ],
+  "schedule": [
+    {
+      "cycle": 1,
+      "scheduled_date": "2025-08-21T16:23:51.328323",
+      "type": "full_retrain",
+      "estimated_duration_hours": 24,
+      "data_window_days": 30
+    },
+    {
+      "cycle": 2,
+      "scheduled_date": "2025-08-28T16:23:51.328323",
+      "type": "incremental",
+      "estimated_duration_hours": 8,
+      "data_window_days": 30
+    },
+    {
+      "cycle": 3,
+      "scheduled_date": "2025-09-04T16:23:51.328323",
+      "type": "incremental",
+      "estimated_duration_hours": 8,
+      "data_window_days": 30
+    },
+    {
+      "cycle": 4,
+      "scheduled_date": "2025-09-11T16:23:51.328323",
+      "type": "incremental",
+      "estimated_duration_hours": 8,
+      "data_window_days": 30
+    },
+    {
+      "cycle": 5,
+      "scheduled_date": "2025-09-18T16:23:51.328323",
+      "type": "full_retrain",
+      "estimated_duration_hours": 24,
+      "data_window_days": 30
+    },
+    {
+      "cycle": 6,
+      "scheduled_date": "2025-09-25T16:23:51.328323",
+      "type": "incremental",
+      "estimated_duration_hours": 8,
+      "data_window_days": 30
+    }
+  ],
+  "checklist": [
+    "\u2705 Data quality validation completed",
+    "\u2705 Feature engineering pipeline validated",
+    "\u2705 Training infrastructure provisioned",
+    "\u2705 Model validation suite prepared",
+    "\u2705 Deployment pipeline tested",
+    "\u2705 Rollback procedures verified",
+    "\u2705 Monitoring and alerting configured",
+    "\u2705 Stakeholder notifications prepared"
+  ],
+  "risks": [
+    "Insufficient training data may lead to overfitting",
+    "Training job failure due to infrastructure issues",
+    "Data pipeline failures during training window",
+    "Model performance regression",
+    "Deployment pipeline failures",
+    "Extended downtime during deployment"
+  ],
+  "success_criteria": [
+    "Model validation pass rate \u2265 95%",
+    "Performance improvement over baseline \u2265 2%",
+    "No critical alerts during 48h monitoring",
+    "Successful A/B test with statistical significance",
+    "Successful deployment to canary environment"
+  ]
+}

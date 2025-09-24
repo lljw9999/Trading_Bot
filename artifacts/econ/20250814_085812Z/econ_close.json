@@ -1,0 +1,72 @@
+{
+  "date": "2025-08-13",
+  "timestamp": "2025-08-14T08:58:12.013600+00:00",
+  "portfolio": {
+    "gross_pnl_usd": 158.0,
+    "total_fees_usd": 45.71,
+    "total_infra_cost_usd": 95.5,
+    "net_pnl_before_infra_usd": 112.28999999999999,
+    "net_pnl_final_usd": 16.789999999999992,
+    "cost_ratio": 0.8937341772151899,
+    "net_margin_pct": 10.626582278481008
+  },
+  "assets": {
+    "SOL-USD": {
+      "gross_pnl_usd": 85.0,
+      "fees_usd": 21.91,
+      "infra_cost_allocated_usd": 51.37658227848101,
+      "net_pnl_usd": 11.713417721518994,
+      "fill_count": 2,
+      "is_bps": 28,
+      "slippage_bps_p95": 32,
+      "net_margin_pct": 13.780491437081169
+    },
+    "BTC-USD": {
+      "gross_pnl_usd": 45.0,
+      "fees_usd": 11.7,
+      "infra_cost_allocated_usd": 27.199367088607598,
+      "net_pnl_usd": 6.100632911392399,
+      "fill_count": 1,
+      "is_bps": 22,
+      "slippage_bps_p95": 26,
+      "net_margin_pct": 13.556962025316441
+    },
+    "ETH-USD": {
+      "gross_pnl_usd": 28.0,
+      "fees_usd": 12.1,
+      "infra_cost_allocated_usd": 16.924050632911392,
+      "net_pnl_usd": -1.0240506329113916,
+      "fill_count": 1,
+      "is_bps": 31,
+      "slippage_bps_p95": 35,
+      "net_margin_pct": -3.6573236889692557
+    },
+    "NVDA": {
+      "gross_pnl_usd": 0.0,
+      "fees_usd": 0.0,
+      "infra_cost_allocated_usd": 0.0,
+      "net_pnl_usd": 0.0,
+      "fill_count": 0,
+      "is_bps": 18,
+      "slippage_bps_p95": 22,
+      "net_margin_pct": 0.0
+    }
+  },
+  "infra_costs": {
+    "daily_cost_usd": 95.5,
+    "breakdown": {
+      "aws_compute": 42.3,
+      "aws_storage": 8.2,
+      "gpu_instances": 35.0,
+      "network_data": 6.5,
+      "monitoring": 3.5
+    },
+    "cost_per_hour": 3.98
+  },
+  "summary": {
+    "profitable_assets": 2,
+    "total_assets": 4,
+    "avg_is_bps": 24.75,
+    "avg_slippage_bps": 28.75
+  }
+}

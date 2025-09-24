@@ -1,0 +1,12 @@
+[Unit]
+Description=Run RL validation every 48h
+Requires=rl-validation.service
+
+[Timer]
+OnBootSec=10m
+OnUnitActiveSec=48h
+AccuracySec=5m
+Unit=rl-validation.service
+
+[Install]
+WantedBy=timers.target

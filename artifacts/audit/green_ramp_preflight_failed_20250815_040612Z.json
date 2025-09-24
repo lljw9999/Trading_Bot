@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-08-15T04:06:12.165014+00:00",
+  "event_type": "green_ramp_preflight_failed",
+  "ramp_pct": 10.0,
+  "min_green_minutes": 1,
+  "calendar_source": "artifacts/ev/20250815_113704Z/calendar_5m.parquet",
+  "current_5min_window": "2025-08-15T04:05:00+00:00",
+  "dry_run": true,
+  "failures": [
+    "m12_go_token_missing",
+    "cost_ratio_breach_100.0%"
+  ],
+  "action": "ramp_blocked"
+}

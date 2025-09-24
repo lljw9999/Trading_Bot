@@ -1,0 +1,42 @@
+{
+  "timestamp": "2025-08-14T09:04:08.396654+00:00",
+  "budget_policy": {
+    "daily_loss_usd": 1000,
+    "weekly_loss_usd": 3000,
+    "monthly_cost_usd": 2500
+  },
+  "checks": {
+    "daily_loss": {
+      "status": "checked",
+      "limit": 1000,
+      "current_loss": 0,
+      "net_pnl": 16.789999999999992,
+      "breach": false,
+      "date": "2025-08-13"
+    },
+    "weekly_loss": {
+      "status": "checked",
+      "limit": 3000,
+      "total_loss": 0,
+      "total_pnl": 16.789999999999992,
+      "days_data": 1,
+      "breach": false
+    },
+    "monthly_cost": {
+      "status": "checked",
+      "limit": 2500,
+      "monthly_cost": 2865.0,
+      "daily_cost": 95.5,
+      "source": "economic_close_estimate",
+      "breach": true
+    }
+  },
+  "breaches": [
+    "monthly_cost"
+  ],
+  "actions_taken": [
+    "monthly_cost_kill_switch: FAILED",
+    "audit: artifacts/audit/2025-08-14T09_04_08.474950+00_00_budget_trip.json",
+    "slack: FAILED"
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "event_type": "ramp20_step",
+  "timestamp": "2025-08-16T06:54:56.505538",
+  "data": {
+    "session_id": "ramp20_20250815_225450",
+    "step": {
+      "step_number": 4,
+      "target_influence_pct": 20.0,
+      "timestamp": "2025-08-15T22:54:56.504952+00:00",
+      "success": true,
+      "asset": "BTC-USD",
+      "ev_ceiling_check": "passed"
+    },
+    "policy_snapshot": {
+      "influence_pct": 20,
+      "scope": "green_windows_only",
+      "micro_steps": [
+        15,
+        17,
+        18.5,
+        20
+      ],
+      "step_minutes": 3,
+      "min_green_minutes": 15,
+      "ceilings": {
+        "by_ev": true,
+        "respect_venue_saturation": true,
+        "respect_impact_budget": true
+      },
+      "econ": {
+        "net_pnl_green_72h": ">= 900",
+        "cost_ratio_green_72h": "<= 0.28",
+        "green_day_streak": ">= 5"
+      },
+      "execution": {
+        "slip_p95_48h": "<= 12bps",
+        "maker_ratio_48h": ">= 0.78",
+        "cancel_ratio_48h": "<= 0.38",
+        "impact_bp_per_$1k_p95": "<= 7",
+        "latency_decision_to_ack_p95_ms": "<= 110"
+      },
+      "risk": {
+        "drawdown_24h": "<= 0.9%",
+        "max_position_concentration": "<= 0.35",
+        "venue_pov_5m": "<= 10%"
+      },
+      "compliance": {
+        "audits_required": [
+          "slip_gate_ok",
+          "m12_go_token",
+          "soak15_ok"
+        ],
+        "capacity_controls_active": [
+          "impact_budget",
+          "venue_saturation_guard",
+          "ev_influence_ceiling"
+        ]
+      },
+      "rollback": {
+        "on_alert_page": true,
+        "on_slip_p95_over": "15bps",
+        "on_impact_p95_over": "8bp_per_$1k",
+        "on_drawdown_over": "1.0%",
+        "on_venue_saturation": true
+      },
+      "promotion": {
+        "steps": [
+          15,
+          17,
+          18.5,
+          20
+        ],
+        "step_duration_minutes": 3,
+        "total_ramp_minutes": 12,
+        "respect_ev_ceilings": true
+      },
+      "capacity_controls": {
+        "impact_budget_enforcement": true,
+        "venue_saturation_adjustments": true,
+        "ev_ceiling_enforcement": true,
+        "dynamic_slice_sizing": true
+      }
+    },
+    "ev_ceiling_enforced": true
+  },
+  "user": "yanzewu",
+  "go_live": false,
+  "ramp_level": "M18_20pct"
+}

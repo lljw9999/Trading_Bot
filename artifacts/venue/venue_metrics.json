@@ -1,0 +1,925 @@
+{
+  "timestamp": "2025-08-15T16:58:20.493567",
+  "config": {
+    "target_pov_5m": 8.0,
+    "warning_pov_5m": 10.0,
+    "critical_pov_5m": 12.0,
+    "target_queue_p80": 15,
+    "warning_queue_p80": 25,
+    "critical_queue_p80": 40,
+    "min_depth_requirements": {
+      "5": 50000,
+      "10": 100000,
+      "20": 200000
+    },
+    "slice_reduction_step": 0.15,
+    "post_only_increase_step": 0.05,
+    "min_slice_pct": 0.3,
+    "max_post_only_ratio": 0.95,
+    "pov_window_minutes": 5,
+    "queue_window_minutes": 10,
+    "min_measurements": 5
+  },
+  "metrics": [
+    {
+      "timestamp": "2025-08-15T15:58:20.483635",
+      "venue": "coinbase",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 3592957.394256495,
+      "our_volume_5m": 11025.855644634496,
+      "participation_pct": 3.6824891925275236,
+      "queue_position_p80": 22,
+      "queue_ahead_estimate": 15.697411696841804,
+      "book_depth_bps": {
+        "5": 67905.44060120713,
+        "10": 76377.43500528549,
+        "20": 163663.26523472808
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:00:20.483635",
+      "venue": "binance",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 1389370.4457839236,
+      "our_volume_5m": 9775.151120183815,
+      "participation_pct": 8.442803270946262,
+      "queue_position_p80": 15,
+      "queue_ahead_estimate": 14.893246948552616,
+      "book_depth_bps": {
+        "5": 76446.57910822779,
+        "10": 101187.16925146579,
+        "20": 173520.2883626731
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:02:20.483635",
+      "venue": "coinbase",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 3831678.6693745432,
+      "our_volume_5m": 9786.395082120911,
+      "participation_pct": 3.0648901204604533,
+      "queue_position_p80": 15,
+      "queue_ahead_estimate": 11.997829822260288,
+      "book_depth_bps": {
+        "5": 36676.64825158979,
+        "10": 144183.66519120592,
+        "20": 260886.9760931807
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:04:20.483635",
+      "venue": "binance",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 1375769.6531179883,
+      "our_volume_5m": 23475.06055227792,
+      "participation_pct": 20.475864254521095,
+      "queue_position_p80": 21,
+      "queue_ahead_estimate": 21.245262217585598,
+      "book_depth_bps": {
+        "5": 74734.51575380492,
+        "10": 82951.37830411198,
+        "20": 291146.8173026945
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:06:20.483635",
+      "venue": "binance",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 3165996.292539919,
+      "our_volume_5m": 23501.08430381479,
+      "participation_pct": 8.907559756475038,
+      "queue_position_p80": 23,
+      "queue_ahead_estimate": 25.505731075675783,
+      "book_depth_bps": {
+        "5": 45689.68935771432,
+        "10": 87624.78314530209,
+        "20": 260609.5110888496
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:08:20.483635",
+      "venue": "coinbase",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 3422323.0894768788,
+      "our_volume_5m": 5433.531419188391,
+      "participation_pct": 1.905208109390608,
+      "queue_position_p80": 18,
+      "queue_ahead_estimate": 16.413895687372893,
+      "book_depth_bps": {
+        "5": 41934.488836477234,
+        "10": 117079.065452899,
+        "20": 227820.05735212847
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:10:20.483635",
+      "venue": "binance",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 4216446.5806479845,
+      "our_volume_5m": 23375.560654366,
+      "participation_pct": 6.6526806989520475,
+      "queue_position_p80": 11,
+      "queue_ahead_estimate": 10.528968902985275,
+      "book_depth_bps": {
+        "5": 71358.90528947563,
+        "10": 96570.3404970792,
+        "20": 293927.0215882412
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:12:20.483635",
+      "venue": "coinbase",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 4341682.998335177,
+      "our_volume_5m": 22264.21982599509,
+      "participation_pct": 6.15361918441277,
+      "queue_position_p80": 24,
+      "queue_ahead_estimate": 17.84215019608087,
+      "book_depth_bps": {
+        "5": 60627.91357509293,
+        "10": 94441.76807738926,
+        "20": 162365.14406143373
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:14:20.483635",
+      "venue": "coinbase",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 2718168.343868052,
+      "our_volume_5m": 11244.525329973414,
+      "participation_pct": 4.964162880642799,
+      "queue_position_p80": 5,
+      "queue_ahead_estimate": 5.975858878998582,
+      "book_depth_bps": {
+        "5": 54183.20817820754,
+        "10": 92314.98260321154,
+        "20": 150421.7585194581
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:16:20.483635",
+      "venue": "binance",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 2457433.852477896,
+      "our_volume_5m": 24586.66140589324,
+      "participation_pct": 12.006017438606627,
+      "queue_position_p80": 29,
+      "queue_ahead_estimate": 29.545787281700026,
+      "book_depth_bps": {
+        "5": 35575.86653387996,
+        "10": 96860.07287739456,
+        "20": 235740.80684251312
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:18:20.483635",
+      "venue": "coinbase",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 4595218.263207091,
+      "our_volume_5m": 7090.894408128137,
+      "participation_pct": 1.8517234225595018,
+      "queue_position_p80": 29,
+      "queue_ahead_estimate": 24.983133244629663,
+      "book_depth_bps": {
+        "5": 51494.300120040236,
+        "10": 141991.20673843604,
+        "20": 239452.62546615925
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:20:20.483635",
+      "venue": "coinbase",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 1797911.6833028463,
+      "our_volume_5m": 9669.708475957596,
+      "participation_pct": 6.453960046487198,
+      "queue_position_p80": 15,
+      "queue_ahead_estimate": 17.58014045536145,
+      "book_depth_bps": {
+        "5": 30049.15583110772,
+        "10": 126937.55234456554,
+        "20": 255024.98963296058
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:22:20.483635",
+      "venue": "coinbase",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 1088296.1636454894,
+      "our_volume_5m": 5454.177923415289,
+      "participation_pct": 6.014000349109357,
+      "queue_position_p80": 5,
+      "queue_ahead_estimate": 6.359561079273206,
+      "book_depth_bps": {
+        "5": 57990.389484635976,
+        "10": 71054.13863302265,
+        "20": 209415.33374830591
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:24:20.483635",
+      "venue": "coinbase",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 2290905.793754628,
+      "our_volume_5m": 24431.892926922603,
+      "participation_pct": 12.797676618669076,
+      "queue_position_p80": 26,
+      "queue_ahead_estimate": 19.50616528340868,
+      "book_depth_bps": {
+        "5": 40628.81239739787,
+        "10": 77467.5763916391,
+        "20": 155659.7925850618
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:26:20.483635",
+      "venue": "coinbase",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 1446208.3760171786,
+      "our_volume_5m": 18752.56439058258,
+      "participation_pct": 15.560051816787288,
+      "queue_position_p80": 19,
+      "queue_ahead_estimate": 21.45085115105588,
+      "book_depth_bps": {
+        "5": 57930.52905281237,
+        "10": 101683.88610369837,
+        "20": 222253.50125170476
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:28:20.483635",
+      "venue": "binance",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 2894264.4057271117,
+      "our_volume_5m": 16937.56162134529,
+      "participation_pct": 7.022535296151762,
+      "queue_position_p80": 20,
+      "queue_ahead_estimate": 15.97577424790751,
+      "book_depth_bps": {
+        "5": 77132.1312020616,
+        "10": 130568.12769935901,
+        "20": 168227.35084572868
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:30:20.483635",
+      "venue": "binance",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 1964026.082992163,
+      "our_volume_5m": 19553.913541908893,
+      "participation_pct": 11.947242683530238,
+      "queue_position_p80": 5,
+      "queue_ahead_estimate": 6.288466063857142,
+      "book_depth_bps": {
+        "5": 57772.11563453019,
+        "10": 78699.71176455267,
+        "20": 236945.08691527584
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:32:20.483635",
+      "venue": "binance",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 4219605.095491726,
+      "our_volume_5m": 17144.364042539863,
+      "participation_pct": 4.875630867217531,
+      "queue_position_p80": 13,
+      "queue_ahead_estimate": 12.034828196218276,
+      "book_depth_bps": {
+        "5": 71244.2039812053,
+        "10": 71907.49544826709,
+        "20": 275341.88869700296
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:34:20.483635",
+      "venue": "binance",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 3639455.8040809655,
+      "our_volume_5m": 15967.684652095106,
+      "participation_pct": 5.26485898277111,
+      "queue_position_p80": 18,
+      "queue_ahead_estimate": 14.627224538442992,
+      "book_depth_bps": {
+        "5": 31980.432564046634,
+        "10": 122623.17332003922,
+        "20": 280083.19869261346
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:36:20.483635",
+      "venue": "binance",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 2966007.5417415053,
+      "our_volume_5m": 18293.70082233138,
+      "participation_pct": 7.401343616917499,
+      "queue_position_p80": 12,
+      "queue_ahead_estimate": 14.01278143696533,
+      "book_depth_bps": {
+        "5": 38906.5679229995,
+        "10": 131794.13602386438,
+        "20": 174375.53119752457
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:38:20.483635",
+      "venue": "binance",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 4460919.578041459,
+      "our_volume_5m": 9009.717812764498,
+      "participation_pct": 2.423639607523298,
+      "queue_position_p80": 37,
+      "queue_ahead_estimate": 29.89546511410515,
+      "book_depth_bps": {
+        "5": 43040.81104710227,
+        "10": 81517.47257972784,
+        "20": 205941.6559325526
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:40:20.483635",
+      "venue": "binance",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 1368722.732579966,
+      "our_volume_5m": 12337.26347968169,
+      "participation_pct": 10.81644647467202,
+      "queue_position_p80": 19,
+      "queue_ahead_estimate": 16.655828942709878,
+      "book_depth_bps": {
+        "5": 52168.545327513806,
+        "10": 86766.73225061991,
+        "20": 271318.3578072809
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:42:20.483635",
+      "venue": "binance",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 3300350.8063153215,
+      "our_volume_5m": 10774.331767409432,
+      "participation_pct": 3.917522372515948,
+      "queue_position_p80": 26,
+      "queue_ahead_estimate": 24.11901844651629,
+      "book_depth_bps": {
+        "5": 51293.67284223263,
+        "10": 89673.83764068031,
+        "20": 255171.98625184764
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:44:20.483635",
+      "venue": "coinbase",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 2171748.544488151,
+      "our_volume_5m": 20728.605232605532,
+      "participation_pct": 11.45359408309821,
+      "queue_position_p80": 14,
+      "queue_ahead_estimate": 12.44563303882969,
+      "book_depth_bps": {
+        "5": 56815.12434021892,
+        "10": 96515.65310938939,
+        "20": 267030.1795335342
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:46:20.483635",
+      "venue": "binance",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 3551020.8415916217,
+      "our_volume_5m": 20222.122600348477,
+      "participation_pct": 6.833681975671406,
+      "queue_position_p80": 12,
+      "queue_ahead_estimate": 12.856571712875182,
+      "book_depth_bps": {
+        "5": 35002.98996191749,
+        "10": 122660.55628268176,
+        "20": 166318.02195562323
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:48:20.483635",
+      "venue": "coinbase",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 1833028.6817027726,
+      "our_volume_5m": 5760.206970468959,
+      "participation_pct": 3.770943921151136,
+      "queue_position_p80": 29,
+      "queue_ahead_estimate": 30.285587053026017,
+      "book_depth_bps": {
+        "5": 76863.8430965113,
+        "10": 135061.3601327533,
+        "20": 263949.7029008765
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:50:20.483635",
+      "venue": "coinbase",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 4062135.991654236,
+      "our_volume_5m": 13886.160644169893,
+      "participation_pct": 4.102125779944159,
+      "queue_position_p80": 27,
+      "queue_ahead_estimate": 25.382314409190183,
+      "book_depth_bps": {
+        "5": 30915.32242244763,
+        "10": 116857.25910972877,
+        "20": 252748.02299907303
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:52:20.483635",
+      "venue": "binance",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 2927375.925177649,
+      "our_volume_5m": 5582.414951194854,
+      "participation_pct": 2.2883627223337566,
+      "queue_position_p80": 22,
+      "queue_ahead_estimate": 15.680767585546292,
+      "book_depth_bps": {
+        "5": 48178.65297340487,
+        "10": 85785.01581795892,
+        "20": 282573.32578932843
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:54:20.483635",
+      "venue": "binance",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 1637168.9848736678,
+      "our_volume_5m": 18016.55383100309,
+      "participation_pct": 13.205640222210786,
+      "queue_position_p80": 21,
+      "queue_ahead_estimate": 16.15660253367001,
+      "book_depth_bps": {
+        "5": 72400.40172315719,
+        "10": 80587.57067874844,
+        "20": 164945.1358469216
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:56:20.483635",
+      "venue": "coinbase",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 3917761.460083466,
+      "our_volume_5m": 23125.946024559693,
+      "participation_pct": 7.083416260080419,
+      "queue_position_p80": 19,
+      "queue_ahead_estimate": 21.983314038620016,
+      "book_depth_bps": {
+        "5": 50282.28193728137,
+        "10": 133611.66116235353,
+        "20": 296273.39089849533
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:58:20.483635",
+      "venue": "coinbase",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 2870728.4600623003,
+      "our_volume_5m": 8491.66577771034,
+      "participation_pct": 3.5496213156403043,
+      "queue_position_p80": 19,
+      "queue_ahead_estimate": 21.070801917282996,
+      "book_depth_bps": {
+        "5": 64711.899852037015,
+        "10": 83275.34068308707,
+        "20": 205091.15459671052
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:00:20.483635",
+      "venue": "coinbase",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 2589611.9251128566,
+      "our_volume_5m": 23917.277985520002,
+      "participation_pct": 11.083024952232257,
+      "queue_position_p80": 14,
+      "queue_ahead_estimate": 15.09284966659493,
+      "book_depth_bps": {
+        "5": 67318.09387404718,
+        "10": 97061.39994725777,
+        "20": 277021.02917924814
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:02:20.483635",
+      "venue": "coinbase",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 2368364.9287016992,
+      "our_volume_5m": 14466.764261959514,
+      "participation_pct": 7.330000923408354,
+      "queue_position_p80": 33,
+      "queue_ahead_estimate": 24.750691150653644,
+      "book_depth_bps": {
+        "5": 45062.75336731501,
+        "10": 120259.43339829285,
+        "20": 180731.14071039262
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:04:20.483635",
+      "venue": "binance",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 1037203.594633954,
+      "our_volume_5m": 17328.419825095603,
+      "participation_pct": 20.04823729660646,
+      "queue_position_p80": 8,
+      "queue_ahead_estimate": 9.761910069845577,
+      "book_depth_bps": {
+        "5": 74216.50700086493,
+        "10": 143799.27113456538,
+        "20": 219281.42635205475
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:06:20.483635",
+      "venue": "binance",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 3615144.2069071284,
+      "our_volume_5m": 18674.54177410635,
+      "participation_pct": 6.198770739521791,
+      "queue_position_p80": 20,
+      "queue_ahead_estimate": 18.70811903465053,
+      "book_depth_bps": {
+        "5": 51331.90570407863,
+        "10": 143178.73383916632,
+        "20": 150331.52225842845
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:08:20.483635",
+      "venue": "coinbase",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 1020752.0946099837,
+      "our_volume_5m": 10157.891953942086,
+      "participation_pct": 11.941655970236283,
+      "queue_position_p80": 21,
+      "queue_ahead_estimate": 24.565431586480848,
+      "book_depth_bps": {
+        "5": 60359.03710866973,
+        "10": 84214.60111956672,
+        "20": 283508.6746678016
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:10:20.483635",
+      "venue": "binance",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 4038970.8403807282,
+      "our_volume_5m": 19407.304967784883,
+      "participation_pct": 5.7660148789652,
+      "queue_position_p80": 31,
+      "queue_ahead_estimate": 27.81402812783339,
+      "book_depth_bps": {
+        "5": 68686.20549012173,
+        "10": 92121.15514438627,
+        "20": 253181.54408646547
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:12:20.483635",
+      "venue": "binance",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 4345233.877475988,
+      "our_volume_5m": 21791.253935925433,
+      "participation_pct": 6.0179740516752025,
+      "queue_position_p80": 9,
+      "queue_ahead_estimate": 9.896645661482893,
+      "book_depth_bps": {
+        "5": 63407.69463677988,
+        "10": 78886.21811162269,
+        "20": 256579.07310052056
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:14:20.483635",
+      "venue": "binance",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 3106908.9136330145,
+      "our_volume_5m": 8300.723450389627,
+      "participation_pct": 3.2060380324507065,
+      "queue_position_p80": 10,
+      "queue_ahead_estimate": 12.473347790609935,
+      "book_depth_bps": {
+        "5": 33934.59319150651,
+        "10": 133158.84014732437,
+        "20": 266346.0627026957
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:16:20.483635",
+      "venue": "coinbase",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 3501187.321545254,
+      "our_volume_5m": 20515.294388989158,
+      "participation_pct": 7.03142991387323,
+      "queue_position_p80": 22,
+      "queue_ahead_estimate": 23.18892559876604,
+      "book_depth_bps": {
+        "5": 35595.82503780239,
+        "10": 77834.85039433623,
+        "20": 209553.48364275263
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:18:20.483635",
+      "venue": "coinbase",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 3667493.513326292,
+      "our_volume_5m": 7140.473506913326,
+      "participation_pct": 2.336355381996188,
+      "queue_position_p80": 23,
+      "queue_ahead_estimate": 22.87978652414281,
+      "book_depth_bps": {
+        "5": 63901.44485195529,
+        "10": 77676.50282569086,
+        "20": 257914.18431093678
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:20:20.483635",
+      "venue": "coinbase",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 4866799.065385846,
+      "our_volume_5m": 12203.677495189426,
+      "participation_pct": 3.009044096022543,
+      "queue_position_p80": 19,
+      "queue_ahead_estimate": 14.535310027599824,
+      "book_depth_bps": {
+        "5": 58145.12971590223,
+        "10": 145720.99608657078,
+        "20": 217993.87864774902
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:22:20.483635",
+      "venue": "binance",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 1028221.0432183505,
+      "our_volume_5m": 18741.266883904696,
+      "participation_pct": 21.8722622037505,
+      "queue_position_p80": 19,
+      "queue_ahead_estimate": 18.628880558663496,
+      "book_depth_bps": {
+        "5": 36532.24824259476,
+        "10": 148833.9428224981,
+        "20": 276838.38936064823
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:24:20.483635",
+      "venue": "binance",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 2987784.3115124805,
+      "our_volume_5m": 14246.697686775622,
+      "participation_pct": 5.721978376503478,
+      "queue_position_p80": 10,
+      "queue_ahead_estimate": 12.63885002469606,
+      "book_depth_bps": {
+        "5": 44335.17219879658,
+        "10": 83272.8382728545,
+        "20": 273793.2934256168
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:26:20.483635",
+      "venue": "binance",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 4719476.83114524,
+      "our_volume_5m": 23726.468656261546,
+      "participation_pct": 6.032821731345343,
+      "queue_position_p80": 13,
+      "queue_ahead_estimate": 9.63022187316049,
+      "book_depth_bps": {
+        "5": 53606.29066644643,
+        "10": 86783.29890803523,
+        "20": 296943.45581396145
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:28:20.483635",
+      "venue": "binance",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 4223618.531335163,
+      "our_volume_5m": 5687.632638953495,
+      "participation_pct": 1.6159506631832674,
+      "queue_position_p80": 26,
+      "queue_ahead_estimate": 32.14752848474372,
+      "book_depth_bps": {
+        "5": 42498.81359364838,
+        "10": 71999.46899898528,
+        "20": 191577.63322600577
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:30:20.483635",
+      "venue": "coinbase",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 3442705.9647233854,
+      "our_volume_5m": 14297.144394247847,
+      "participation_pct": 4.983455877120169,
+      "queue_position_p80": 25,
+      "queue_ahead_estimate": 24.124974937098386,
+      "book_depth_bps": {
+        "5": 61464.92944828996,
+        "10": 135380.31188580568,
+        "20": 297254.3664079976
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:32:20.483635",
+      "venue": "coinbase",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 2425923.873568633,
+      "our_volume_5m": 10415.501315679081,
+      "participation_pct": 5.152099666024946,
+      "queue_position_p80": 22,
+      "queue_ahead_estimate": 21.645161408503455,
+      "book_depth_bps": {
+        "5": 43194.17084715514,
+        "10": 91005.36520665852,
+        "20": 241577.70751903253
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:34:20.483635",
+      "venue": "binance",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 2888594.0799015732,
+      "our_volume_5m": 23180.354916857093,
+      "participation_pct": 9.629745520068482,
+      "queue_position_p80": 19,
+      "queue_ahead_estimate": 14.513550413355844,
+      "book_depth_bps": {
+        "5": 70483.10988908159,
+        "10": 92834.18826292914,
+        "20": 236685.44886896806
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:36:20.483635",
+      "venue": "binance",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 3441736.335236156,
+      "our_volume_5m": 13685.715690819046,
+      "participation_pct": 4.771678370840687,
+      "queue_position_p80": 11,
+      "queue_ahead_estimate": 13.584084595114835,
+      "book_depth_bps": {
+        "5": 54074.69127558834,
+        "10": 146406.3569353904,
+        "20": 258076.88226430578
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:38:20.483635",
+      "venue": "binance",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 2391529.941512231,
+      "our_volume_5m": 17980.983542856622,
+      "participation_pct": 9.022333309272348,
+      "queue_position_p80": 12,
+      "queue_ahead_estimate": 10.628834149431906,
+      "book_depth_bps": {
+        "5": 46018.13442701286,
+        "10": 136625.48806825155,
+        "20": 250755.16832053356
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:40:20.483635",
+      "venue": "coinbase",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 2290494.2421074747,
+      "our_volume_5m": 20416.868735502547,
+      "participation_pct": 10.696487261221177,
+      "queue_position_p80": 27,
+      "queue_ahead_estimate": 31.483638841134084,
+      "book_depth_bps": {
+        "5": 75863.70171536683,
+        "10": 114751.92481632384,
+        "20": 202021.46116389308
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:42:20.483635",
+      "venue": "binance",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 1703110.6051040394,
+      "our_volume_5m": 19858.254321239627,
+      "participation_pct": 13.991989195576545,
+      "queue_position_p80": 18,
+      "queue_ahead_estimate": 20.153700679541902,
+      "book_depth_bps": {
+        "5": 64374.73319101785,
+        "10": 143692.87949265307,
+        "20": 155837.31340097688
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:44:20.483635",
+      "venue": "coinbase",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 2911673.0818515387,
+      "our_volume_5m": 14991.840102461962,
+      "participation_pct": 6.178649737529717,
+      "queue_position_p80": 17,
+      "queue_ahead_estimate": 20.979579975980453,
+      "book_depth_bps": {
+        "5": 43525.77059771815,
+        "10": 136080.50309742772,
+        "20": 243775.05385598366
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:46:20.483635",
+      "venue": "coinbase",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 3619073.922094752,
+      "our_volume_5m": 19480.2032925769,
+      "participation_pct": 6.459178357308022,
+      "queue_position_p80": 5,
+      "queue_ahead_estimate": 5.814260289917492,
+      "book_depth_bps": {
+        "5": 56424.124378937166,
+        "10": 85098.98605198349,
+        "20": 229610.93313167163
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:48:20.483635",
+      "venue": "binance",
+      "asset": "SOL-USD",
+      "estimated_volume_1h": 1030479.5720812913,
+      "our_volume_5m": 6533.030799914947,
+      "participation_pct": 7.60775581806438,
+      "queue_position_p80": 24,
+      "queue_ahead_estimate": 25.549591092343945,
+      "book_depth_bps": {
+        "5": 50269.85332921444,
+        "10": 95137.7740877462,
+        "20": 194865.9941599789
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:50:20.483635",
+      "venue": "coinbase",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 4821616.643844407,
+      "our_volume_5m": 9920.451314682026,
+      "participation_pct": 2.4689937954350962,
+      "queue_position_p80": 21,
+      "queue_ahead_estimate": 22.373674003998985,
+      "book_depth_bps": {
+        "5": 58973.918718342524,
+        "10": 82455.56505999411,
+        "20": 177096.62082387548
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:52:20.483635",
+      "venue": "binance",
+      "asset": "ETH-USD",
+      "estimated_volume_1h": 2451545.7237441633,
+      "our_volume_5m": 13446.29613745241,
+      "participation_pct": 6.5817884645853555,
+      "queue_position_p80": 20,
+      "queue_ahead_estimate": 19.860318345391907,
+      "book_depth_bps": {
+        "5": 42277.44072886556,
+        "10": 136397.0611222,
+        "20": 246877.10348372548
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:54:20.483635",
+      "venue": "binance",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 2357836.388795622,
+      "our_volume_5m": 24246.845037361556,
+      "participation_pct": 12.340217575357785,
+      "queue_position_p80": 15,
+      "queue_ahead_estimate": 18.920713327989997,
+      "book_depth_bps": {
+        "5": 65332.64226327419,
+        "10": 96574.8101835946,
+        "20": 178404.9683285276
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:56:20.483635",
+      "venue": "coinbase",
+      "asset": "BTC-USD",
+      "estimated_volume_1h": 3188859.1992145027,
+      "our_volume_5m": 11945.030035928281,
+      "participation_pct": 4.495035731475625,
+      "queue_position_p80": 22,
+      "queue_ahead_estimate": 24.723278930505536,
+      "book_depth_bps": {
+        "5": 34889.096409472324,
+        "10": 127700.18002414149,
+        "20": 299272.93280728743
+      }
+    }
+  ]
+}

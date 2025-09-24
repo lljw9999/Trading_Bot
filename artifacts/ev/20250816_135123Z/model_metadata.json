@@ -1,0 +1,37 @@
+{
+  "timestamp": "20250816_135123Z",
+  "window_days": 2,
+  "ev_threshold": 10.0,
+  "assets": [
+    "SOL-USD",
+    "BTC-USD",
+    "ETH-USD",
+    "NVDA"
+  ],
+  "venues": [
+    "coinbase",
+    "binance",
+    "alpaca"
+  ],
+  "cv_r2": 0.38446669857536425,
+  "cv_mae": 6.694089477306879,
+  "feature_importance": {
+    "vol_5m": 0.10692054839765437,
+    "spread_bps": 0.149192359770089,
+    "depth": 0.0637977091535199,
+    "slip_p95": 0.4151591226465028,
+    "is_bps": 0.15136097525387893,
+    "fees_bps": 0.01950915136192298,
+    "rebate_bps": 0.014383383571159473,
+    "cost_per_hour": 0.0,
+    "hour": 0.056189986780813654,
+    "dow": 0.009269691845207654,
+    "is_weekend": 0.0037376386801600296,
+    "is_night": 0.00542118781392397,
+    "is_lunch": 0.005058244725167257
+  },
+  "ev_bands": {
+    "red": 391,
+    "amber": 1
+  }
+}

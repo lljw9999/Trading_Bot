@@ -1,0 +1,272 @@
+{
+  "analysis_timestamp": "2025-08-14T22:16:17.931082Z",
+  "experiment": "m11_econ_uplift_v1",
+  "primary_metric": "net_pnl_usd_per_hour",
+  "cuped_adjustment": {
+    "variance_reduction": 0.09834602694150296,
+    "covariates_used": [
+      "pre_pnl",
+      "vol_5m",
+      "spread_bps",
+      "volume"
+    ],
+    "covariate_coefficients": {
+      "pre_pnl": -0.0958011662987213,
+      "vol_5m": -11.479213095152348,
+      "spread_bps": -0.6612323482845583,
+      "volume": 0.00014056800984004283
+    },
+    "model_r2": 0.09834602694150296,
+    "adjustment_successful": true,
+    "original_variance": 119.22287,
+    "cuped_variance": 107.4977744149367
+  },
+  "primary_results": {
+    "raw": {
+      "treatment_mean": 14.475833333333334,
+      "control_mean": 6.411666666666666,
+      "effect": 8.064166666666669,
+      "effect_se": 2.0805407347172915,
+      "t_statistic": 3.875995567932221,
+      "p_value": 0.00019651679810106515,
+      "ci_95": [
+        3.986306826620777,
+        12.142026506712561
+      ],
+      "n_treatment": 48,
+      "n_control": 48
+    },
+    "cuped": {
+      "treatment_mean": 14.34701318021203,
+      "control_mean": 6.5404868197879695,
+      "effect": 7.806526360424061,
+      "effect_se": 1.9693669193093917,
+      "t_statistic": 3.9639776030977596,
+      "p_value": 0.0001436331995579021,
+      "ci_95": [
+        3.9465671985776534,
+        11.666485522270468
+      ],
+      "n_treatment": 48,
+      "n_control": 48
+    },
+    "power_improvement": 1.116089877813002
+  },
+  "secondary_results": {
+    "slip_bps_p95": {
+      "cuped_info": {
+        "variance_reduction": 0.0434499269528531,
+        "covariates_used": [
+          "pre_pnl",
+          "vol_5m",
+          "spread_bps",
+          "volume"
+        ],
+        "covariate_coefficients": {
+          "pre_pnl": -0.18191677760842073,
+          "vol_5m": 35.29943285122276,
+          "spread_bps": -0.09032120826676156,
+          "volume": 4.944506658904834e-05
+        },
+        "model_r2": 0.04344992695285299,
+        "adjustment_successful": true,
+        "original_variance": 152.572300877193,
+        "cuped_variance": 145.94304554905023
+      },
+      "treatment_effects": {
+        "raw": {
+          "treatment_mean": 12.032916666666665,
+          "control_mean": 25.162916666666664,
+          "effect": -13.129999999999999,
+          "effect_se": 2.1426150365242824,
+          "t_statistic": -6.1280256957868104,
+          "p_value": 2.0658130317485757e-08,
+          "ci_95": [
+            -17.329525471587594,
+            -8.930474528412406
+          ],
+          "n_treatment": 48,
+          "n_control": 48
+        },
+        "cuped": {
+          "treatment_mean": 12.355573630703722,
+          "control_mean": 24.840259702629613,
+          "effect": -12.484686071925891,
+          "effect_se": 2.1183690927934777,
+          "t_statistic": -5.893536737482526,
+          "p_value": 5.8702515515207665e-08,
+          "ci_95": [
+            -16.636689493801107,
+            -8.332682650050675
+          ],
+          "n_treatment": 48,
+          "n_control": 48
+        },
+        "power_improvement": 1.0230221429761797
+      }
+    },
+    "is_bps": {
+      "cuped_info": {
+        "variance_reduction": 0.053278716842639184,
+        "covariates_used": [
+          "pre_pnl",
+          "vol_5m",
+          "spread_bps",
+          "volume"
+        ],
+        "covariate_coefficients": {
+          "pre_pnl": -0.06860896655755307,
+          "vol_5m": -167.78686739554922,
+          "spread_bps": 0.12111601826218775,
+          "volume": -3.9253048413130504e-05
+        },
+        "model_r2": 0.053278716842639184,
+        "adjustment_successful": true,
+        "original_variance": 53.7564178508772,
+        "cuped_variance": 50.89234488572572
+      },
+      "treatment_effects": {
+        "raw": {
+          "treatment_mean": 6.359375,
+          "control_mean": 12.755208333333334,
+          "effect": -6.395833333333334,
+          "effect_se": 1.3522209336980862,
+          "t_statistic": -4.729873036236657,
+          "p_value": 7.891701021334185e-06,
+          "ci_95": [
+            -9.046186363381583,
+            -3.745480303285085
+          ],
+          "n_treatment": 48,
+          "n_control": 48
+        },
+        "cuped": {
+          "treatment_mean": 6.6093511987405416,
+          "control_mean": 12.505232134592793,
+          "effect": -5.895880935852252,
+          "effect_se": 1.3316421359843333,
+          "t_statistic": -4.427526567784737,
+          "p_value": 2.5699274814661166e-05,
+          "ci_95": [
+            -8.505899522381545,
+            -3.2858623493229584
+          ],
+          "n_treatment": 48,
+          "n_control": 48
+        },
+        "power_improvement": 1.031146216289908
+      }
+    },
+    "fill_ratio": {
+      "cuped_info": {
+        "variance_reduction": 0.01840745966520574,
+        "covariates_used": [
+          "pre_pnl",
+          "vol_5m",
+          "spread_bps",
+          "volume"
+        ],
+        "covariate_coefficients": {
+          "pre_pnl": -0.00028879278774757096,
+          "vol_5m": -0.4619903013924989,
+          "spread_bps": -0.001976008809232655,
+          "volume": -1.6614427353739324e-07
+        },
+        "model_r2": 0.01840745966520574,
+        "adjustment_successful": true,
+        "original_variance": 0.005887539421052632,
+        "cuped_variance": 0.0057791647766322965
+      },
+      "treatment_effects": {
+        "raw": {
+          "treatment_mean": 0.9132854166666666,
+          "control_mean": 0.8387895833333333,
+          "effect": 0.07449583333333332,
+          "effect_se": 0.013743553365990105,
+          "t_statistic": 5.420420130770637,
+          "p_value": 4.578359560358791e-07,
+          "ci_95": [
+            0.04755846873599271,
+            0.10143319793067393
+          ],
+          "n_treatment": 48,
+          "n_control": 48
+        },
+        "cuped": {
+          "treatment_mean": 0.9127713338866009,
+          "control_mean": 0.8393036661133989,
+          "effect": 0.07346766777320202,
+          "effect_se": 0.013635982735822854,
+          "t_statistic": 5.387779465296357,
+          "p_value": 5.260252611272165e-07,
+          "ci_95": [
+            0.046741141610989224,
+            0.10019419393541482
+          ],
+          "n_treatment": 48,
+          "n_control": 48
+        },
+        "power_improvement": 1.0158396985772158
+      }
+    },
+    "cost_ratio": {
+      "cuped_info": {
+        "variance_reduction": 0.0584359276689429,
+        "covariates_used": [
+          "pre_pnl",
+          "vol_5m",
+          "spread_bps",
+          "volume"
+        ],
+        "covariate_coefficients": {
+          "pre_pnl": 0.5170070174556012,
+          "vol_5m": -844.7077080338837,
+          "spread_bps": -0.032483626611194194,
+          "volume": 0.00048297546335109964
+        },
+        "model_r2": 0.0584359276689429,
+        "adjustment_successful": true,
+        "original_variance": 2023.6971612656746,
+        "cuped_variance": 1905.4405403261085
+      },
+      "treatment_effects": {
+        "raw": {
+          "treatment_mean": 2.51456875,
+          "control_mean": 34.6679375,
+          "effect": -32.15336875,
+          "effect_se": 8.615071410304354,
+          "t_statistic": -3.73222312603722,
+          "p_value": 0.0003248947238392308,
+          "ci_95": [
+            -49.03890871419654,
+            -15.267828785803463
+          ],
+          "n_treatment": 48,
+          "n_control": 48
+        },
+        "cuped": {
+          "treatment_mean": 1.9929906241565651,
+          "control_mean": 35.189515625843434,
+          "effect": -33.19652500168687,
+          "effect_se": 8.277346381533908,
+          "t_statistic": -4.010527465148208,
+          "p_value": 0.0001214681440604437,
+          "ci_95": [
+            -49.42012390949333,
+            -16.972926093880414
+          ],
+          "n_treatment": 48,
+          "n_control": 48
+        },
+        "power_improvement": 1.083266977875429
+      }
+    }
+  },
+  "key_findings": {
+    "primary_effect_cuped": 7.806526360424061,
+    "primary_ci_95": [
+      3.9465671985776534,
+      11.666485522270468
+    ],
+    "primary_p_value": 0.0001436331995579021,
+    "effect_significant": 

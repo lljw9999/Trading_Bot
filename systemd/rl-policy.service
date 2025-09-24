@@ -1,0 +1,30 @@
+[Unit]
+Description=RL Policy Training Daemon
+After=redis.service network.target
+Requires=redis.service
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=yanzewu
+WorkingDirectory=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D
+Environment=PYTHONPATH=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D
+Environment=CUDA_VISIBLE_DEVICES=0
+ExecStart=/usr/bin/python3 -m src.rl.policy_daemon_lora
+Restart=on-failure
+RestartSec=30
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=rl-policy
+
+# Resource limits
+MemoryMax=8G
+CPUQuota=400%
+
+# Failure handling
+TimeoutStartSec=120
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

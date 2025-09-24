@@ -1,0 +1,47 @@
+name: "policy_quantized_fp16"
+platform: "onnxruntime_onnx"
+max_batch_size: 64
+
+input [
+  {
+    name: "input"
+    data_type: TYPE_FP32
+    dims: [ 32 ]
+  }
+]
+
+output [
+  {
+    name: "output" 
+    data_type: TYPE_FP32
+    dims: [ 1 ]
+  }
+]
+
+dynamic_batching {
+  preferred_batch_size: [ 8, 16, 32 ]
+  max_queue_delay_microseconds: 5000
+  preserve_ordering: true
+}
+
+optimization {
+  execution_accelerators {
+    gpu_execution_accelerator: [
+      {
+        name: "tensorrt"
+        parameters: [
+          { key: "precision_mode", value: "fp16" },
+          { key: "max_workspace_size_bytes", value: "1073741824" }
+        ]
+      }
+    ]
+  }
+}
+
+instance_group [
+  {
+    count: 1
+    kind: KIND_GPU
+    gpus: [ 0 ]
+  }
+]

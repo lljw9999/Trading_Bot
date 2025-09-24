@@ -1,0 +1,80 @@
+{
+  "type": "record",
+  "name": "DepthSnap",
+  "namespace": "com.nlpfinalproject.market",
+  "doc": "L2 order book depth snapshot with VWAP calculations",
+  "fields": [
+    {
+      "name": "ts",
+      "type": "long",
+      "doc": "Unix timestamp in milliseconds"
+    },
+    {
+      "name": "symbol",
+      "type": "string",
+      "doc": "Trading symbol (e.g., BTC-USD)"
+    },
+    {
+      "name": "bids",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": "double"
+        }
+      },
+      "doc": "Array of bid levels [price, size]"
+    },
+    {
+      "name": "asks",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": "double"
+        }
+      },
+      "doc": "Array of ask levels [price, size]"
+    },
+    {
+      "name": "best_bid",
+      "type": ["null", {
+        "type": "array",
+        "items": "double"
+      }],
+      "doc": "Best bid [price, size], null if empty book",
+      "default": null
+    },
+    {
+      "name": "best_ask",
+      "type": ["null", {
+        "type": "array",
+        "items": "double"
+      }],
+      "doc": "Best ask [price, size], null if empty book",
+      "default": null
+    },
+    {
+      "name": "vwap_1s",
+      "type": "double",
+      "doc": "Volume-weighted average price over 1 second window"
+    },
+    {
+      "name": "vwap_5s",
+      "type": "double",
+      "doc": "Volume-weighted average price over 5 second window"
+    },
+    {
+      "name": "exchange",
+      "type": "string",
+      "doc": "Exchange name (e.g., coinbase)",
+      "default": "coinbase"
+    },
+    {
+      "name": "sequence",
+      "type": ["null", "long"],
+      "doc": "Exchange sequence number for ordering",
+      "default": null
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "pipeline_run_id": "run_20250814_083858Z",
+  "timestamp": "2025-08-14T08:38:58.036103+00:00",
+  "overall_status": "SUCCESS",
+  "results": {
+    "training": {
+      "status": "SUCCESS",
+      "training_id": "dry_run_run_20250814_083857Z",
+      "checkpoint_file": "dry_run_checkpoint.pt"
+    },
+    "validation": {
+      "status": "PASS",
+      "details": "Dry run validation"
+    },
+    "model_card": {
+      "status": "SUCCESS",
+      "card_path": "model_cards/sol_policy_card.yaml"
+    },
+    "lineage": {
+      "status": "SUCCESS"
+    },
+    "ab": {
+      "status": "PASS",
+      "verdict": "PASS"
+    },
+    "last_good": {
+      "status": "UPDATED",
+      "metadata": {
+        "timestamp": "2025-08-14T08:38:58.035722+00:00",
+        "training_id": "dry_run_run_20250814_083857Z",
+        "checkpoint_path": "dry_run_checkpoint.pt",
+        "validation_status": "PASS",
+        "ab_verdict": "PASS",
+        "pipeline_version": "1.0"
+      }
+    }
+  },
+  "recommendations": [
+    "Model ready for consideration in next deployment"
+  ]
+}

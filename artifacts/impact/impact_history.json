@@ -1,0 +1,1421 @@
+{
+  "timestamp": "2025-08-15T16:58:05.704961",
+  "config": {
+    "target_impact_p95": 6.0,
+    "hard_cap_impact_p95": 8.0,
+    "warning_impact_p95": 7.0,
+    "measurement_window_minutes": 30,
+    "min_samples_for_decision": 10,
+    "default_slice_pct_cap": 1.2,
+    "min_slice_pct_cap": 0.3,
+    "max_slice_pct_cap": 2.0,
+    "adjustment_step_pct": 0.1,
+    "route_multipliers": {
+      "post_only": 0.8,
+      "mid_point": 1.0,
+      "cross_spread": 1.5
+    }
+  },
+  "measurements": [
+    {
+      "timestamp": "2025-08-15T14:58:05.699874",
+      "asset": "SOL-USD",
+      "venue": "coinbase",
+      "route": "post_only",
+      "notional_usd": 3836.0478201659466,
+      "impact_bps": 2.557965508138717,
+      "slice_pct": 0.9463841829274863,
+      "market_conditions": {
+        "spread_bps": 1.5070341769499334,
+        "book_depth_$1k": 181.4019122228436,
+        "volatility_1h": 2.8453063689158817
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:00:05.699874",
+      "asset": "SOL-USD",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 5401.732298080355,
+      "impact_bps": 14.604130527582026,
+      "slice_pct": 1.1995075311389205,
+      "market_conditions": {
+        "spread_bps": 4.098161074515343,
+        "book_depth_$1k": 182.57835162611065,
+        "volatility_1h": 2.8429022331256135
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:02:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 5332.909542645752,
+      "impact_bps": 16.93898937607104,
+      "slice_pct": 1.3553897872487182,
+      "market_conditions": {
+        "spread_bps": 3.6078813361214586,
+        "book_depth_$1k": 85.87007824658481,
+        "volatility_1h": 1.5231289311070664
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:04:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 2167.2943351336075,
+      "impact_bps": 9.183897665929301,
+      "slice_pct": 0.5369253511061902,
+      "market_conditions": {
+        "spread_bps": 4.979329790251132,
+        "book_depth_$1k": 178.9681063072985,
+        "volatility_1h": 2.1063772346472067
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:06:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 7133.85421828657,
+      "impact_bps": 13.39567972716458,
+      "slice_pct": 1.0721106767148865,
+      "market_conditions": {
+        "spread_bps": 3.772246389170449,
+        "book_depth_$1k": 195.02762150660703,
+        "volatility_1h": 1.0269925572498548
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:08:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 2806.159713572932,
+      "impact_bps": 5.365509027322191,
+      "slice_pct": 1.1289879798381137,
+      "market_conditions": {
+        "spread_bps": 2.8610392713255384,
+        "book_depth_$1k": 96.8480672691312,
+        "volatility_1h": 2.79332324276118
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:10:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "mid_point",
+      "notional_usd": 4622.053129113515,
+      "impact_bps": 4.893543551057216,
+      "slice_pct": 1.1026122302367707,
+      "market_conditions": {
+        "spread_bps": 3.97286776682157,
+        "book_depth_$1k": 105.39911406882229,
+        "volatility_1h": 2.656689939717453
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:12:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 4702.005890534179,
+      "impact_bps": 11.166948011673574,
+      "slice_pct": 1.2421216181174748,
+      "market_conditions": {
+        "spread_bps": 1.6858110041371925,
+        "book_depth_$1k": 120.007820843079,
+        "volatility_1h": 2.078237415576888
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:14:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 4890.684562593687,
+      "impact_bps": 10.976382684495144,
+      "slice_pct": 1.2042442562157651,
+      "market_conditions": {
+        "spread_bps": 4.129115733845955,
+        "book_depth_$1k": 121.49698660344528,
+        "volatility_1h": 2.335947085459392
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:16:05.699874",
+      "asset": "NVDA",
+      "venue": "coinbase",
+      "route": "mid_point",
+      "notional_usd": 6759.582453059929,
+      "impact_bps": 5.971824949616029,
+      "slice_pct": 0.5538447594854439,
+      "market_conditions": {
+        "spread_bps": 2.356377799240652,
+        "book_depth_$1k": 66.40517772900941,
+        "volatility_1h": 2.742807464124607
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:18:05.699874",
+      "asset": "SOL-USD",
+      "venue": "coinbase",
+      "route": "mid_point",
+      "notional_usd": 2627.514614159175,
+      "impact_bps": 9.645450504899568,
+      "slice_pct": 0.952396025237065,
+      "market_conditions": {
+        "spread_bps": 2.9833797010294507,
+        "book_depth_$1k": 184.13672879347413,
+        "volatility_1h": 1.958613030067108
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:20:05.699874",
+      "asset": "NVDA",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 4302.10541696855,
+      "impact_bps": 11.678846118075622,
+      "slice_pct": 1.3899396954955376,
+      "market_conditions": {
+        "spread_bps": 1.6484346449019727,
+        "book_depth_$1k": 100.49132172762069,
+        "volatility_1h": 2.503543153599027
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:22:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 2626.411825662074,
+      "impact_bps": 9.885590255129205,
+      "slice_pct": 0.7431818955106332,
+      "market_conditions": {
+        "spread_bps": 1.6662117005089638,
+        "book_depth_$1k": 55.76459539627907,
+        "volatility_1h": 2.337350099492208
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:24:05.699874",
+      "asset": "ETH-USD",
+      "venue": "coinbase",
+      "route": "mid_point",
+      "notional_usd": 4583.505906313907,
+      "impact_bps": 5.836730686667702,
+      "slice_pct": 0.9926206479437605,
+      "market_conditions": {
+        "spread_bps": 2.738665263017334,
+        "book_depth_$1k": 150.21314131618914,
+        "volatility_1h": 0.655727788641874
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:26:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "mid_point",
+      "notional_usd": 7748.936830517421,
+      "impact_bps": 8.25952632661553,
+      "slice_pct": 1.3910663993575934,
+      "market_conditions": {
+        "spread_bps": 2.5089352465836674,
+        "book_depth_$1k": 84.07169304488703,
+        "volatility_1h": 2.5582875931390694
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:28:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 4698.285765095377,
+      "impact_bps": 11.582168538845448,
+      "slice_pct": 0.799978631807454,
+      "market_conditions": {
+        "spread_bps": 3.8630194345223092,
+        "book_depth_$1k": 72.68770430405641,
+        "volatility_1h": 0.9675793044170193
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:30:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "mid_point",
+      "notional_usd": 5182.468911544109,
+      "impact_bps": 5.314210950824142,
+      "slice_pct": 0.9322692249589186,
+      "market_conditions": {
+        "spread_bps": 4.352585679372984,
+        "book_depth_$1k": 169.51359499299383,
+        "volatility_1h": 2.2814920714189455
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:32:05.699874",
+      "asset": "NVDA",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 3479.4073542000797,
+      "impact_bps": 11.874124436136496,
+      "slice_pct": 1.2003063695195504,
+      "market_conditions": {
+        "spread_bps": 4.986476022516664,
+        "book_depth_$1k": 161.82484634585768,
+        "volatility_1h": 2.0390359748524967
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:34:05.699874",
+      "asset": "BTC-USD",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 3642.6650447689135,
+      "impact_bps": 8.620414077702149,
+      "slice_pct": 1.1742688822368983,
+      "market_conditions": {
+        "spread_bps": 1.1607220987963371,
+        "book_depth_$1k": 188.03586892817404,
+        "volatility_1h": 1.5460903910235753
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:36:05.699874",
+      "asset": "ETH-USD",
+      "venue": "coinbase",
+      "route": "post_only",
+      "notional_usd": 4619.382061884007,
+      "impact_bps": 3.437581853804269,
+      "slice_pct": 1.2882026101930362,
+      "market_conditions": {
+        "spread_bps": 1.7968026998456041,
+        "book_depth_$1k": 107.381169001442,
+        "volatility_1h": 2.9262856162945474
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:38:05.699874",
+      "asset": "ETH-USD",
+      "venue": "coinbase",
+      "route": "post_only",
+      "notional_usd": 5701.74740083307,
+      "impact_bps": 7.1275343487979494,
+      "slice_pct": 0.5772865119530108,
+      "market_conditions": {
+        "spread_bps": 4.418595199722775,
+        "book_depth_$1k": 180.12887170314178,
+        "volatility_1h": 2.2045622571321237
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:40:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 6236.299783217081,
+      "impact_bps": 2.043877860851337,
+      "slice_pct": 1.2184965007019222,
+      "market_conditions": {
+        "spread_bps": 2.037242562087381,
+        "book_depth_$1k": 73.1684802158725,
+        "volatility_1h": 1.8926462926906622
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:42:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 2081.934049131813,
+      "impact_bps": 11.78091958635191,
+      "slice_pct": 1.2177994846741478,
+      "market_conditions": {
+        "spread_bps": 2.582752929597757,
+        "book_depth_$1k": 114.18790869765913,
+        "volatility_1h": 0.8099730476707943
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:44:05.699874",
+      "asset": "ETH-USD",
+      "venue": "coinbase",
+      "route": "mid_point",
+      "notional_usd": 3918.5016527644375,
+      "impact_bps": 4.476480457429327,
+      "slice_pct": 1.432541074971622,
+      "market_conditions": {
+        "spread_bps": 3.899977182119264,
+        "book_depth_$1k": 157.03558541048437,
+        "volatility_1h": 2.179931081593368
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:46:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 5207.837633590659,
+      "impact_bps": 8.599227390657461,
+      "slice_pct": 0.5241902235878432,
+      "market_conditions": {
+        "spread_bps": 2.2495368165731024,
+        "book_depth_$1k": 90.01818362467064,
+        "volatility_1h": 2.7205696830824873
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:48:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "mid_point",
+      "notional_usd": 7786.849280762879,
+      "impact_bps": 6.479679607018063,
+      "slice_pct": 0.7230981794298321,
+      "market_conditions": {
+        "spread_bps": 1.6163836217193297,
+        "book_depth_$1k": 183.22235715184945,
+        "volatility_1h": 1.3182232379209833
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:50:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 4836.991348041342,
+      "impact_bps": 12.206559745306787,
+      "slice_pct": 1.33187559897685,
+      "market_conditions": {
+        "spread_bps": 3.243101092503322,
+        "book_depth_$1k": 196.6850649272061,
+        "volatility_1h": 2.544057535345689
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:52:05.699874",
+      "asset": "BTC-USD",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 5337.98053926857,
+      "impact_bps": 9.064842890458756,
+      "slice_pct": 1.0888480965961223,
+      "market_conditions": {
+        "spread_bps": 4.172040988386291,
+        "book_depth_$1k": 99.75686621330118,
+        "volatility_1h": 1.5697003952806707
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:54:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "post_only",
+      "notional_usd": 5898.530909873123,
+      "impact_bps": 8.853966836008198,
+      "slice_pct": 1.1976517829772173,
+      "market_conditions": {
+        "spread_bps": 2.0487206518329852,
+        "book_depth_$1k": 61.600422740021244,
+        "volatility_1h": 1.9390163454062253
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:56:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 4792.979185708859,
+      "impact_bps": 2.4390782372459974,
+      "slice_pct": 1.2599739469026447,
+      "market_conditions": {
+        "spread_bps": 2.6299610906159097,
+        "book_depth_$1k": 59.41088237871867,
+        "volatility_1h": 2.6530106063519248
+      }
+    },
+    {
+      "timestamp": "2025-08-15T15:58:05.699874",
+      "asset": "BTC-USD",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 4038.504918357212,
+      "impact_bps": 10.734318415785289,
+      "slice_pct": 0.6990148868282581,
+      "market_conditions": {
+        "spread_bps": 2.1691271036263946,
+        "book_depth_$1k": 58.533416397993946,
+        "volatility_1h": 2.7482471071249437
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:00:05.699874",
+      "asset": "NVDA",
+      "venue": "coinbase",
+      "route": "post_only",
+      "notional_usd": 2324.035704173009,
+      "impact_bps": 1.7743482370460173,
+      "slice_pct": 0.9397634428795659,
+      "market_conditions": {
+        "spread_bps": 3.2112949080937834,
+        "book_depth_$1k": 109.12878737524679,
+        "volatility_1h": 2.3579944883729516
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:02:05.699874",
+      "asset": "ETH-USD",
+      "venue": "coinbase",
+      "route": "post_only",
+      "notional_usd": 7898.459750069216,
+      "impact_bps": 3.4214385087786674,
+      "slice_pct": 1.0652434160076414,
+      "market_conditions": {
+        "spread_bps": 2.8923990606542818,
+        "book_depth_$1k": 193.08749806544404,
+        "volatility_1h": 1.8669951529243591
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:04:05.699874",
+      "asset": "ETH-USD",
+      "venue": "coinbase",
+      "route": "post_only",
+      "notional_usd": 7301.086630738607,
+      "impact_bps": 1.4558930903134488,
+      "slice_pct": 1.4742239130170418,
+      "market_conditions": {
+        "spread_bps": 3.893451906965915,
+        "book_depth_$1k": 198.44010688257552,
+        "volatility_1h": 1.4195355653600776
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:06:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 4072.2882361562743,
+      "impact_bps": 8.56488044512139,
+      "slice_pct": 0.880963765685025,
+      "market_conditions": {
+        "spread_bps": 2.5108625474466586,
+        "book_depth_$1k": 127.47029284605524,
+        "volatility_1h": 2.3619741654135176
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:08:05.699874",
+      "asset": "SOL-USD",
+      "venue": "binance",
+      "route": "mid_point",
+      "notional_usd": 4489.932385470698,
+      "impact_bps": 7.275692370935316,
+      "slice_pct": 0.9256971233593917,
+      "market_conditions": {
+        "spread_bps": 1.0829554064582174,
+        "book_depth_$1k": 116.7908241833848,
+        "volatility_1h": 2.522097542254899
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:10:05.699874",
+      "asset": "SOL-USD",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 4841.812229570161,
+      "impact_bps": 1.0,
+      "slice_pct": 0.6782373261577462,
+      "market_conditions": {
+        "spread_bps": 2.0863011325890337,
+        "book_depth_$1k": 193.21783829542366,
+        "volatility_1h": 1.3938933936003781
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:12:05.699874",
+      "asset": "NVDA",
+      "venue": "coinbase",
+      "route": "post_only",
+      "notional_usd": 7559.922996862039,
+      "impact_bps": 3.2353930615476374,
+      "slice_pct": 0.5688613546185209,
+      "market_conditions": {
+        "spread_bps": 4.783873659005161,
+        "book_depth_$1k": 160.32727157598413,
+        "volatility_1h": 1.31429533378904
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:14:05.699874",
+      "asset": "BTC-USD",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 2788.837649831604,
+      "impact_bps": 10.724135035847352,
+      "slice_pct": 1.0062650348051987,
+      "market_conditions": {
+        "spread_bps": 3.6329917629924275,
+        "book_depth_$1k": 186.3339217372645,
+        "volatility_1h": 1.7482317081413972
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:16:05.699874",
+      "asset": "ETH-USD",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 7221.640941663213,
+      "impact_bps": 10.28220483437643,
+      "slice_pct": 0.5155567276047777,
+      "market_conditions": {
+        "spread_bps": 1.5791149346986946,
+        "book_depth_$1k": 55.580506788106014,
+        "volatility_1h": 2.4835861327461015
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:18:05.699874",
+      "asset": "SOL-USD",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 7179.607179781462,
+      "impact_bps": 12.470285374472036,
+      "slice_pct": 1.339445524144485,
+      "market_conditions": {
+        "spread_bps": 3.930692436937144,
+        "book_depth_$1k": 157.88214229622287,
+        "volatility_1h": 2.6458202494967025
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:20:05.699874",
+      "asset": "SOL-USD",
+      "venue": "coinbase",
+      "route": "post_only",
+      "notional_usd": 3479.7972573054694,
+      "impact_bps": 4.506193825619818,
+      "slice_pct": 0.8621319336125175,
+      "market_conditions": {
+        "spread_bps": 4.790532744851637,
+        "book_depth_$1k": 140.74944036493565,
+        "volatility_1h": 1.8831435404982062
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:22:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 5227.995792477679,
+      "impact_bps": 13.678456995858346,
+      "slice_pct": 0.9060747510603575,
+      "market_conditions": {
+        "spread_bps": 1.188343772378793,
+        "book_depth_$1k": 79.21635457788285,
+        "volatility_1h": 1.365239327229598
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:24:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "post_only",
+      "notional_usd": 5935.33537344506,
+      "impact_bps": 4.223295076475996,
+      "slice_pct": 0.789986284903838,
+      "market_conditions": {
+        "spread_bps": 3.3565298035239897,
+        "book_depth_$1k": 118.32527085155482,
+        "volatility_1h": 1.9585830524905137
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:26:05.699874",
+      "asset": "SOL-USD",
+      "venue": "coinbase",
+      "route": "post_only",
+      "notional_usd": 6123.296098845243,
+      "impact_bps": 4.038654090427065,
+      "slice_pct": 1.01892504225408,
+      "market_conditions": {
+        "spread_bps": 2.760387494997276,
+        "book_depth_$1k": 117.68178992477935,
+        "volatility_1h": 2.7820388821596813
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:28:05.699874",
+      "asset": "BTC-USD",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 6656.244553600482,
+      "impact_bps": 3.513477677173049,
+      "slice_pct": 1.3720786678366244,
+      "market_conditions": {
+        "spread_bps": 4.732219842474616,
+        "book_depth_$1k": 127.10349361021633,
+        "volatility_1h": 1.9951093226044612
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:30:05.699874",
+      "asset": "ETH-USD",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 3522.6225832541613,
+      "impact_bps": 12.680585888945295,
+      "slice_pct": 1.423229681248984,
+      "market_conditions": {
+        "spread_bps": 2.6556314449625713,
+        "book_depth_$1k": 73.71187020259535,
+        "volatility_1h": 0.8896397884590128
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:32:05.699874",
+      "asset": "SOL-USD",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 7588.898021403642,
+      "impact_bps": 10.763382115281562,
+      "slice_pct": 1.11131483924133,
+      "market_conditions": {
+        "spread_bps": 3.2217034197265826,
+        "book_depth_$1k": 123.81519643063228,
+        "volatility_1h": 1.7097989956399882
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:34:05.699874",
+      "asset": "BTC-USD",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 5518.797868484735,
+      "impact_bps": 3.1046000931539566,
+      "slice_pct": 1.0375829509504935,
+      "market_conditions": {
+        "spread_bps": 1.8212042178644907,
+        "book_depth_$1k": 65.45635892849374,
+        "volatility_1h": 1.3817345992743593
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:36:05.699874",
+      "asset": "ETH-USD",
+      "venue": "coinbase",
+      "route": "mid_point",
+      "notional_usd": 5869.819912571878,
+      "impact_bps": 1.6399045069033429,
+      "slice_pct": 1.4930079704022179,
+      "market_conditions": {
+        "spread_bps": 3.5186779817736857,
+        "book_depth_$1k": 168.65154268749018,
+        "volatility_1h": 2.09747302276754
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:38:05.699874",
+      "asset": "SOL-USD",
+      "venue": "binance",
+      "route": "mid_point",
+      "notional_usd": 7325.604310875783,
+      "impact_bps": 7.989152786939897,
+      "slice_pct": 1.164127080715296,
+      "market_conditions": {
+        "spread_bps": 1.6315761166712126,
+        "book_depth_$1k": 186.48152759073488,
+        "volatility_1h": 2.7808140377412616
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:40:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "mid_point",
+      "notional_usd": 7348.582192184602,
+      "impact_bps": 7.483162289029296,
+      "slice_pct": 1.2010646146077244,
+      "market_conditions": {
+        "spread_bps": 1.5797734971405393,
+        "book_depth_$1k": 199.44550446101388,
+        "volatility_1h": 1.808250060233949
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:42:05.699874",
+      "asset": "SOL-USD",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 4085.0919288438813,
+      "impact_bps": 11.051113870223963,
+      "slice_pct": 0.5956071096556265,
+      "market_conditions": {
+        "spread_bps": 1.5476808930342654,
+        "book_depth_$1k": 59.519968959920895,
+        "volatility_1h": 2.731878089141575
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:44:05.699874",
+      "asset": "SOL-USD",
+      "venue": "binance",
+      "route": "mid_point",
+      "notional_usd": 7923.111078104217,
+      "impact_bps": 5.644594767879141,
+      "slice_pct": 1.3269946788377882,
+      "market_conditions": {
+        "spread_bps": 4.938060360418991,
+        "book_depth_$1k": 94.84583119215213,
+        "volatility_1h": 0.7300942096864389
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:46:05.699874",
+      "asset": "SOL-USD",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 7477.466204015476,
+      "impact_bps": 9.877233089521905,
+      "slice_pct": 0.7805159972211315,
+      "market_conditions": {
+        "spread_bps": 1.6112433216142654,
+        "book_depth_$1k": 155.70079509198172,
+        "volatility_1h": 2.5723447970111826
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:48:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 6798.155711544516,
+      "impact_bps": 9.757269282006202,
+      "slice_pct": 1.4906429003248465,
+      "market_conditions": {
+        "spread_bps": 2.6850062716730108,
+        "book_depth_$1k": 115.44630365501291,
+        "volatility_1h": 2.976526788315399
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:50:05.699874",
+      "asset": "SOL-USD",
+      "venue": "coinbase",
+      "route": "mid_point",
+      "notional_usd": 4286.990426257235,
+      "impact_bps": 5.453782201627943,
+      "slice_pct": 1.0685238911590007,
+      "market_conditions": {
+        "spread_bps": 3.658738359764991,
+        "book_depth_$1k": 110.1891011268657,
+        "volatility_1h": 1.1133345397577403
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:52:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "mid_point",
+      "notional_usd": 2895.8857450654637,
+      "impact_bps": 9.617787665563332,
+      "slice_pct": 0.7828286254582388,
+      "market_conditions": {
+        "spread_bps": 4.780997652634456,
+        "book_depth_$1k": 168.6617619171281,
+        "volatility_1h": 0.9050677571525174
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:54:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 6740.341318229316,
+      "impact_bps": 4.928107079894147,
+      "slice_pct": 0.5757797489739853,
+      "market_conditions": {
+        "spread_bps": 2.3837755135283034,
+        "book_depth_$1k": 53.44820114677339,
+        "volatility_1h": 1.9960135682765607
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:56:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "mid_point",
+      "notional_usd": 4360.360079009963,
+      "impact_bps": 5.717943184969684,
+      "slice_pct": 1.2594969911029834,
+      "market_conditions": {
+        "spread_bps": 2.0244192283792706,
+        "book_depth_$1k": 68.16314860901451,
+        "volatility_1h": 2.1148082861961885
+      }
+    },
+    {
+      "timestamp": "2025-08-15T16:58:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 3315.792447063812,
+      "impact_bps": 9.96558025706417,
+      "slice_pct": 1.291223686876389,
+      "market_conditions": {
+        "spread_bps": 1.5726020511226242,
+        "book_depth_$1k": 123.6920412006462,
+        "volatility_1h": 2.0188035500236152
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:00:05.699874",
+      "asset": "SOL-USD",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 3240.9560838295483,
+      "impact_bps": 12.479037446911146,
+      "slice_pct": 0.5912963208006856,
+      "market_conditions": {
+        "spread_bps": 4.509032726313116,
+        "book_depth_$1k": 157.77729983283996,
+        "volatility_1h": 2.888226846820573
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:02:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "post_only",
+      "notional_usd": 3043.063626066437,
+      "impact_bps": 1.0,
+      "slice_pct": 1.432166957818946,
+      "market_conditions": {
+        "spread_bps": 3.6213213347506916,
+        "book_depth_$1k": 71.65301959788371,
+        "volatility_1h": 1.5545652128332048
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:04:05.699874",
+      "asset": "SOL-USD",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 4880.074663857869,
+      "impact_bps": 4.269107852759895,
+      "slice_pct": 1.0365516141287148,
+      "market_conditions": {
+        "spread_bps": 1.4954914735608482,
+        "book_depth_$1k": 53.57611472525411,
+        "volatility_1h": 1.0543022709053458
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:06:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 7981.2499457671165,
+      "impact_bps": 6.851900126047039,
+      "slice_pct": 1.0232559913962533,
+      "market_conditions": {
+        "spread_bps": 1.9917915876893653,
+        "book_depth_$1k": 75.01997208076286,
+        "volatility_1h": 2.158497219912492
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:08:05.699874",
+      "asset": "SOL-USD",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 5956.038152987543,
+      "impact_bps": 2.8498993881141104,
+      "slice_pct": 0.7073369742354622,
+      "market_conditions": {
+        "spread_bps": 2.596725385678961,
+        "book_depth_$1k": 89.70938565690324,
+        "volatility_1h": 1.641247037184062
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:10:05.699874",
+      "asset": "ETH-USD",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 7747.237991851854,
+      "impact_bps": 13.347652626647058,
+      "slice_pct": 0.5514605989677707,
+      "market_conditions": {
+        "spread_bps": 3.8985483601894284,
+        "book_depth_$1k": 194.8829699123355,
+        "volatility_1h": 0.6789747689565533
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:12:05.699874",
+      "asset": "ETH-USD",
+      "venue": "coinbase",
+      "route": "mid_point",
+      "notional_usd": 7538.545476485471,
+      "impact_bps": 9.439300634704077,
+      "slice_pct": 1.0023537168462473,
+      "market_conditions": {
+        "spread_bps": 4.5988964978101485,
+        "book_depth_$1k": 168.76304943963282,
+        "volatility_1h": 1.6310221767737128
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:14:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 3760.866890631615,
+      "impact_bps": 10.573720958516654,
+      "slice_pct": 0.7230487112872996,
+      "market_conditions": {
+        "spread_bps": 1.0497909762308115,
+        "book_depth_$1k": 127.29645641173352,
+        "volatility_1h": 2.406251038886664
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:16:05.699874",
+      "asset": "ETH-USD",
+      "venue": "coinbase",
+      "route": "post_only",
+      "notional_usd": 5242.875454169748,
+      "impact_bps": 1.6710357314620068,
+      "slice_pct": 1.4372167687281814,
+      "market_conditions": {
+        "spread_bps": 1.158556280396167,
+        "book_depth_$1k": 113.74176100822497,
+        "volatility_1h": 0.6780141966520637
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:18:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 7735.928653141612,
+      "impact_bps": 14.042978241106168,
+      "slice_pct": 0.9298570877744793,
+      "market_conditions": {
+        "spread_bps": 3.283372573133626,
+        "book_depth_$1k": 52.5561818528782,
+        "volatility_1h": 1.3813606306305695
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:20:05.699874",
+      "asset": "SOL-USD",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 3259.1973200739485,
+      "impact_bps": 12.416468983995204,
+      "slice_pct": 1.4853758209633297,
+      "market_conditions": {
+        "spread_bps": 3.169029533732795,
+        "book_depth_$1k": 79.09296820724325,
+        "volatility_1h": 1.6409982375937366
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:22:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 4169.095805236286,
+      "impact_bps": 4.522450777462495,
+      "slice_pct": 0.6118339010530257,
+      "market_conditions": {
+        "spread_bps": 3.3806525682929744,
+        "book_depth_$1k": 197.25394284818412,
+        "volatility_1h": 2.006817042687165
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:24:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 7750.3328498552355,
+      "impact_bps": 9.549001918066132,
+      "slice_pct": 1.483523196051027,
+      "market_conditions": {
+        "spread_bps": 3.429999773100267,
+        "book_depth_$1k": 50.33311026361068,
+        "volatility_1h": 0.5214369944644308
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:26:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 4239.561233616405,
+      "impact_bps": 2.1484488796995675,
+      "slice_pct": 1.3588626578310854,
+      "market_conditions": {
+        "spread_bps": 2.8802596371434577,
+        "book_depth_$1k": 178.50818462708034,
+        "volatility_1h": 0.5742194863931939
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:28:05.699874",
+      "asset": "BTC-USD",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 5236.057262076839,
+      "impact_bps": 1.0,
+      "slice_pct": 0.8914950958487041,
+      "market_conditions": {
+        "spread_bps": 3.2813447291192515,
+        "book_depth_$1k": 138.68870923412834,
+        "volatility_1h": 1.6938100681824801
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:30:05.699874",
+      "asset": "BTC-USD",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 5255.784407398293,
+      "impact_bps": 3.980744551683566,
+      "slice_pct": 1.336615473271996,
+      "market_conditions": {
+        "spread_bps": 4.043374634809238,
+        "book_depth_$1k": 66.90390748734563,
+        "volatility_1h": 1.3434882769665513
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:32:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "mid_point",
+      "notional_usd": 5200.11945361126,
+      "impact_bps": 6.055146512170293,
+      "slice_pct": 1.4836808008614422,
+      "market_conditions": {
+        "spread_bps": 1.4503284459948924,
+        "book_depth_$1k": 105.1261089526037,
+        "volatility_1h": 1.9820177488672905
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:34:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "mid_point",
+      "notional_usd": 5514.628644740862,
+      "impact_bps": 5.327261226619588,
+      "slice_pct": 0.836509516527381,
+      "market_conditions": {
+        "spread_bps": 3.997503148182784,
+        "book_depth_$1k": 176.05819512363445,
+        "volatility_1h": 2.308523760103761
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:36:05.699874",
+      "asset": "BTC-USD",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 4059.8093731581944,
+      "impact_bps": 7.4343686984202915,
+      "slice_pct": 1.40981470053212,
+      "market_conditions": {
+        "spread_bps": 2.8509194701564047,
+        "book_depth_$1k": 73.1193398127539,
+        "volatility_1h": 1.1349414151645116
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:38:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "mid_point",
+      "notional_usd": 5635.156274511428,
+      "impact_bps": 7.1939130392813935,
+      "slice_pct": 1.0216091695282077,
+      "market_conditions": {
+        "spread_bps": 1.0445552324247411,
+        "book_depth_$1k": 167.1501821840318,
+        "volatility_1h": 2.1674156910698064
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:40:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 5854.063610390789,
+      "impact_bps": 10.248851395808192,
+      "slice_pct": 1.1339183370028274,
+      "market_conditions": {
+        "spread_bps": 4.4030726596866945,
+        "book_depth_$1k": 75.86628381919314,
+        "volatility_1h": 1.4575915945626825
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:42:05.699874",
+      "asset": "BTC-USD",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 5174.0821785829785,
+      "impact_bps": 4.283344641849249,
+      "slice_pct": 0.6108875764591527,
+      "market_conditions": {
+        "spread_bps": 1.1265094525210868,
+        "book_depth_$1k": 115.65051757394171,
+        "volatility_1h": 1.870218461734215
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:44:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "mid_point",
+      "notional_usd": 7773.984442165976,
+      "impact_bps": 4.670660162461705,
+      "slice_pct": 0.5897698531668372,
+      "market_conditions": {
+        "spread_bps": 4.9707822896473495,
+        "book_depth_$1k": 157.65654887860254,
+        "volatility_1h": 1.678807182650253
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:46:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 6258.552764410427,
+      "impact_bps": 12.136731199753596,
+      "slice_pct": 1.0595464438150084,
+      "market_conditions": {
+        "spread_bps": 3.4908629847760198,
+        "book_depth_$1k": 157.55712182988015,
+        "volatility_1h": 1.3767869674965647
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:48:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "mid_point",
+      "notional_usd": 3389.8168714587623,
+      "impact_bps": 6.136047373898346,
+      "slice_pct": 0.9407229085676303,
+      "market_conditions": {
+        "spread_bps": 3.755799323444137,
+        "book_depth_$1k": 194.95805425931863,
+        "volatility_1h": 2.324653519879294
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:50:05.699874",
+      "asset": "ETH-USD",
+      "venue": "coinbase",
+      "route": "post_only",
+      "notional_usd": 3183.916077386677,
+      "impact_bps": 8.194490376216587,
+      "slice_pct": 1.4012782514825568,
+      "market_conditions": {
+        "spread_bps": 1.9859234342133587,
+        "book_depth_$1k": 149.42331268749817,
+        "volatility_1h": 1.6385602056161181
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:52:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 7323.461738859988,
+      "impact_bps": 4.860803191897863,
+      "slice_pct": 0.7979421908781997,
+      "market_conditions": {
+        "spread_bps": 3.045760780521934,
+        "book_depth_$1k": 134.28767155922685,
+        "volatility_1h": 2.0809230292398837
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:54:05.699874",
+      "asset": "BTC-USD",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 6582.4255793606235,
+      "impact_bps": 5.6071285896141285,
+      "slice_pct": 0.5288982146667139,
+      "market_conditions": {
+        "spread_bps": 3.747969581318918,
+        "book_depth_$1k": 169.531731139561,
+        "volatility_1h": 1.48996355979091
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:56:05.699874",
+      "asset": "SOL-USD",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 6801.6947878958745,
+      "impact_bps": 13.428247739220296,
+      "slice_pct": 0.5227026484793929,
+      "market_conditions": {
+        "spread_bps": 4.891374089740317,
+        "book_depth_$1k": 92.58374437293654,
+        "volatility_1h": 1.4049920599972956
+      }
+    },
+    {
+      "timestamp": "2025-08-15T17:58:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 6055.795977277029,
+      "impact_bps": 10.363277542413538,
+      "slice_pct": 0.7897300906369968,
+      "market_conditions": {
+        "spread_bps": 2.1952061213106107,
+        "book_depth_$1k": 105.14301881253621,
+        "volatility_1h": 1.741150767864948
+      }
+    },
+    {
+      "timestamp": "2025-08-15T18:00:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "mid_point",
+      "notional_usd": 5752.1330601708305,
+      "impact_bps": 4.553797354454899,
+      "slice_pct": 0.6184251995178094,
+      "market_conditions": {
+        "spread_bps": 2.469099068245484,
+        "book_depth_$1k": 162.9403335914157,
+        "volatility_1h": 1.9350669463845098
+      }
+    },
+    {
+      "timestamp": "2025-08-15T18:02:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 4559.507656008445,
+      "impact_bps": 4.28592485508285,
+      "slice_pct": 0.5668944003927904,
+      "market_conditions": {
+        "spread_bps": 2.3675263342524264,
+        "book_depth_$1k": 158.1557440287039,
+        "volatility_1h": 1.4407152323199788
+      }
+    },
+    {
+      "timestamp": "2025-08-15T18:04:05.699874",
+      "asset": "ETH-USD",
+      "venue": "binance",
+      "route": "cross_spread",
+      "notional_usd": 5660.063390254409,
+      "impact_bps": 11.100154044353827,
+      "slice_pct": 1.4737612261632511,
+      "market_conditions": {
+        "spread_bps": 4.06084363128444,
+        "book_depth_$1k": 53.09788447234257,
+        "volatility_1h": 2.972252453848193
+      }
+    },
+    {
+      "timestamp": "2025-08-15T18:06:05.699874",
+      "asset": "BTC-USD",
+      "venue": "binance",
+      "route": "mid_point",
+      "notional_usd": 4657.574086449398,
+      "impact_bps": 9.825925141665948,
+      "slice_pct": 0.8142543769967663,
+      "market_conditions": {
+        "spread_bps": 4.224440157391728,
+        "book_depth_$1k": 185.02603098532896,
+        "volatility_1h": 1.3573058336529338
+      }
+    },
+    {
+      "timestamp": "2025-08-15T18:08:05.699874",
+      "asset": "NVDA",
+      "venue": "coinbase",
+      "route": "post_only",
+      "notional_usd": 5940.212103087006,
+      "impact_bps": 5.444422612573705,
+      "slice_pct": 1.1625192053730982,
+      "market_conditions": {
+        "spread_bps": 3.242378255482066,
+        "book_depth_$1k": 86.52229784278362,
+        "volatility_1h": 2.9026300619456062
+      }
+    },
+    {
+      "timestamp": "2025-08-15T18:10:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "mid_point",
+      "notional_usd": 5702.320144937101,
+      "impact_bps": 7.506796103317833,
+      "slice_pct": 1.1719411847387764,
+      "market_conditions": {
+        "spread_bps": 3.7258427469228224,
+        "book_depth_$1k": 63.39551430377957,
+        "volatility_1h": 2.225092968451165
+      }
+    },
+    {
+      "timestamp": "2025-08-15T18:12:05.699874",
+      "asset": "BTC-USD",
+      "venue": "coinbase",
+      "route": "cross_spread",
+      "notional_usd": 7249.69068112913,
+      "impact_bps": 15.660705627639008,
+      "slice_pct": 0.5347376841018544,
+      "market_conditions": {
+        "spread_bps": 1.541345399048701,
+        "book_depth_$1k": 53.28588925319953,
+        "volatility_1h": 2.296556207888533
+      }
+    },
+    {
+      "timestamp": "2025-08-15T18:14:05.699874",
+      "asset": "NVDA",
+      "venue": "binance",
+      "route": "post_only",
+      "notional_usd": 7687.988221662293,
+      "impact_bps": 4.394606053566587,
+      "slice_pct": 1.0417817832601202,
+      "market_conditions": {
+        "spread_bps": 1.746130348271972,
+        "book_depth_$1k": 52.78591498530837,
+        "volatility_1h": 2.63899799921971
+      }
+    },
+    {
+      "timestamp": "2025-08-15T18:16:05.699874",
+      "asset": "SOL-USD",
+      "venue": "coinbase",
+      "route": "mid_point",
+      "notional_usd": 3512.4127269085257,
+      "impact_bps": 6.2749613101048345,
+      "slice_pct": 0.9507028463181871,
+      "market_conditions": {
+        "spread_bps": 4.813028176369347,
+        "book_depth_$1k": 87.3785438678167,
+        "volatility_1h": 1.43611049662126
+      }
+    }
+  ]
+}

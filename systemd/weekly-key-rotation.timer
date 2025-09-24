@@ -1,0 +1,12 @@
+[Unit]
+Description=Weekly API Key Rotation Timer
+Requires=weekly-key-rotation.service
+
+[Timer]
+# Run every Sunday at 2:00 AM
+OnCalendar=Sun *-*-* 02:00:00
+Persistent=true
+RandomizedDelaySec=1800
+
+[Install]
+WantedBy=timers.target

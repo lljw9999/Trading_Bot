@@ -1,0 +1,30 @@
+[Unit]
+Description=Time Synchronization Monitor
+After=network.target ntp.service chronyd.service
+Wants=ntp.service chronyd.service
+
+[Service]
+Type=simple
+User=trading
+Group=trading
+WorkingDirectory=/opt/trading-system
+Environment=PYTHONPATH=/opt/trading-system
+ExecStart=/opt/trading-system/venv/bin/python scripts/time_sync_monitor.py --mode daemon
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Monitor will restart if unhealthy for too long
+TimeoutStartSec=30
+TimeoutStopSec=15
+
+# Security settings
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/tmp
+
+[Install]
+WantedBy=multi-user.target

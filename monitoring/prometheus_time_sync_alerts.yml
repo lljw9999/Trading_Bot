@@ -1,0 +1,53 @@
+groups:
+  - name: time_synchronization
+    rules:
+      - alert: ClockSkewCritical
+        expr: time_sync_clock_skew_milliseconds > 150
+        for: 2m
+        labels:
+          severity: critical
+          component: time_sync
+        annotations:
+          summary: "Critical clock skew detected"
+          description: "System clock skew is {{ $value }}ms, exceeding critical threshold of 150ms. This may affect trade timestamps and compliance."
+          runbook_url: "https://wiki.trading.com/runbooks/time_sync_issues"
+      
+      - alert: ClockSkewWarning
+        expr: time_sync_clock_skew_milliseconds > 75
+        for: 5m
+        labels:
+          severity: warning
+          component: time_sync
+        annotations:
+          summary: "Clock skew warning"
+          description: "System clock skew is {{ $value }}ms, exceeding warning threshold of 75ms."
+      
+      - alert: TimeNotSynchronized
+        expr: time_sync_synchronized == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: time_sync
+        annotations:
+          summary: "System time not synchronized"
+          description: "System is not synchronized with NTP/PTP time sources. Trading should be halted."
+      
+      - alert: TimeSyncUnhealthy
+        expr: time_sync_healthy == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: time_sync
+        annotations:
+          summary: "Time synchronization unhealthy"
+          description: "Overall time synchronization health is poor. Check NTP/PTP services."
+      
+      - alert: TimeSyncMonitorDown
+        expr: up{job="time_sync_monitor"} == 0
+        for: 1m
+        labels:
+          severity: warning
+          component: monitoring
+        annotations:
+          summary: "Time sync monitor is down"
+          description: "Time synchronization monitoring service is not running."

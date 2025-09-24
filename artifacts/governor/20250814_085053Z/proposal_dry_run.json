@@ -1,0 +1,102 @@
+{
+  "timestamp": "2025-08-14T08:50:53.557491+00:00",
+  "total_influence_pct": 28,
+  "asset_weights": {
+    "SOL-USD": 11,
+    "BTC-USD": 4,
+    "ETH-USD": 6,
+    "NVDA": 7
+  },
+  "risk_metrics": {
+    "SOL-USD": {
+      "var_95_usd": 2500,
+      "sharpe_ratio": 1.2,
+      "max_drawdown_24h": 1.1,
+      "volatility": 0.45
+    },
+    "BTC-USD": {
+      "var_95_usd": 3200,
+      "sharpe_ratio": 0.9,
+      "max_drawdown_24h": 1.8,
+      "volatility": 0.38
+    },
+    "ETH-USD": {
+      "var_95_usd": 2800,
+      "sharpe_ratio": 1.0,
+      "max_drawdown_24h": 1.5,
+      "volatility": 0.42
+    },
+    "NVDA": {
+      "var_95_usd": 1800,
+      "sharpe_ratio": 1.4,
+      "max_drawdown_24h": 0.8,
+      "volatility": 0.28
+    }
+  },
+  "tca_metrics": {
+    "SOL-USD": {
+      "is_bps": 28,
+      "slip_bps_p95": 32,
+      "fill_ratio": 0.94,
+      "cancel_ratio": 0.12
+    },
+    "BTC-USD": {
+      "is_bps": 22,
+      "slip_bps_p95": 26,
+      "fill_ratio": 0.96,
+      "cancel_ratio": 0.08
+    },
+    "ETH-USD": {
+      "is_bps": 31,
+      "slip_bps_p95": 35,
+      "fill_ratio": 0.91,
+      "cancel_ratio": 0.15
+    },
+    "NVDA": {
+      "is_bps": 18,
+      "slip_bps_p95": 22,
+      "fill_ratio": 0.97,
+      "cancel_ratio": 0.05
+    }
+  },
+  "tca_results": {
+    "SOL-USD": {
+      "asset": "SOL-USD",
+      "pass": true,
+      "reasons": [
+        "All TCA gates passed"
+      ]
+    },
+    "BTC-USD": {
+      "asset": "BTC-USD",
+      "pass": true,
+      "reasons": [
+        "All TCA gates passed"
+      ]
+    },
+    "ETH-USD": {
+      "asset": "ETH-USD",
+      "pass": true,
+      "reasons": [
+        "All TCA gates passed"
+      ]
+    },
+    "NVDA": {
+      "asset": "NVDA",
+      "pass": true,
+      "reasons": [
+        "All TCA gates passed"
+      ]
+    }
+  },
+  "governance_checks": {
+    "go_live_flag": false,
+    "recent_alerts": true,
+    "slo_status": {
+      "entropy_current": 1.15,
+      "qspread_ratio_24h": 1.6,
+      "heartbeat_age_seconds": 45,
+      "overall_healthy": true
+    }
+  }
+}

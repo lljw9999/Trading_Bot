@@ -1,0 +1,66 @@
+{
+  "timestamp": "2025-08-15T03:48:54.905101+00:00",
+  "event_type": "duty_cycle_v2",
+  "calendar_source": "artifacts/ev/calendar_5m.parquet",
+  "duty_cycle_time": "2025-08-15T03:48:54.905101+00:00",
+  "current_5min_window": "2025-08-15T03:45:00+00:00",
+  "dry_run": true,
+  "go_token_present": false,
+  "actions": [
+    {
+      "asset": "SOL-USD",
+      "ev_band": "red",
+      "event_override": false,
+      "current_influence_pct": 0.0,
+      "target_influence_pct": 0.0,
+      "change_needed": false,
+      "success": true,
+      "window_data": null,
+      "event_data": null,
+      "reason": "no_change_needed"
+    },
+    {
+      "asset": "BTC-USD",
+      "ev_band": "red",
+      "event_override": false,
+      "current_influence_pct": 0.0,
+      "target_influence_pct": 0.0,
+      "change_needed": false,
+      "success": true,
+      "window_data": null,
+      "event_data": null,
+      "reason": "no_change_needed"
+    },
+    {
+      "asset": "ETH-USD",
+      "ev_band": "red",
+      "event_override": false,
+      "current_influence_pct": 0.0,
+      "target_influence_pct": 0.0,
+      "change_needed": false,
+      "success": true,
+      "window_data": null,
+      "event_data": null,
+      "reason": "no_change_needed"
+    },
+    {
+      "asset": "NVDA",
+      "ev_band": "red",
+      "event_override": false,
+      "current_influence_pct": 0.0,
+      "target_influence_pct": 0.0,
+      "change_needed": false,
+      "success": true,
+      "window_data": null,
+      "event_data": null,
+      "reason": "no_change_needed"
+    }
+  ],
+  "parameters": {
+    "green_pct": 10.0,
+    "amber_pct": 5.0,
+    "red_pct": 0.0,
+    "event_green_pct": 15.0,
+    "ttl_minutes": 15
+  }
+}

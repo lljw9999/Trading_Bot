@@ -1,0 +1,56 @@
+{
+  "event_type": "ramp15_rollback",
+  "timestamp": "2025-08-16T09:28:22.228670",
+  "data": {
+    "rollback_id": "rollback15_20250816_092822",
+    "trigger_time": "2025-08-16T09:28:22.219499",
+    "triggered_guards": [
+      {
+        "guard": "slip_p95_30min",
+        "value": 16.78180075575427,
+        "threshold": 15.0,
+        "severity": "critical"
+      }
+    ],
+    "rollback_steps": [
+      {
+        "asset": "BTC-USD",
+        "success": true,
+        "duration_seconds": 0.003962993621826172
+      },
+      {
+        "asset": "ETH-USD",
+        "success": true,
+        "duration_seconds": 0.00030732154846191406
+      },
+      {
+        "asset": "SOL-USD",
+        "success": true,
+        "duration_seconds": 0.00021982192993164062
+      },
+      {
+        "asset": "NVDA",
+        "success": true,
+        "duration_seconds": 0.00018978118896484375
+      }
+    ],
+    "kill_switch_activated": true,
+    "total_duration_seconds": 0.00874185562133789,
+    "sla_met": true,
+    "status": "failed",
+    "error": "[Errno 32] Broken pipe"
+  },
+  "user": "yanzewu",
+  "guard_config": {
+    "slip_p95_30min_threshold": 15.0,
+    "slip_p95_10min_threshold": 18.0,
+    "drawdown_2h_threshold": 1.0,
+    "drawdown_30min_threshold": 0.6,
+    "maker_ratio_30min_threshold": 0.65,
+    "cancel_ratio_30min_threshold": 0.5,
+    "latency_p95_threshold_ms": 150,
+    "latency_budget_fail_count": 3,
+    "alert_page_immediate": true,
+    "rollback_sla_seconds": 2
+  }
+}

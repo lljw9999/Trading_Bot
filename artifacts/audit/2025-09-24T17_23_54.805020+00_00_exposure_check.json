@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-09-24T17:23:54.805020+00:00",
+  "action": "exposure_check",
+  "order_request": {
+    "symbol": "SOL-USD",
+    "notional_usd": 5000,
+    "venue": "coinbase",
+    "influence_pct": 30,
+    "side": "buy"
+  },
+  "reason": "Failed checks: asset_percentage: Asset influence cap exceeded for SOL-USD: 30% > 25%",
+  "allowed": false,
+  "limits_checked": {
+    "gross_notional_usd": 100000,
+    "var_95_usd": 10000,
+    "venue_caps": {
+      "binance": 50000,
+      "coinbase": 60000
+    }
+  },
+  "operator": "exposure_limiter"
+}

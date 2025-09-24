@@ -1,0 +1,18 @@
+[Unit]
+Description=RL Synthetic Prober
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=yanzewu
+WorkingDirectory=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D
+Environment=PATH=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D/venv/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D/venv/bin/python src/monitoring/synthetic_prober.py --port 9110
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

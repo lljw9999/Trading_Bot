@@ -1,7 +1,7 @@
-# Multi-Layer Trading System v0.4.0-rc3
+# Multi-Layer Trading System v0.9.0-rc1
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/trading-system/actions)
-[![Version](https://img.shields.io/badge/version-v0.4.0--rc3-blue)](https://github.com/trading-system/releases)
+[![Version](https://img.shields.io/badge/version-v0.9.0--rc1-blue)](https://github.com/trading-system/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.9+-blue)](https://python.org)
 [![Docker](https://img.shields.io/badge/docker-ready-blue)](docker-compose.yml)
@@ -84,7 +84,7 @@ Grafana Dashboard ←────────────── Redis Streams �
 | **4** | Execution | Order management, fills | <500ms order |
 | **5** | Monitoring | Grafana, alerts, TimeSeries | <2s lag |
 
-## 📈 Performance Targets (v0.4.0-rc3)
+## 📈 Performance Targets (v0.9.0-rc1)
 
 ### Risk Management
 - **Edge Blending:** ≤20µs per blend operation ✅
@@ -172,8 +172,8 @@ redis-cli PUBLISH param.reload '{"component": "model_router", "config_path": "mo
 
 ## 🔄 Release Status
 
-**Current:** v0.4.0-rc3 (2025-01-17)
-**Next:** v0.4.0 (production) after 48h paper trading validation
+**Current:** v0.9.0-rc1 (2025-09-23)
+**Next:** v0.9.0 (production) after 48h paper trading validation
 **Features Complete:** Risk Harmoniser, Grafana Dashboards, Hot-Reload, Runbooks
 
 ---

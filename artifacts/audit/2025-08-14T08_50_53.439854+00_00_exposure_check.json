@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-08-14T08:50:53.439854+00:00",
+  "action": "exposure_check",
+  "order_request": {
+    "symbol": "SOL-USD",
+    "notional_usd": 35000,
+    "venue": "coinbase",
+    "influence_pct": 20,
+    "side": "buy"
+  },
+  "reason": "Failed checks: venue_limit: Venue limit exceeded for coinbase: 65,000 > 60,000 USD",
+  "allowed": false,
+  "limits_checked": {
+    "gross_notional_usd": 100000,
+    "var_95_usd": 10000,
+    "venue_caps": {
+      "binance": 50000,
+      "coinbase": 60000
+    }
+  },
+  "operator": "exposure_limiter"
+}

@@ -16,27 +16,22 @@ Mathematical Components:
 - Asset-class specific risk limits and leverage constraints
 """
 
-from .edge_blender import (
-    EdgeBlender,
-    ModelEdge,
-    BlendedEdge,
-    create_edge_blender
-)
+from .edge_blender import EdgeBlender, ModelEdge, BlendedEdge, create_edge_blender
 
 from .position_sizer import (
     RiskAwarePositionSizer,
     PositionSizeResult,
-    create_position_sizer
+    create_position_sizer,
 )
 
 __all__ = [
-    'EdgeBlender',
-    'ModelEdge', 
-    'BlendedEdge',
-    'RiskAwarePositionSizer',
-    'PositionSizeResult',
-    'create_edge_blender',
-    'create_position_sizer'
+    "EdgeBlender",
+    "ModelEdge",
+    "BlendedEdge",
+    "RiskAwarePositionSizer",
+    "PositionSizeResult",
+    "create_edge_blender",
+    "create_position_sizer",
 ]
 
-__version__ = "1.0.0" 
+__version__ = "1.0.0"

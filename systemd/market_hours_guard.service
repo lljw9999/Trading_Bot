@@ -1,0 +1,22 @@
+[Unit]
+Description=Market Hours Guard Daemon
+After=network.target redis.service
+Wants=redis.service
+
+[Service]
+Type=simple
+User=trading
+WorkingDirectory=/opt/trading
+Environment=PYTHONPATH=/opt/trading
+ExecStart=/opt/anaconda3/bin/python3 services/market_hours_guard_daemon.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Resource limits
+MemoryMax=256M
+CPUQuota=10%
+
+[Install]
+WantedBy=multi-user.target

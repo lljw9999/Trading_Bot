@@ -1,0 +1,122 @@
+{
+  "date": "2025-08-13",
+  "experiment": "m11_econ_uplift_v1",
+  "hours_collected": 3,
+  "asset_summaries": {
+    "SOL-USD": {
+      "treatment_hours": 1,
+      "control_hours": 2,
+      "total_net_pnl": 17.39,
+      "total_gross_pnl": 21.44,
+      "total_fees": 1.08,
+      "avg_slippage_p95": [
+        34.34,
+        13.11,
+        5.5
+      ],
+      "avg_is_bps": [
+        12.58,
+        5.43,
+        1.32
+      ],
+      "avg_fill_ratio": [
+        0.8099,
+        0.6965,
+        0.9392
+      ],
+      "avg_cost_ratio": [
+        0.368,
+        0.1569,
+        0.1605
+      ]
+    },
+    "BTC-USD": {
+      "treatment_hours": 0,
+      "control_hours": 3,
+      "total_net_pnl": 3.0100000000000002,
+      "total_gross_pnl": 6.520000000000001,
+      "total_fees": 0.53,
+      "avg_slippage_p95": [
+        22.98,
+        7.28,
+        32.56
+      ],
+      "avg_is_bps": [
+        20.14,
+        11.56,
+        8.99
+      ],
+      "avg_fill_ratio": [
+        0.7811,
+        0.8689,
+        0.7271
+      ],
+      "avg_cost_ratio": [
+        0.2114,
+        109.6134,
+        0.4669
+      ]
+    },
+    "ETH-USD": {
+      "treatment_hours": 1,
+      "control_hours": 2,
+      "total_net_pnl": -8.959999999999999,
+      "total_gross_pnl": -4.609999999999999,
+      "total_fees": 1.37,
+      "avg_slippage_p95": [
+        29.97,
+        28.31,
+        8.58
+      ],
+      "avg_is_bps": [
+        9.77,
+        13.36,
+        3.64
+      ],
+      "avg_fill_ratio": [
+        0.6766,
+        0.8833,
+        0.9179
+      ],
+      "avg_cost_ratio": [
+        174.2818,
+        104.6086,
+        0.1375
+      ]
+    },
+    "NVDA": {
+      "treatment_hours": 0,
+      "control_hours": 3,
+      "total_net_pnl": 28.86,
+      "total_gross_pnl": 33.519999999999996,
+      "total_fees": 1.67,
+      "avg_slippage_p95": [
+        26.82,
+        16.13,
+        22.95
+      ],
+      "avg_is_bps": [
+        26.23,
+        9.23,
+        11.3
+      ],
+      "avg_fill_ratio": [
+        0.8491,
+        0.9797,
+        0.973
+      ],
+      "avg_cost_ratio": [
+        0.488,
+        0.1104,
+        0.1173
+      ]
+    }
+  },
+  "overall_summary": {
+    "total_net_pnl_day": 40.3,
+    "avg_net_pnl_per_hour": 3.36,
+    "total_hours_collected": 12,
+    "treatment_ratio": 0.16666666666666666,
+    "assignment_balance": "UNBALANCED"
+  }
+}

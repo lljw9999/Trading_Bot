@@ -1,0 +1,61 @@
+{
+  "event_type": "ramp15_rollback",
+  "timestamp": "2025-08-16T01:16:32.713299",
+  "data": {
+    "rollback_id": "rollback15_20250816_011632",
+    "trigger_time": "2025-08-16T01:16:32.704506",
+    "triggered_guards": [
+      {
+        "guard": "maker_ratio_30min",
+        "value": 0.5972061904551624,
+        "threshold": 0.65,
+        "severity": "high"
+      },
+      {
+        "guard": "latency_p95",
+        "value": 191.22366746964087,
+        "threshold": 150,
+        "severity": "medium"
+      }
+    ],
+    "rollback_steps": [
+      {
+        "asset": "BTC-USD",
+        "success": true,
+        "duration_seconds": 0.0035638809204101562
+      },
+      {
+        "asset": "ETH-USD",
+        "success": true,
+        "duration_seconds": 0.00040912628173828125
+      },
+      {
+        "asset": "SOL-USD",
+        "success": true,
+        "duration_seconds": 0.00026917457580566406
+      },
+      {
+        "asset": "NVDA",
+        "success": true,
+        "duration_seconds": 0.0002391338348388672
+      }
+    ],
+    "kill_switch_activated": true,
+    "total_duration_seconds": 0.00793600082397461,
+    "sla_met": true,
+    "status": "completed"
+  },
+  "user": "yanzewu",
+  "guard_config": {
+    "slip_p95_30min_threshold": 15.0,
+    "slip_p95_10min_threshold": 18.0,
+    "drawdown_2h_threshold": 1.0,
+    "drawdown_30min_threshold": 0.6,
+    "maker_ratio_30min_threshold": 0.65,
+    "cancel_ratio_30min_threshold": 0.5,
+    "latency_p95_threshold_ms": 150,
+    "latency_budget_fail_count": 3,
+    "alert_page_immediate": true,
+    "rollback_sla_seconds": 2
+  }
+}

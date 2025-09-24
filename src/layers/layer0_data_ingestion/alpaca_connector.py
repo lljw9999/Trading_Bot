@@ -33,6 +33,7 @@ ALPACA_WS_URL = "wss://stream.data.alpaca.markets/v2/sip"
 KAFKA_TOPIC = "market.raw.stocks.alpaca"
 SYMBOLS = ["AAPL", "TSLA", "MSFT"]
 
+
 class AlpacaConnector(BaseDataConnector):
     """Real-time Alpaca trade connector."""
 
@@ -41,7 +42,9 @@ class AlpacaConnector(BaseDataConnector):
         super().__init__(symbols=symbols, exchange_name="alpaca", asset_type="stock")
 
         self.ws_url = ALPACA_WS_URL
-        self.kafka_bootstrap = config.get("data_ingestion.kafka.bootstrap_servers", "localhost:9092")
+        self.kafka_bootstrap = config.get(
+            "data_ingestion.kafka.bootstrap_servers", "localhost:9092"
+        )
 
         self.producer: Optional[AIOKafkaProducer] = None
         self.kafka_topic = KAFKA_TOPIC
@@ -81,7 +84,9 @@ class AlpacaConnector(BaseDataConnector):
     # ------------------------------------------------------------------
 
     async def _connect_impl(self):
-        self.websocket = await websockets.connect(self.ws_url, ping_interval=30, ping_timeout=10)
+        self.websocket = await websockets.connect(
+            self.ws_url, ping_interval=30, ping_timeout=10
+        )
         self.logger.info("Connected to Alpaca WS")
         await self._authenticate()
 
@@ -197,7 +202,9 @@ class AlpacaConnector(BaseDataConnector):
                 self.logger.error(f"Reconnect failed: {exc}")
                 backoff = min(backoff * 2, 60)
 
+
 # ------------------------------------------------------------------
+
 
 def create_alpaca_connector(symbols: list[str] | None = None) -> AlpacaConnector:
     return AlpacaConnector(symbols)
@@ -223,5 +230,6 @@ async def test_alpaca_connector():
     assert latency_ms < 3, f"Latency {latency_ms:.2f} ms exceeds 3 ms"
     print(f"✅ Parse latency {latency_ms:.2f} ms")
 
+
 if __name__ == "__main__":
-    asyncio.run(test_alpaca_connector()) 
+    asyncio.run(test_alpaca_connector())

@@ -1,0 +1,9 @@
+# Offline acceptance thresholds (SOL policy)
+name: sol_offline_gate
+entropy_range: [1.0, 2.0]
+min_return_vs_last_good: -0.05   # allow up to -5% vs last_good
+max_grad_norm_p95: 1.25
+require_no_nans: true
+q_spread_max_ratio: 2.0          # vs baseline q_spread_mean
+baseline_json: artifacts/last_good/rl/eval.json
+episodes_min: 24

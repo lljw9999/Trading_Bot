@@ -1,0 +1,98 @@
+{
+  "timestamp": "2025-08-14T22:56:11.362869+00:00",
+  "policy_file": "ramp/ramp_policy.yaml",
+  "apply_mode": false,
+  "checks": {
+    "go_live_flag": {
+      "pass": false
+    },
+    "recent_alerts": {
+      "pass": true,
+      "alert_files": []
+    },
+    "kri_status": {
+      "pass": true,
+      "metrics": {
+        "entropy": 1.15,
+        "qspread_ratio": 1.6,
+        "heartbeat_age": 45,
+        "daily_drawdown_pct": 0.8
+      }
+    },
+    "economic_gates": {
+      "pass": false,
+      "issues": [
+        "Cost ratio 89.4% > 30.0% maximum"
+      ]
+    },
+    "confidence_interval": {
+      "ci_level": 0.9,
+      "ci_low": -8.493624086164544,
+      "ci_high": 20.977479857565314,
+      "mean_pnl": 6.434959293046446,
+      "passes": false
+    },
+    "tca_gates": {
+      "SOL-USD": {
+        "is_bps": 28,
+        "slippage_bps": 32,
+        "is_pass": true,
+        "slip_pass": true,
+        "overall_pass": true
+      },
+      "BTC-USD": {
+        "is_bps": 22,
+        "slippage_bps": 26,
+        "is_pass": true,
+        "slip_pass": true,
+        "overall_pass": true
+      },
+      "ETH-USD": {
+        "is_bps": 31,
+        "slippage_bps": 35,
+        "is_pass": true,
+        "slip_pass": true,
+        "overall_pass": true
+      },
+      "NVDA": {
+        "is_bps": 18,
+        "slippage_bps": 22,
+        "is_pass": true,
+        "slip_pass": true,
+        "overall_pass": true
+      }
+    },
+    "cost_gates": {
+      "cost_ratio": 0.58,
+      "cost_ratio_cap": 0.3,
+      "cost_ratio_pass": false,
+      "quantization_drift": 0.12,
+      "quantization_pass": true,
+      "overall_pass": false
+    },
+    "experiment_token": {
+      "token_found": false,
+      "token_file": null,
+      "decision_go": false,
+      "valid_until": null,
+      "experiment": null
+    },
+    "m13_ev_gates": {
+      "ev_calendar_found": true,
+      "favorable_windows_pct": 0.25510204081632654,
+      "green_windows_count": 0,
+      "amber_windows_count": 1,
+      "red_windows_count": 391,
+      "ev_gate_pass": true,
+      "current_hour_favorable": true
+    },
+    "m13_duty_gates": {
+      "duty_cycle_active": false,
+      "duty_cycle_token_found": false,
+      "go_token_present": false,
+      "influence_aligned": true,
+      "duty_gate_pass": false
+    },
+    "m13_rebate_gates": {
+      "maker_ratio_targets_met": true,
+      "rebate_capture_positive": 

@@ -26,4 +26,4 @@ def safe_load(stream: Union[str, bytes]) -> Dict[str, Any]:  # type: ignore[over
 
 
 def safe_dump(data: Dict[str, Any], *args: Any, **kwargs: Any) -> str:  # noqa: D401
-    return json.dumps(data, *args, **kwargs) 
+    return json.dumps(data, *args, **kwargs)

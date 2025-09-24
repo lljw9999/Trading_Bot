@@ -1,0 +1,96 @@
+{
+  "collection_time": "2025-08-14T22:16:07.211443Z",
+  "hour_start": "2025-08-14T04:00:00Z",
+  "experiment": "m11_econ_uplift_v1",
+  "metrics": {
+    "SOL-USD": {
+      "timestamp": "2025-08-14T04:00:00Z",
+      "assignment": "control",
+      "gross_pnl_usd": 17.57,
+      "trading_fees_usd": 0.88,
+      "infra_cost_usd": 0.99,
+      "net_pnl_usd": 15.69,
+      "slip_bps_p95": 24.28,
+      "is_bps": 15.79,
+      "fill_ratio": 0.8605,
+      "cost_ratio": 0.1066,
+      "trading_volume": 878.36,
+      "regime_factor": 0.869
+    },
+    "BTC-USD": {
+      "timestamp": "2025-08-14T04:00:00Z",
+      "assignment": "treatment",
+      "gross_pnl_usd": 15.48,
+      "trading_fees_usd": 0.77,
+      "infra_cost_usd": 0.99,
+      "net_pnl_usd": 13.71,
+      "slip_bps_p95": 16.06,
+      "is_bps": 5.01,
+      "fill_ratio": 0.9723,
+      "cost_ratio": 0.1143,
+      "trading_volume": 773.77,
+      "regime_factor": 1.151
+    },
+    "ETH-USD": {
+      "timestamp": "2025-08-14T04:00:00Z",
+      "assignment": "control",
+      "gross_pnl_usd": -6.66,
+      "trading_fees_usd": 0.33,
+      "infra_cost_usd": 0.99,
+      "net_pnl_usd": -7.99,
+      "slip_bps_p95": 22.22,
+      "is_bps": 5.64,
+      "fill_ratio": 0.8344,
+      "cost_ratio": 132.7826,
+      "trading_volume": 333.03,
+      "regime_factor": 0.899
+    },
+    "NVDA": {
+      "timestamp": "2025-08-14T04:00:00Z",
+      "assignment": "treatment",
+      "gross_pnl_usd": 11.18,
+      "trading_fees_usd": 0.56,
+      "infra_cost_usd": 0.99,
+      "net_pnl_usd": 9.62,
+      "slip_bps_p95": 7.25,
+      "is_bps": 4.79,
+      "fill_ratio": 0.8448,
+      "cost_ratio": 0.139,
+      "trading_volume": 558.8,
+      "regime_factor": 0.925
+    }
+  },
+  "covariates": {
+    "SOL-USD": {
+      "pre_pnl": 18.5,
+      "vol_5m": 0.002989,
+      "spread_bps": 15.24,
+      "volume": 2488.27
+    },
+    "BTC-USD": {
+      "pre_pnl": 9.22,
+      "vol_5m": 0.012228,
+      "spread_bps": 10.94,
+      "volume": 3702.85
+    },
+    "ETH-USD": {
+      "pre_pnl": 28.86,
+      "vol_5m": 0.002073,
+      "spread_bps": 10.13,
+      "volume": 4047.0
+    },
+    "NVDA": {
+      "pre_pnl": 17.49,
+      "vol_5m": 0.019147,
+      "spread_bps": 13.8,
+      "volume": 5512.36
+    }
+  },
+  "primary_metric": "net_pnl_usd_per_hour",
+  "secondary_metrics": [
+    "slip_bps_p95",
+    "is_bps",
+    "fill_ratio",
+    "cost_ratio"
+  ]
+}

@@ -1,0 +1,112 @@
+# M16.1 Execution Policy: Slippage Kill Plan Configuration
+# Target: Reduce P95 slippage from 37.4 bps to ≤15 bps
+
+# Based on Pareto analysis findings:
+# - cross_spread route causes 59.2% of high slippage (403.6 bps P95)
+# - Wide spreads and event-driven spikes are major contributors
+# - Size impact and time-of-day effects need optimization
+
+sizer_v2:
+  # Reduce slice sizes to minimize impact
+  slice_pct_min: 0.15        # ↓ smaller minimum to reduce impact
+  slice_pct_max: 1.2         # ↓ clamp oversized slices (was 2.0+)
+  pov_cap: 0.12              # ≤ 12% POV in thin markets (was 25%)
+  
+  # Spread-based regimes
+  thin_spread_bp: 6          # spread≤6bp → maker priority
+  thick_spread_bp: 20        # spread≥20bp → consider mid/defer
+  
+  # Enhanced maker bias in thin spreads
+  post_only_base: 0.70       # Base 70% post-only (was 65%)
+  post_only_thin_bonus: 0.15 # +15% in tight spreads  
+  post_only_max: 0.90        # Cap at 90%
+  
+  # Volatility-based deferrals
+  vol_zscore_defer: 2.0      # Defer if vol z-score > 2
+  vol_defer_beats: 3         # Wait up to 3 intervals
+  
+  # Depth-based sizing
+  depth_p20_threshold: 500   # Thin if depth@1 < 500
+  thin_market_slice_mult: 0.6 # Halve slice size in thin markets
+
+queue_timing_v2:
+  # Tighten SLAs for earlier escalation
+  sla_ms_crypto: 120         # ↓ SLA for earlier escalate (was 150+)
+  sla_ms_equities: 180       # ↓ equity SLA (was 200+)
+  
+  # Higher confidence required to stay maker
+  eta_conf_hi: 0.80          # need 80% conf to stay maker (was 0.6)
+  eta_conf_escalate: 0.50    # escalate if confidence < 50%
+  
+  # Queue reset penalties
+  queue_reset_penalty_ms: 20 # +20ms ETA penalty on queue reset
+  maker_queue_p80_penalty: 15 # +15ms if queue ahead > p80
+  
+  # Economic threshold for mid vs maker
+  mid_vs_maker_econ_bp: 5    # Use mid if forecaster shows >5bp advantage
+
+escalation_policy:
+  # Earlier escalation on adverse selection
+  adverse_tau: 0.65          # earlier cross when adverse↑ (was 0.7)
+  
+  # Mid-point pricing to avoid requeue
+  mid_reprice_ticks: 1       # mid+1 tick to avoid requeue
+  
+  # Escalation limits
+  max_escalations: 2         # limit escalation attempts (was 3)
+  cooldown_ms_after_cross: 800 # cooldown after aggressive fill
+  
+  # Cancel and repost logic
+  cancel_repost_conditions:
+    - eta_hi_exceeds_sla_1_5x: true    # if ETA > 1.5*SLA
+    - spread_collapse_to_thin: true     # if spread drops to ≤thin_bp
+    - adverse_score_critical: true     # if adverse > 0.9
+
+spread_capture_guard:
+  # Optimize maker ratios based on Pareto findings  
+  maker_target_ratio: 0.75   # Target 75% maker fills
+  post_only_base: 0.70       # Start at 70% base
+  post_only_step_on_miss: 0.10   # +10% if target missed
+  post_only_max: 0.90        # Cap at 90%
+  
+  # Time-based adjustments (off-hours penalty from analysis)
+  time_based_adjustments:
+    off_peak_hours: [0,1,2,3,4,5,6,7,8,20,21,22,23]
+    off_peak_maker_bonus: 0.10  # +10% maker ratio off-peak
+    overlap_hours: [13,14,15,16,17,18,19,20,21]
+    overlap_maker_target: 0.70   # Lower target during active hours
+
+slip_gate:
+  # Gate parameters
+  window: 48h
+  min_child_orders: 2000
+  p95_threshold_bps: 15.0
+  
+  # Alert thresholds  
+  warning_threshold_bps: 12.0  # Warning at 12 bps
+  critical_threshold_bps: 18.0 # Critical at 18 bps
+
+# NEW: No-trade micro-halt logic
+micro_halt:
+  enabled: true
+  
+  # Spread widening halt
+  spread_widen_threshold: 1.5  # halt if spread widens >1.5x
+  spread_widen_window_ms: 200  # within 200ms
+  spread_halt_duration_ms: 600 # halt for 600ms
+  
+  # Latency spike halt  
+  latency_p95_budget_ms: 120   # crypto budget
+  latency_p95_budget_eq_ms: 200 # equity budget
+  latency_halt_duration_ms: 800 # halt for 800ms
+  
+  # Volatility spike halt
+  vol_spike_zscore: 3.0        # halt if vol z-score > 3
+  vol_halt_duration_ms: 500    # halt for 500ms
+
+# Parameter validation ranges
+validation:
+  slice_pct_max: [0.5, 5.0]     # Must be reasonable
+  post_only_base: [0.4, 0.95]   # Must allow some aggressive fills  
+  sla_ms_crypto: [60, 300]      # Reasonable SLA range
+  adverse_tau: [0.3, 0.9]       # Reasonable adverse threshold

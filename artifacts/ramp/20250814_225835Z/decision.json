@@ -1,0 +1,178 @@
+{
+  "timestamp": "2025-08-14T22:58:35.579459+00:00",
+  "policy_file": "ramp/ramp_policy.yaml",
+  "apply_mode": false,
+  "checks": {
+    "go_live_flag": {
+      "pass": false
+    },
+    "recent_alerts": {
+      "pass": true,
+      "alert_files": []
+    },
+    "kri_status": {
+      "pass": true,
+      "metrics": {
+        "entropy": 1.15,
+        "qspread_ratio": 1.6,
+        "heartbeat_age": 45,
+        "daily_drawdown_pct": 0.8
+      }
+    },
+    "economic_gates": {
+      "pass": false,
+      "issues": [
+        "Cost ratio 89.4% > 30.0% maximum"
+      ]
+    },
+    "confidence_interval": {
+      "ci_level": 0.9,
+      "ci_low": -8.493624086164544,
+      "ci_high": 20.977479857565314,
+      "mean_pnl": 6.434959293046446,
+      "passes": false
+    },
+    "tca_gates": {
+      "SOL-USD": {
+        "is_bps": 28,
+        "slippage_bps": 32,
+        "is_pass": true,
+        "slip_pass": true,
+        "overall_pass": true
+      },
+      "BTC-USD": {
+        "is_bps": 22,
+        "slippage_bps": 26,
+        "is_pass": true,
+        "slip_pass": true,
+        "overall_pass": true
+      },
+      "ETH-USD": {
+        "is_bps": 31,
+        "slippage_bps": 35,
+        "is_pass": true,
+        "slip_pass": true,
+        "overall_pass": true
+      },
+      "NVDA": {
+        "is_bps": 18,
+        "slippage_bps": 22,
+        "is_pass": true,
+        "slip_pass": true,
+        "overall_pass": true
+      }
+    },
+    "cost_gates": {
+      "cost_ratio": 0.58,
+      "cost_ratio_cap": 0.3,
+      "cost_ratio_pass": false,
+      "quantization_drift": 0.12,
+      "quantization_pass": true,
+      "overall_pass": false
+    },
+    "experiment_token": {
+      "token_found": false,
+      "token_file": null,
+      "decision_go": false,
+      "valid_until": null,
+      "experiment": null
+    },
+    "m13_ev_gates": {
+      "ev_calendar_found": true,
+      "favorable_windows_pct": 3.571428571428571,
+      "green_windows_count": 0,
+      "amber_windows_count": 14,
+      "red_windows_count": 378,
+      "ev_gate_pass": false,
+      "current_hour_favorable": false
+    },
+    "m13_duty_gates": {
+      "duty_cycle_active": false,
+      "duty_cycle_token_found": false,
+      "go_token_present": false,
+      "influence_aligned": true,
+      "duty_gate_pass": false
+    },
+    "m13_rebate_gates": {
+      "maker_ratio_targets_met": true,
+      "rebate_capture_positive": true,
+      "fee_tier_optimized": true,
+      "rebate_gate_pass": true,
+      "venues": {
+        "SOL-USD_coinbase": {
+          "maker_ratio_actual": 0.7876927527465831,
+          "maker_ratio_target": 0.6,
+          "meets_target": true,
+          "rebate_capture_bps": -1.3878157640239446
+        },
+        "BTC-USD_coinbase": {
+          "maker_ratio_actual": 0.8459773777759059,
+          "maker_ratio_target": 0.6,
+          "meets_target": true,
+          "rebate_capture_bps": -1.440795692449338
+        },
+        "ETH-USD_coinbase": {
+          "maker_ratio_actual": 0.7124409358422495,
+          "maker_ratio_target": 0.6,
+          "meets_target": true,
+          "rebate_capture_bps": -0.6583367415106395
+        },
+        "NVDA_coinbase": {
+          "maker_ratio_actual": 0.8062027209146234,
+          "maker_ratio_target": 0.6,
+          "meets_target": true,
+          "rebate_capture_bps": -1.4772773601278737
+        },
+        "SOL-USD_binance": {
+          "maker_ratio_actual": 0.9142753899463598,
+          "maker_ratio_target": 0.6,
+          "meets_target": true,
+          "rebate_capture_bps": -1.4600879822682522
+        },
+        "BTC-USD_binance": {
+          "maker_ratio_actual": 0.9460769993890027,
+          "maker_ratio_target": 0.6,
+          "meets_target": true,
+          "rebate_capture_bps": -0.6646288874004775
+        },
+        "ETH-USD_binance": {
+          "maker_ratio_actual": 0.8686578101320951,
+          "maker_ratio_target": 0.6,
+          "meets_target": true,
+          "rebate_capture_bps": -1.3102742542074972
+        },
+        "NVDA_alpaca": {
+          "maker_ratio_actual": 0.5639324605440819,
+          "maker_ratio_target": 0.6,
+          "meets_target": false,
+          "rebate_capture_bps": -0.009944382309020255
+        }
+      }
+    }
+  },
+  "decision": "NO_RAMP",
+  "reasons": [
+    "Cost ratio 89.4% > 30.0% maximum",
+    "Confidence interval lower bound -8.49 < 0",
+    "Cost ratio 58.0% > 30.0% cap",
+    "M12 experiment GO token not found",
+    "Insufficient favorable trading windows: 3.6% < 5%",
+    "M13 duty cycling not active"
+  ],
+  "proposed_action": null,
+  "current_influence": {
+    "asset_weights": {},
+    "total_influence_pct": 0,
+    "max_asset_pct": 0
+  },
+  "current_step": {
+    "step_index": 0,
+    "step": {
+      "pct": 10,
+      "hold_h": 24,
+      "min_net_pnl_usd": 0,
+      "max_dd_day_pct": 2.0,
+      "max_cost_ratio": 0.3
+    }
+  }
+}

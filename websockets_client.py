@@ -40,4 +40,4 @@ async def connect(*args: Any, **kwargs: Any) -> _DummyWebSocketClient:  # noqa: 
 
 
 # Minimal exceptions namespace expected by code
-exceptions = types.SimpleNamespace(ConnectionClosed=Exception) 
+exceptions = types.SimpleNamespace(ConnectionClosed=Exception)

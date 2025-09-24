@@ -1,0 +1,253 @@
+{
+  "timestamp": "2025-08-14T13:12:24.198592Z",
+  "export_results": {
+    "model_path": "artifacts/cost/models/policy.onnx",
+    "input_shape": [
+      1,
+      32
+    ],
+    "output_shape": [
+      1,
+      1
+    ],
+    "num_parameters": 125000000,
+    "model_size_mb": 500,
+    "export_time_sec": 15.2,
+    "export_success": true
+  },
+  "quantization_variants": {
+    "fp32": {
+      "precision": "fp32",
+      "model_size_mb": 500,
+      "avg_latency_ms": 2.6,
+      "throughput_inf_per_s": 2200,
+      "memory_usage_mb": 1200,
+      "accuracy_loss_pct": 0.0,
+      "action_drift_pct": 0.0
+    },
+    "fp16": {
+      "precision": "fp16",
+      "model_size_mb": 250,
+      "avg_latency_ms": 1.7,
+      "throughput_inf_per_s": 3400,
+      "memory_usage_mb": 700,
+      "accuracy_loss_pct": 0.1,
+      "action_drift_pct": 0.3
+    },
+    "int8": {
+      "precision": "int8",
+      "model_size_mb": 125,
+      "avg_latency_ms": 1.3,
+      "throughput_inf_per_s": 4100,
+      "memory_usage_mb": 450,
+      "accuracy_loss_pct": 0.4,
+      "action_drift_pct": 0.7
+    }
+  },
+  "benchmark_results": {
+    "fp32": {
+      "config": {
+        "precision": "fp32",
+        "model_size_mb": 500,
+        "avg_latency_ms": 2.6,
+        "throughput_inf_per_s": 2200,
+        "memory_usage_mb": 1200,
+        "accuracy_loss_pct": 0.0,
+        "action_drift_pct": 0.0
+      },
+      "batch_sweep": [
+        {
+          "batch_size": 1,
+          "latency_ms": 2.8,
+          "throughput_inf_per_s": 357.0,
+          "memory_mb": 1215
+        },
+        {
+          "batch_size": 4,
+          "latency_ms": 3.4,
+          "throughput_inf_per_s": 1176.0,
+          "memory_mb": 1260
+        },
+        {
+          "batch_size": 8,
+          "latency_ms": 4.2,
+          "throughput_inf_per_s": 1905.0,
+          "memory_mb": 1320
+        },
+        {
+          "batch_size": 16,
+          "latency_ms": 5.8,
+          "throughput_inf_per_s": 2759.0,
+          "memory_mb": 1440
+        },
+        {
+          "batch_size": 32,
+          "latency_ms": 9.0,
+          "throughput_inf_per_s": 3556.0,
+          "memory_mb": 1680
+        }
+      ],
+      "best_throughput": {
+        "batch_size": 32,
+        "latency_ms": 9.0,
+        "throughput_inf_per_s": 3556.0,
+        "memory_mb": 1680
+      }
+    },
+    "fp16": {
+      "config": {
+        "precision": "fp16",
+        "model_size_mb": 250,
+        "avg_latency_ms": 1.7,
+        "throughput_inf_per_s": 3400,
+        "memory_usage_mb": 700,
+        "accuracy_loss_pct": 0.1,
+        "action_drift_pct": 0.3
+      },
+      "batch_sweep": [
+        {
+          "batch_size": 1,
+          "latency_ms": 1.9,
+          "throughput_inf_per_s": 526.0,
+          "memory_mb": 715
+        },
+        {
+          "batch_size": 4,
+          "latency_ms": 2.5,
+          "throughput_inf_per_s": 1600.0,
+          "memory_mb": 760
+        },
+        {
+          "batch_size": 8,
+          "latency_ms": 3.3,
+          "throughput_inf_per_s": 2424.0,
+          "memory_mb": 820
+        },
+        {
+          "batch_size": 16,
+          "latency_ms": 4.9,
+          "throughput_inf_per_s": 3265.0,
+          "memory_mb": 940
+        },
+        {
+          "batch_size": 32,
+          "latency_ms": 8.1,
+          "throughput_inf_per_s": 3951.0,
+          "memory_mb": 1180
+        }
+      ],
+      "best_throughput": {
+        "batch_size": 32,
+        "latency_ms": 8.1,
+        "throughput_inf_per_s": 3951.0,
+        "memory_mb": 1180
+      }
+    },
+    "int8": {
+      "config": {
+        "precision": "int8",
+        "model_size_mb": 125,
+        "avg_latency_ms": 1.3,
+        "throughput_inf_per_s": 4100,
+        "memory_usage_mb": 450,
+        "accuracy_loss_pct": 0.4,
+        "action_drift_pct": 0.7
+      },
+      "batch_sweep": [
+        {
+          "batch_size": 1,
+          "latency_ms": 1.5,
+          "throughput_inf_per_s": 667.0,
+          "memory_mb": 465
+        },
+        {
+          "batch_size": 4,
+          "latency_ms": 2.1,
+          "throughput_inf_per_s": 1905.0,
+          "memory_mb": 510
+        },
+        {
+          "batch_size": 8,
+          "latency_ms": 2.9,
+          "throughput_inf_per_s": 2759.0,
+          "memory_mb": 570
+        },
+        {
+          "batch_size": 16,
+          "latency_ms": 4.5,
+          "throughput_inf_per_s": 3556.0,
+          "memory_mb": 690
+        },
+        {
+          "batch_size": 32,
+          "latency_ms": 7.7,
+          "throughput_inf_per_s": 4156.0,
+          "memory_mb": 930
+        }
+      ],
+      "best_throughput": {
+        "batch_size": 32,
+        "latency_ms": 7.7,
+        "throughput_inf_per_s": 4156.0,
+        "memory_mb": 930
+      }
+    }
+  },
+  "accuracy_assessment": {
+    "fp32": {
+      "entropy_drift": 0.0,
+      "action_correlation": 1.0,
+      "signal_quality": 1.0,
+      "acceptable": true,
+      "notes": "Baseline reference"
+    },
+    "fp16": {
+      "entropy_drift": 0.12,
+      "action_correlation": 0.997,
+      "signal_quality": 0.995,
+      "acceptable": true,
+      "notes": "Minimal accuracy loss, excellent speedup"
+    },
+    "int8": {
+      "entropy_drift": 0.34,
+      "action_correlation": 0.993,
+      "signal_quality": 0.988,
+      "acceptable": true,
+      "notes": "Moderate accuracy loss but significant speedup"
+    }
+  },
+  "triton_config": {
+    "config_path": "docker/triton/model_repository/policy_quantized/config.pbtxt",
+    "precision": "fp16",
+    "max_batch_size": 64,
+    "preferred_batch_sizes": [
+      8,
+      16,
+      32
+    ],
+    "max_queue_delay_us": 5000
+  },
+  "cost_analysis": {
+    "speedup_factor": 1.55,
+    "memory_reduction_pct": 41.7,
+    "compute_cost_reduction_pct": 35.3,
+    "total_cost_reduction_pct": 52.0,
+    "projected_daily_savings_usd": 49.62,
+    "projected_monthly_savings_usd": 1488.68,
+    "current_cost_ratio": 89.4,
+    "projected_cost_ratio": 58.0,
+    "cost_ratio_improvement": 31.4
+  },
+  "recommendations": {
+    "optimal_precision": "fp16",
+    "deployment_ready": true,
+    "accuracy_acceptable": true,
+    "cost_target_met": true,
+    "next_actions": [
+      "Deploy FP16 model to Triton with dynamic batching",
+      "Monitor accuracy metrics for 24h before production switch",
+      "Configure A/B test between FP32 and optimized model",
+      "Update cost monitoring to track new efficiency gains"
+    ]
+  }
+}

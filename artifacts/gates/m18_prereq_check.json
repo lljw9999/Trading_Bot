@@ -1,0 +1,50 @@
+{
+  "overall_status": "PASS",
+  "timestamp": "2025-08-16T06:54:06.049973",
+  "checks": [
+    {
+      "name": "Impact Budget",
+      "status": "WARN",
+      "details": {
+        "impact_budget_enabled": false,
+        "max_impact_bp_per_1k": "not_set",
+        "impact_limiter": "not_set"
+      }
+    },
+    {
+      "name": "Saturation Guard",
+      "status": "WARN",
+      "details": {
+        "error": "no saturation files found"
+      }
+    },
+    {
+      "name": "EV Ceiling",
+      "status": "PASS",
+      "details": {
+        "cost_ratio_projection": 0.28,
+        "threshold": 0.35,
+        "meets_20pct_requirement": true,
+        "calibration_file": "/Users/yanzewu/PycharmProjects/NLP_Final_Project_D/artifacts/ev/ev_calibration_simple.json"
+      }
+    },
+    {
+      "name": "Execution Quality",
+      "status": "WARN",
+      "details": {
+        "p95_slippage_bps": 9.092588944029789,
+        "maker_ratio": 0.7,
+        "slip_meets_20pct": true,
+        "maker_meets_20pct": false,
+        "slip_threshold": 12.0,
+        "maker_threshold": 0.75
+      }
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "warned": 3,
+    "failed": 0,
+    "errors": 0
+  }
+}

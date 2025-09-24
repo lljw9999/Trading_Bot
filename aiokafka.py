@@ -25,7 +25,9 @@ class AIOKafkaProducer:  # noqa: N801 – keep original class name
     async def stop(self) -> None:  # noqa: D401
         self._started = False
 
-    async def send_and_wait(self, topic: str, value: Any, *args: Any, **kwargs: Any) -> None:  # noqa: D401
+    async def send_and_wait(
+        self, topic: str, value: Any, *args: Any, **kwargs: Any
+    ) -> None:  # noqa: D401
         # In stub mode we just swallow the message.
         if not self._started:
             raise RuntimeError("Producer not started – stub")
@@ -53,4 +55,4 @@ class AIOKafkaConsumer:  # noqa: N801 – keep original name
 
 
 # Provide errors namespace compatible with aiokafka.errors
-errors = SimpleNamespace(KafkaError=Exception) 
+errors = SimpleNamespace(KafkaError=Exception)

@@ -1,0 +1,53 @@
+groups:
+- name: rl-ops
+  rules:
+  - alert: RLPolicyStale
+    expr: rl_policy_heartbeat_age_seconds > 6 * 3600
+    for: 15m
+    labels: 
+      severity: page
+      component: rl-policy
+    annotations:
+      summary: "RL policy heartbeat stale >6h"
+      description: "Policy heartbeat age is {{ $value | humanizeDuration }}. Last update: {{ with query \"rl_policy_last_update_seconds\" }}{{ . | first | value | humanizeTimestamp }}{{ end }}"
+      runbook_url: "https://github.com/yourorg/trading-system/blob/main/RUNBOOK.md#rl-policy-stale"
+
+  - alert: RLPolicyEntropyStuck
+    expr: rl_policy_entropy < 0.9
+    for: 30m
+    labels: 
+      severity: warn
+      component: rl-policy
+    annotations:
+      summary: "Policy entropy low (<0.9) for 30m"
+      description: "Current entropy: {{ $value | printf \"%.3f\" }}. This may indicate policy collapse or insufficient exploration."
+
+  - alert: RLPolicyQSpreadExploding
+    expr: rl_policy_q_spread > 2 * scalar(rl_policy_q_spread offset 24h)
+    for: 30m
+    labels: 
+      severity: warn
+      component: rl-policy
+    annotations:
+      summary: "Q-spread doubled vs 24h baseline"
+      description: "Current Q-spread: {{ $value | printf \"%.1f\" }}. 24h ago: {{ with query \"rl_policy_q_spread offset 24h\" }}{{ . | first | value | printf \"%.1f\" }}{{ end }}"
+
+  - alert: RLPolicyCollapseRisk
+    expr: rl_policy_collapse_risk >= 2
+    for: 15m
+    labels: 
+      severity: page
+      component: rl-policy
+    annotations:
+      summary: "Policy collapse risk HIGH"
+      description: "Collapse risk level: {{ $value }} (0=LOW, 1=MEDIUM, 2=HIGH). Entropy: {{ with query \"rl_policy_entropy\" }}{{ . | first | value | printf \"%.3f\" }}{{ end }}"
+
+  - alert: RLExporterDown
+    expr: up{job="rl-exporter"} == 0
+    for: 5m
+    labels: 
+      severity: warn
+      component: rl-exporter
+    annotations:
+      summary: "RL metrics exporter is down"
+      description: "Cannot scrape RL policy metrics. Check exporter service status."

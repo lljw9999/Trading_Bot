@@ -1,0 +1,33 @@
+pilot:
+  name: "portfolio_canary_v1"
+  assets:
+    - {symbol: "SOL-USD", class: "crypto", venue: "paper", max_influence_pct: 25}
+    - {symbol: "BTC-USD", class: "crypto", venue: "paper", max_influence_pct: 20}
+    - {symbol: "ETH-USD", class: "crypto", venue: "paper", max_influence_pct: 20}
+    - {symbol: "NVDA",    class: "equity", venue: "paper", max_influence_pct: 15}
+
+portfolio_limits:
+  max_total_influence_pct: 30          # portfolio cap
+  max_gross_notional_usd: 250000
+  max_var_95_usd: 15000
+  max_daily_drawdown_pct: 2.0
+  per_venue_notional_caps:
+    coinbase: 100000
+    binance:  100000
+    alpaca:    50000
+
+tca_gates:
+  is_bps_max: 35                        # implementation shortfall cap
+  slip_bps_p95_max: 40
+  fill_ratio_min: 0.90
+  cancel_ratio_max: 0.40
+
+governance:
+  require_go_flag: true
+  no_pages_hours: 48
+  entropy_floor: 0.90
+  qspread_ratio_24h_max: 2.0
+
+reporting:
+  slack_webhook_env: "SLACK_WEBHOOK_URL"
+  daily_digest_hour_utc: 09

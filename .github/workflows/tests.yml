@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 5 * * *'
+
+jobs:
+  unit:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    env:
+      BOOTSTRAP_SLO_DB: "1"
+      FF_EDGE_BLEND_LEGACY: "1"
+      FF_LEVERAGE_LEGACY: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt || true
+      - name: Run unit suite
+        run: pytest -m "not integration and not soak" --maxfail=5 --durations=20 -q
+
+  integration:
+    name: Integration Tests
+    needs: unit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt || true
+      - name: Start CI services
+        run: docker compose -f docker-compose.ci.yml up -d
+      - name: Run integration suite
+        env:
+          DRY_RUN: "1"
+          OPENAI_MOCK: "1"
+          REDIS_MOCK: "0"
+          USE_NOWNODES: "0"
+        run: pytest -m "integration and not soak" --maxfail=5 --durations=20 -q
+      - name: Tear down CI services
+        if: always()
+        run: docker compose -f docker-compose.ci.yml down
+
+  soak:
+    name: Soak / Nightly Tests
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install dependencies with extras
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt || true
+          pip install .[ml,onnx,bandits] || true
+      - name: Run ML extras suite
+        env:
+          DRY_RUN: "1"
+          OPENAI_MOCK: "1"
+          REDIS_MOCK: "0"
+          RUN_ML_TESTS: "1"
+        run: pytest -m "ml" -q
+      - name: Run ONNX extras suite
+        env:
+          DRY_RUN: "1"
+          OPENAI_MOCK: "1"
+          REDIS_MOCK: "0"
+          RUN_ONNX_TESTS: "1"
+        run: pytest -m "onnx" -q
+      - name: Run soak suite
+        env:
+          DRY_RUN: "1"
+          OPENAI_MOCK: "1"
+          REDIS_MOCK: "0"
+        run: pytest -m "soak" -q

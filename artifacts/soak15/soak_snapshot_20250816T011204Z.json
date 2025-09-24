@@ -1,0 +1,140 @@
+{
+  "timestamp": "2025-08-16T01:12:04.843938+00:00",
+  "soak_start": "2025-08-15T08:55:11.318749+00:00",
+  "soak_duration_hours": 16.28153477472222,
+  "target_duration_hours": 48,
+  "completion_pct": 33.919864114004625,
+  "metrics_collected": 3900,
+  "current_metrics": {
+    "timestamp": "2025-08-16T01:12:04.843946+00:00",
+    "collection_success": true,
+    "slip_p95_bps": 10.703261376938206,
+    "slip_mean_bps": 8.0,
+    "maker_ratio": 0.8447546531302876,
+    "total_fills": 2364,
+    "cancel_ratio": 0.24288250484671142,
+    "decision_to_ack_p95_ms": 67.68886293744441,
+    "queue_timing_accuracy": 0.8740554061721464,
+    "escalation_rate": 0.1978871982915565,
+    "net_pnl_green_hourly": 31.71878000228833,
+    "cost_ratio_green": 0.24588689860830384,
+    "active_hours_today": 10.098872901933609,
+    "green_window_utilization": 0.9441850511037873,
+    "impact_bp_per_1k": 8.884445703330428,
+    "drawdown_24h_pct": 0.2064623164228737,
+    "max_position_size_usd": 8325.085035811519,
+    "risk_budget_utilization": 0.5277930342846942,
+    "alert_count_24h": 1,
+    "page_count_24h": 1,
+    "system_health_score": 0.9145024177261566,
+    "last_alert_time": "2025-08-15T09:12:00.875672+00:00"
+  },
+  "rolling_windows": {
+    "30m": {
+      "window_size": 180,
+      "window_hours": 0.5,
+      "stats": {
+        "slip_p95_mean": 10.32281185657957,
+        "slip_p95_max": 11.087773677272237,
+        "slip_p95_p95": 10.87701365753464,
+        "maker_ratio_mean": 0.8588004350609076,
+        "maker_ratio_min": 0.8346456692913385,
+        "cancel_ratio_mean": 0.2528279231452967,
+        "cancel_ratio_max": 0.4293367562423336,
+        "latency_p95_mean": 85.36976196849088,
+        "latency_p95_max": 119.21627574933208,
+        "impact_mean": 6.062066694545482,
+        "impact_p95": 8.462213209544972,
+        "net_pnl_total": 8592.013871023426,
+        "net_pnl_mean": 47.73341039457459,
+        "cost_ratio_mean": 0.2446889650845863,
+        "cost_ratio_max": 0.3422223062656121,
+        "drawdown_max": 0.8606843644493429,
+        "total_alerts": 87,
+        "total_pages": 17
+      }
+    },
+    "2h": {
+      "window_size": 544,
+      "window_hours": 2.0,
+      "stats": {
+        "slip_p95_mean": 10.280342399374703,
+        "slip_p95_max": 11.327564311242348,
+        "slip_p95_p95": 10.851584405093435,
+        "maker_ratio_mean": 0.8594771474912354,
+        "maker_ratio_min": 0.8346456692913385,
+        "cancel_ratio_mean": 0.2507532062330116,
+        "cancel_ratio_max": 0.4293367562423336,
+        "latency_p95_mean": 84.24880727684592,
+        "latency_p95_max": 123.18749298741645,
+        "impact_mean": 6.036893987197051,
+        "impact_p95": 8.524252184705876,
+        "net_pnl_total": 26619.71102710592,
+        "net_pnl_mean": 48.933292329238824,
+        "cost_ratio_mean": 0.2485589246395131,
+        "cost_ratio_max": 0.4013789659565944,
+        "drawdown_max": 0.8606843644493429,
+        "total_alerts": 281,
+        "total_pages": 54
+      }
+    },
+    "24h": {
+      "window_size": 3900,
+      "window_hours": 24.0,
+      "stats": {
+        "slip_p95_mean": 7.175225439029609,
+        "slip_p95_max": 11.680412272548278,
+        "slip_p95_p95": 10.491060916749198,
+        "maker_ratio_mean": 0.879054340408745,
+        "maker_ratio_min": 0.8346456692913385,
+        "cancel_ratio_mean": 0.2506798780641977,
+        "cancel_ratio_max": 0.4406889901553388,
+        "latency_p95_mean": 84.99179316124857,
+        "latency_p95_max": 133.38430255736,
+        "impact_mean": 5.992459002277995,
+        "impact_p95": 8.423862721481548,
+        "net_pnl_total": 195997.10240459608,
+        "net_pnl_mean": 50.25566728322976,
+        "cost_ratio_mean": 0.2509407196192204,
+        "cost_ratio_max": 0.4013789659565944,
+        "drawdown_max": 1.0330938939131409,
+        "total_alerts": 1923,
+        "total_pages": 392
+      }
+    },
+    "48h": {
+      "window_size": 3900,
+      "window_hours": 48.0,
+      "stats": {
+        "slip_p95_mean": 7.175225439029609,
+        "slip_p95_max": 11.680412272548278,
+        "slip_p95_p95": 10.491060916749198,
+        "maker_ratio_mean": 0.879054340408745,
+        "maker_ratio_min": 0.8346456692913385,
+        "cancel_ratio_mean": 0.2506798780641977,
+        "cancel_ratio_max": 0.4406889901553388,
+        "latency_p95_mean": 84.99179316124857,
+        "latency_p95_max": 133.38430255736,
+        "impact_mean": 5.992459002277995,
+        "impact_p95": 8.423862721481548,
+        "net_pnl_total": 195997.10240459608,
+        "net_pnl_mean": 50.25566728322976,
+        "cost_ratio_mean": 0.2509407196192204,
+        "cost_ratio_max": 0.4013789659565944,
+        "drawdown_max": 1.0330938939131409,
+        "total_alerts": 1923,
+        "total_pages": 392
+      }
+    }
+  },
+  "soak_health": {
+    "overall_status": "HEALTHY",
+    "issues": [
+      "1 pages in 24h"
+    ],
+    "warnings": [
+      "Impact 8.9bp/$1k approaching limit"
+    ],
+    "readiness_score": 0.7833333333333333
+  }
+}

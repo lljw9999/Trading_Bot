@@ -1,0 +1,86 @@
+{
+  "timestamp": "2025-08-14T08:41:08.761739+00:00",
+  "action": "go_nogo_decision",
+  "decision": "NO_GO",
+  "decision_reason": "Blocking criteria failed: validation_history, slo_performance, technical_readiness",
+  "score": {
+    "points": 25.0,
+    "max_points": 85,
+    "percentage": 29.411764705882355
+  },
+  "summary": {
+    "total_criteria": 6,
+    "passed": 1,
+    "warned": 2,
+    "failed": 3
+  },
+  "criteria_results": {
+    "validation_history": {
+      "status": "FAIL",
+      "score_weight": 20,
+      "details": {
+        "message": "No validation artifacts directory found"
+      },
+      "timestamp": "2025-08-14T08:41:08.569777+00:00"
+    },
+    "alerting_status": {
+      "status": "PASS",
+      "score_weight": 15,
+      "details": {
+        "page_alerts": 0,
+        "recent_alerts": 0,
+        "message": "No page alerts, alert volume acceptable"
+      },
+      "timestamp": "2025-08-14T08:41:08.577447+00:00"
+    },
+    "slo_performance": {
+      "status": "FAIL",
+      "score_weight": 15,
+      "details": {
+        "budget_spent": 384.9999999999996,
+        "status": "EXHAUSTED",
+        "message": "Error budget exhausted"
+      },
+      "timestamp": "2025-08-14T08:41:08.758128+00:00"
+    },
+    "technical_readiness": {
+      "status": "FAIL",
+      "score_weight": 15,
+      "details": {
+        "preflight_passed": false,
+        "security_passed": false,
+        "kill_switch_works": false,
+        "message": "Only 0/3 technical checks passed"
+      },
+      "timestamp": "2025-08-14T08:41:08.758877+00:00"
+    },
+    "policy_health": {
+      "status": "WARN",
+      "score_weight": 10,
+      "details": {
+        "error": "HTTPConnectionPool(host='localhost', port=9108): Max retries exceeded with url: /metrics (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x101dd88b0>: Failed to establish a new connection: [Errno 61] Connection refused'))",
+        "message": "Could not check policy health metrics"
+      },
+      "timestamp": "2025-08-14T08:41:08.761538+00:00"
+    },
+    "operational_readiness": {
+      "status": "WARN",
+      "score_weight": 10,
+      "details": {
+        "ops_bot_works": false,
+        "runbooks_exist": true,
+        "message": "Some operational readiness issues"
+      },
+      "timestamp": "2025-08-14T08:41:08.761711+00:00"
+    }
+  },
+  "go_blockers": [
+    "validation_history",
+    "slo_performance",
+    "technical_readiness"
+  ],
+  "warnings": [
+    "policy_health",
+    "operational_readiness"
+  ]
+}

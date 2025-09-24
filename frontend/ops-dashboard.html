@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading System - Ops Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background-color: #0f1419;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1f2937, #374151);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .card {
+            background: linear-gradient(135deg, #1f2937, #111827);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #374151;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            margin-bottom: 16px;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: auto;
+        }
+        
+        .status-pass { background-color: #059669; color: #ffffff; }
+        .status-fail { background-color: #dc2626; color: #ffffff; }
+        .status-clean { background-color: #059669; color: #ffffff; }
+        .status-issues { background-color: #ea580c; color: #ffffff; }
+        .status-active { background-color: #0ea5e9; color: #ffffff; }
+        .status-inactive { background-color: #6b7280; color: #ffffff; }
+        .status-enabled { background-color: #059669; color: #ffffff; }
+        .status-disabled { background-color: #dc2626; color: #ffffff; }
+        .status-stale-orders { background-color: #ea580c; color: #ffffff; }
+        
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #374151;
+        }
+        
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #9ca3af;
+        }
+        
+        .metric-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .metric-value.success { color: #34d399; }
+        .metric-value.warning { color: #fbbf24; }
+        .metric-value.error { color: #f87171; }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #374151;
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #60a5fa, #34d399);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .refresh-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #9ca3af;
+            font-size: 14px;
+            z-index: 1000;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #374151;
+            border-radius: 50%;
+            border-top-color: #60a5fa;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 8px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background-color: #7f1d1d;
+            border: 1px solid #dc2626;
+            color: #fecaca;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 16px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Trading System - Operations Dashboard</h1>
+            <p>Real-time monitoring of critical system components</p>
+        </div>
+        
+        <div class="refresh-indicator">
+            <span id="refresh-status">Loading...</span>
+            <span class="loading" id="loading-spinner"></span>
+        </div>
+        
+        <div id="error-container"></div>
+        
+        <div class="dashboard-grid" id="dashboard">
+            <!-- Cards will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        class OpsDashboard {
+            constructor() {
+                this.apiUrl = 'http://localhost:8000';
+                this.refreshInterval = 10000; // 10 seconds
+                this.refreshTimer = null;
+                this.lastUpdate = null;
+                
+                this.init();
+            }
+            
+            async init() {
+                await this.loadData();
+                this.startAutoRefresh();
+            }
+            
+            async loadData() {
+                try {
+                    this.updateRefreshStatus('Loading...');
+                    
+                    const response = await fetch(`${this.apiUrl}/api/ops-dashboard`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const data = await response.json();
+                    this.renderDashboard(data);
+                    this.clearError();
+                    
+                    this.lastUpdate = new Date();
+                    this.updateRefreshStatus(`Last updated: ${this.lastUpdate.toLocaleTimeString()}`);
+                    
+                } catch (error) {
+                    console.error('Error loading dashboard data:', error);
+                    this.showError(`Failed to load dashboard data: ${error.message}`);
+                    this.updateRefreshStatus('Error - retrying...');
+                }
+            }
+            
+            renderDashboard(data) {
+                const dashboard = document.getElementById('dashboard');
+                dashboard.innerHTML = '';
+                
+                // Render each section as a card
+                Object.entries(data.sections).forEach(([key, section]) => {
+                    const card = this.createCard(key, section);
+                    dashboard.appendChild(card);
+                });
+            }
+            
+            createCard(key, section) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                const statusClass = `status-${section.status.toLowerCase().replace(/_/g, '-')}`;
+                
+                let content = `
+                    <div class="card-header">
+                        <h3 class="card-title">${section.title}</h3>
+                        <span class="status-badge ${statusClass}">${section.status}</span>
+                    </div>
+                    <div class="card-content">
+                `;
+                
+                // Render metrics based on section type
+                switch (key) {
+                    case 'ab_gate':
+                        content += this.renderABGateMetrics(section.data);
+                        break;
+                    case 'reconciliation':
+                        content += this.renderReconMetrics(section.data);
+                        break;
+                    case 'capital':
+                        content += this.renderCapitalMetrics(section.data);
+                        break;
+                    case 'hedge':
+                        content += this.renderHedgeMetrics(section.data);
+                        break;
+                    case 'orders':
+                        content += this.renderOrderMetrics(section.data);
+                        break;
+                    default:
+                        content += this.renderGenericMetrics(section.data);
+                }
+                
+                content += '</div>';
+                card.innerHTML = content;
+                
+                return card;
+            }
+            
+            renderABGateMetrics(data) {
+                const passRate = (data.consecutive_passes / data.required_passes * 100).toFixed(0);
+                return `
+                    <div class="metric-row">
+                        <span class="metric-label">Consecutive Passes</span>
+                        <span class="metric-value ${data.consecutive_passes >= data.required_passes ? 'success' : 'warning'}">
+                            ${data.consecutive_passes}/${data.required_passes}
+                        </span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Total Tests</span>
+                        <span class="metric-value">${data.total_tests}</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${passRate}%"></div>
+                    </div>
+                `;
+            }
+            
+            renderReconMetrics(data) {
+                return `
+                    <div class="metric-row">
+                        <span class="metric-label">Breaches (24h)</span>
+                        <span class="metric-value ${data.breaches === 0 ? 'success' : 'error'}">${data.breaches}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Position Mismatches</span>
+                        <span class="metric-value ${data.position_mismatches === 0 ? 'success' : 'error'}">${data.position_mismatches}</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Total Issues</span>
+                        <span class="metric-value ${data.total_issues === 0 ? 'success' : 'error'}">${data.total_issues}</span>
+                    </div>
+                `;
+            }
+            
+            renderCapitalMetrics(data) {
+                const utilizationPct = (data.utilization * 100).toFixed(1);
+                return `
+                    <div class="metric-row">
+                        <span class="metric-label">Effective Capital</span>
+                        <span class="metric-value">${(data.effective * 100).toFixed(0)}%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Capital Cap</span>
+                        <span class="metric-value">${(data.cap * 100).toFixed(0)}%</span>
+                    </div>
+                    ${data.staged ? `
+                    <div class="metric-row">
+                        <span class="metric-label">Staged</span>
+                        <span class="metric-value warning">${(data.staged * 100).toFixed(0)}%</span>
+                    </div>
+                    ` : ''}
+                    <div class="metric-row">
+                        <span class="metric-label">Utilization</span>
+                        <span class="metric-value">${utilizationPct}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${utilizationPct}%"></div>
+                    </div>
+                `;
+            }
+            
+            renderHedgeMetrics(data) {
+                return `
+                    <div class="metric-row">
+                        <span class="metric-label">Hedge System</span>
+                        <span class="metric-value ${data.enabled ? 'success' : 'error'}">
+                            ${data.enabled ? 'Enabled' : 'Disabled'}
+                        </span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">System Mode</span>
+                        <span class="metric-value ${data.system_mode === 'auto' ? 'success' : 'warning'}">
+                            ${data.system_mode}
+                        </span>
+                    </div>
+                `;
+            }
+            
+            renderOrderMetrics(data) {
+                return `
+                    <div class="metric-row">
+                        <span class="metric-label">Stale Orders</span>
+                        <span class="metric-value ${data.stale_count === 0 ? 'success' : 'error'}">${data.stale_count}</span>
+                    </div>
+                `;
+            }
+            
+            renderGenericMetrics(data) {
+                return Object.entries(data).map(([key, value]) => `
+                    <div class="metric-row">
+                        <span class="metric-label">${key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+                        <span class="metric-value">${value}</span>
+                    </div>
+                `).join('');
+            }
+            
+            showError(message) {
+                const errorContainer = document.getElementById('error-container');
+                errorContainer.innerHTML = `
+                    <div class="error-message">
+                        <strong>Error:</strong> ${message}
+                    </div>
+                `;
+            }
+            
+            clearError() {
+                const errorContainer = document.getElementById('error-container');
+                errorContainer.innerHTML = '';
+            }
+            
+            updateRefreshStatus(status) {
+                const refreshStatus = document.getElementById('refresh-status');
+                const spinner = document.getElementById('loading-spinner');
+                
+                refreshStatus.textContent = status;
+                
+                if (status.includes('Loading') || status.includes('retrying')) {
+                    spinner.style.display = 'inline-block';
+                } else {
+                    spinner.style.display = 'none';
+                }
+            }
+            
+            startAutoRefresh() {
+                this.refreshTimer = setInterval(() => {
+                    this.loadData();
+                }, this.refreshInterval);
+            }
+            
+            stopAutoRefresh() {
+                if (this.refreshTimer) {
+                    clearInterval(this.refreshTimer);
+                    this.refreshTimer = null;
+                }
+            }
+        }
+        
+        // Initialize dashboard when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new OpsDashboard();
+        });
+        
+        // Handle page visibility changes to pause/resume refreshing
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // Page is hidden, could pause refreshing
+            } else {
+                // Page is visible, ensure refreshing is active
+            }
+        });
+    </script>
+</body>
+</html>

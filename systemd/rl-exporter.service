@@ -1,0 +1,18 @@
+[Unit]
+Description=RL Redis Prometheus Exporter
+After=network.target redis.service
+Wants=redis.service
+
+[Service]
+User=yanzewu
+WorkingDirectory=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D
+Environment=REDIS_URL=redis://localhost:6379/0
+Environment=EXPORTER_PORT=9108
+ExecStart=/usr/bin/python3 -u src/monitoring/rl_redis_exporter.py
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

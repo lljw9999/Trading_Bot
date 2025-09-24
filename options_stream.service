@@ -1,0 +1,25 @@
+[Unit]
+Description=Unusual Whales Options Flow Stream for SAC-DiF Trading Bot
+After=network.target redis.service
+Requires=redis.service
+
+[Service]
+Type=simple
+User=yanzewu
+WorkingDirectory=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D
+ExecStart=/usr/bin/python3 -c "import asyncio; from src.layers.layer1_signal_generation.options_flow import run_options_flow_daemon; asyncio.run(run_options_flow_daemon())"
+Restart=always
+RestartSec=15
+StandardOutput=journal
+StandardError=journal
+
+# Environment variables
+Environment=PYTHONPATH=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D
+Environment=UNUSUAL_WHALES_API_KEY=DEMO_KEY
+
+# Resource limits
+LimitNOFILE=1024
+MemoryLimit=256M
+
+[Install]
+WantedBy=multi-user.target

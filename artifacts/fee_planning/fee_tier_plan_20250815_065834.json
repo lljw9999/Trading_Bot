@@ -1,0 +1,58 @@
+{
+  "timestamp": "2025-08-15T06:58:34.714883Z",
+  "analysis_type": "fee_tier_optimization",
+  "dry_run": true,
+  "total_potential_savings_monthly": 421.1498550373561,
+  "venue_recommendations": {
+    "coinbase": {
+      "current_tier": "retail",
+      "recommended_tier": "prime_plus",
+      "monthly_savings": 224.39284948771356,
+      "roi_months": 0,
+      "volume_requirement": 1000000,
+      "current_volume": 2384720.35377878,
+      "meets_volume": true,
+      "reason": "upgrade_to_prime_plus; savings_$224/month; fast_roi"
+    },
+    "binance": {
+      "current_tier": "vip0",
+      "recommended_tier": "vip3",
+      "monthly_savings": 196.7570055496425,
+      "roi_months": 0,
+      "volume_requirement": 1000000,
+      "current_volume": 1540847.4185559014,
+      "meets_volume": true,
+      "reason": "upgrade_to_vip3; savings_$197/month; fast_roi"
+    },
+    "alpaca": {
+      "current_tier": "unlimited",
+      "recommended_tier": "unlimited",
+      "monthly_savings": 0.0,
+      "roi_months": Infinity,
+      "volume_requirement": 0,
+      "current_volume": 197667.18772059717,
+      "meets_volume": true,
+      "reason": "no_upgrade_needed"
+    }
+  },
+  "implementation_actions": [
+    {
+      "venue": "coinbase",
+      "action": "upgrade_to_prime_plus",
+      "savings": 224.39284948771356,
+      "roi_months": 0,
+      "priority": "high"
+    },
+    {
+      "venue": "binance",
+      "action": "upgrade_to_vip3",
+      "savings": 196.7570055496425,
+      "roi_months": 0,
+      "priority": "high"
+    }
+  ],
+  "priority_venues": [
+    "coinbase",
+    "binance"
+  ]
+}

@@ -1,0 +1,12 @@
+[Unit]
+Description=Run RL Watchdog every 30 minutes
+Requires=rl-watchdog.service
+
+[Timer]
+OnBootSec=5m
+OnUnitActiveSec=30m
+AccuracySec=1m
+Unit=rl-watchdog.service
+
+[Install]
+WantedBy=timers.target

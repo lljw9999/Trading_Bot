@@ -1,0 +1,44 @@
+[
+  {
+    "regime": "low_volatility_tight_spread",
+    "conditions": {
+      "spread_bps": 3.0,
+      "vol_1m": 0.5,
+      "vol_5m": 0.8,
+      "ob_imbalance": 0.1,
+      "depth_1": 2.0,
+      "slice_pct": 0.01,
+      "is_maker": true,
+      "hour": 14
+    },
+    "predicted_slip_p95_bps": {}
+  },
+  {
+    "regime": "high_volatility_wide_spread",
+    "conditions": {
+      "spread_bps": 20.0,
+      "vol_1m": 2.5,
+      "vol_5m": 4.0,
+      "ob_imbalance": -0.6,
+      "depth_1": 0.3,
+      "slice_pct": 0.03,
+      "is_maker": false,
+      "hour": 9
+    },
+    "predicted_slip_p95_bps": {}
+  },
+  {
+    "regime": "moderate_conditions",
+    "conditions": {
+      "spread_bps": 8.0,
+      "vol_1m": 1.2,
+      "vol_5m": 1.8,
+      "ob_imbalance": 0.0,
+      "depth_1": 1.0,
+      "slice_pct": 0.015,
+      "is_maker": true,
+      "hour": 11
+    },
+    "predicted_slip_p95_bps": {}
+  }
+]

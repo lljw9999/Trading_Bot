@@ -1,0 +1,16 @@
+{
+  "timestamp": "2025-08-14T09:04:08.474950+00:00",
+  "action": "budget_tripwire_triggered",
+  "trip_type": "monthly_cost",
+  "breach_data": {
+    "status": "checked",
+    "limit": 2500,
+    "monthly_cost": 2865.0,
+    "daily_cost": 95.5,
+    "source": "economic_close_estimate",
+    "breach": true
+  },
+  "kill_switch_executed": false,
+  "operator": "budget_tripwire_daemon",
+  "severity": "CRITICAL"
+}

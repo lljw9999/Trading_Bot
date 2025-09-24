@@ -1,0 +1,80 @@
+[
+  {
+    "regime": "low_volatility_tight_spread",
+    "conditions": {
+      "spread_bps": 3.0,
+      "vol_1m": 0.5,
+      "vol_5m": 0.8,
+      "ob_imbalance": 0.1,
+      "depth_1": 2.0,
+      "slice_pct": 0.01,
+      "is_maker": true,
+      "hour": 14
+    },
+    "predicted_slip_p95_bps": {
+      "BTC-USD_alpaca": 184.00802699990965,
+      "BTC-USD_binance": 181.95202112240054,
+      "BTC-USD_coinbase": 182.57613973419078,
+      "ETH-USD_alpaca": 192.06395675612504,
+      "ETH-USD_binance": 182.0026424928148,
+      "ETH-USD_coinbase": 191.64592139191694,
+      "NVDA_alpaca": 190.2045825010936,
+      "NVDA_coinbase": 193.9036974553198,
+      "SOL-USD_alpaca": 186.53377447909273,
+      "SOL-USD_binance": 185.7933353033832,
+      "SOL-USD_coinbase": 190.46945153361705
+    }
+  },
+  {
+    "regime": "high_volatility_wide_spread",
+    "conditions": {
+      "spread_bps": 20.0,
+      "vol_1m": 2.5,
+      "vol_5m": 4.0,
+      "ob_imbalance": -0.6,
+      "depth_1": 0.3,
+      "slice_pct": 0.03,
+      "is_maker": false,
+      "hour": 9
+    },
+    "predicted_slip_p95_bps": {
+      "BTC-USD_alpaca": 491.6131777677037,
+      "BTC-USD_binance": 496.69997641072285,
+      "BTC-USD_coinbase": 495.9821129903129,
+      "ETH-USD_alpaca": 484.9302754716549,
+      "ETH-USD_binance": 493.98070692471026,
+      "ETH-USD_coinbase": 491.88073436862794,
+      "NVDA_alpaca": 489.82869616345727,
+      "NVDA_coinbase": 497.1925154717225,
+      "SOL-USD_alpaca": 494.35042138552024,
+      "SOL-USD_binance": 482.9161990999238,
+      "SOL-USD_coinbase": 489.99155060235785
+    }
+  },
+  {
+    "regime": "moderate_conditions",
+    "conditions": {
+      "spread_bps": 8.0,
+      "vol_1m": 1.2,
+      "vol_5m": 1.8,
+      "ob_imbalance": 0.0,
+      "depth_1": 1.0,
+      "slice_pct": 0.015,
+      "is_maker": true,
+      "hour": 11
+    },
+    "predicted_slip_p95_bps": {
+      "BTC-USD_alpaca": 252.3069624065293,
+      "BTC-USD_binance": 255.72747148976862,
+      "BTC-USD_coinbase": 251.12969113178423,
+      "ETH-USD_alpaca": 257.37531528703295,
+      "ETH-USD_binance": 254.2681096147566,
+      "ETH-USD_coinbase": 258.64872959649716,
+      "NVDA_alpaca": 259.62279721922533,
+      "NVDA_coinbase": 269.9136500285674,
+      "SOL-USD_alpaca": 254.72398442268934,
+      "SOL-USD_binance": 262.11251713958313,
+      "SOL-USD_coinbase": 258.6217048082156
+    }
+  }
+]

@@ -20,24 +20,98 @@ import openai
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import uvicorn
-from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
+
+# Prometheus client with fallback
+try:
+    from prometheus_client import (
+        Counter,
+        Histogram,
+        generate_latest,
+        CONTENT_TYPE_LATEST,
+    )
+except ImportError:
+    from prometheus_client_stub import (
+        Counter,
+        Histogram,
+        generate_latest,
+        CONTENT_TYPE_LATEST,
+    )
 from fastapi.responses import Response
 
+# External service configuration
+OPENAI_TIMEOUT = float(os.getenv("OPENAI_TIMEOUT", "10"))
+USE_OPENAI_MOCK = os.getenv("OPENAI_MOCK", "0") == "1"
+USE_REDIS_MOCK = os.getenv("REDIS_MOCK", "0") == "1"
+REDIS_TIMEOUT = float(os.getenv("REDIS_TIMEOUT", "5"))
+
 # Add src to path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
+class MockOpenAIClient:
+    """Mock OpenAI client for testing and offline mode."""
+
+    class MockResponse:
+        def __init__(self):
+            self.choices = [MockOpenAIClient.MockChoice()]
+
+    class MockChoice:
+        def __init__(self):
+            self.message = MockOpenAIClient.MockMessage()
+
+    class MockMessage:
+        def __init__(self):
+            self.content = "[MOCK] Trade executed based on MA crossover signal with 85% confidence. Strong momentum supports position sizing at 5% of portfolio. Risk level: MODERATE."
+
+    class MockChat:
+        def __init__(self):
+            self.completions = MockOpenAIClient.MockCompletions()
+
+    class MockCompletions:
+        async def create(self, **kwargs):
+            return MockOpenAIClient.MockResponse()
+
+    def __init__(self):
+        self.chat = self.MockChat()
+
+
+class MockRedisClient:
+    """Mock Redis client for testing and offline mode."""
+
+    def __init__(self):
+        self._store = {}
+
+    async def setex(self, key: str, time: int, value: str):
+        self._store[key] = value
+        return True
+
+    async def get(self, key: str):
+        return self._store.get(key)
+
+    async def ping(self):
+        return True
+
+
 # Prometheus metrics
-EXPLANATIONS_GENERATED = Counter('explanations_generated_total', 'Total explanations generated', ['status'])
-EXPLANATION_LATENCY = Histogram('explanation_latency_seconds', 'Time to generate explanation')
-OPENAI_EXPLAIN_CALLS = Counter('openai_explain_calls_total', 'OpenAI API calls for explanations', ['status'])
+EXPLANATIONS_GENERATED = Counter(
+    "explanations_generated_total", "Total explanations generated", ["status"]
+)
+EXPLANATION_LATENCY = Histogram(
+    "explanation_latency_seconds", "Time to generate explanation"
+)
+OPENAI_EXPLAIN_CALLS = Counter(
+    "openai_explain_calls_total", "OpenAI API calls for explanations", ["status"]
+)
+
 
 @dataclass
 class OrderEvent:
     """Order event structure."""
+
     order_id: str
     symbol: str
     side: str  # 'buy' or 'sell'
@@ -45,22 +119,24 @@ class OrderEvent:
     price: float
     timestamp: str
     order_type: str  # 'market', 'limit', etc.
-    
+
     # Trading context
     edge_bps: Optional[float] = None
     confidence: Optional[float] = None
     portfolio_value: Optional[float] = None
     position_size_pct: Optional[float] = None
-    
+
     # Alpha model contributions
     sentiment_score: Optional[float] = None
     technical_signal: Optional[str] = None
     risk_metrics: Optional[Dict[str, Any]] = None
     big_bet_flag: Optional[bool] = None
 
+
 @dataclass
 class TradeExplanation:
     """Generated trade explanation."""
+
     order_id: str
     symbol: str
     explanation: str
@@ -70,15 +146,15 @@ class TradeExplanation:
     timestamp: str
     processing_time_ms: float
 
+
 class ExplainService:
     """GPT-4o powered trade explanation service."""
-    
+
     def __init__(self):
-        self.openai_client = openai.AsyncOpenAI(
-            api_key=os.getenv("OPENAI_API_KEY")
-        )
+        self._openai_client = None
         self.redis_client = None
-        
+        self.openai_api_key = os.getenv("OPENAI_API_KEY")
+
         # Explanation prompt template
         self.explanation_prompt = """
 You are a professional trading analyst explaining a trading decision to a portfolio manager.
@@ -108,26 +184,49 @@ Please provide a concise explanation (≤50 words) covering:
 
 Format as a single paragraph suitable for a trading dashboard.
 """
-    
+
+    @property
+    def openai_client(self):
+        """Lazy initialization of OpenAI client with mock support."""
+        if self._openai_client is None:
+            if USE_OPENAI_MOCK:
+                self._openai_client = MockOpenAIClient()
+            else:
+                if not self.openai_api_key:
+                    raise ValueError("OPENAI_API_KEY environment variable is required")
+                self._openai_client = openai.AsyncOpenAI(
+                    api_key=self.openai_api_key, timeout=OPENAI_TIMEOUT
+                )
+        return self._openai_client
+
     async def init_redis(self, redis_host: str = "localhost", redis_port: int = 6379):
-        """Initialize Redis connection."""
-        self.redis_client = redis.Redis(
-            host=redis_host, 
-            port=redis_port, 
-            decode_responses=True
-        )
-        await self.redis_client.ping()
-        logger.info(f"Connected to Redis at {redis_host}:{redis_port}")
-    
+        """Initialize Redis connection with mock support."""
+        if USE_REDIS_MOCK:
+            self.redis_client = MockRedisClient()
+            logger.info("Using Redis mock client for testing")
+        else:
+            try:
+                self.redis_client = redis.Redis(
+                    host=redis_host,
+                    port=redis_port,
+                    decode_responses=True,
+                    socket_timeout=REDIS_TIMEOUT,
+                )
+                await self.redis_client.ping()
+                logger.info(f"Connected to Redis at {redis_host}:{redis_port}")
+            except Exception as e:
+                logger.warning(f"Redis connection failed, falling back to mock: {e}")
+                self.redis_client = MockRedisClient()
+
     async def generate_explanation(self, order_event: OrderEvent) -> TradeExplanation:
         """Generate explanation for a trade order."""
         start_time = datetime.now()
-        
+
         try:
             # Prepare prompt with order context
             prompt = self.explanation_prompt.format(
                 symbol=order_event.symbol,
-                side=order_event.side.upper(),
+                side=(order_event.side or "").lower(),
                 quantity=order_event.quantity,
                 price=order_event.price,
                 order_type=order_event.order_type,
@@ -139,35 +238,53 @@ Format as a single paragraph suitable for a trading dashboard.
                 technical_signal=order_event.technical_signal or "None",
                 big_bet_flag="Yes" if order_event.big_bet_flag else "No",
                 portfolio_value=order_event.portfolio_value or 0,
-                risk_metrics=json.dumps(order_event.risk_metrics or {})
+                risk_metrics=json.dumps(order_event.risk_metrics or {}),
             )
-            
-            # Call OpenAI API
-            response = await self.openai_client.chat.completions.create(
-                model="gpt-4",
-                messages=[
-                    {"role": "system", "content": "You are a professional trading analyst."},
-                    {"role": "user", "content": prompt}
-                ],
-                max_tokens=100,
-                temperature=0.3,  # Consistent but natural explanations
-                timeout=15.0
-            )
-            
+
+            # Call OpenAI API with retry logic
+            max_retries = 3
+            retry_delay = 1.0
+
+            for attempt in range(max_retries):
+                try:
+                    response = await self.openai_client.chat.completions.create(
+                        model="gpt-4",
+                        messages=[
+                            {
+                                "role": "system",
+                                "content": "You are a professional trading analyst.",
+                            },
+                            {"role": "user", "content": prompt},
+                        ],
+                        max_tokens=100,
+                        temperature=0.3,  # Consistent but natural explanations
+                        timeout=OPENAI_TIMEOUT,
+                    )
+                    break  # Success, exit retry loop
+                except Exception as e:
+                    if attempt == max_retries - 1:  # Last attempt
+                        raise e
+                    logger.warning(
+                        f"OpenAI API attempt {attempt + 1} failed: {e}, retrying..."
+                    )
+                    await asyncio.sleep(
+                        retry_delay * (2**attempt)
+                    )  # Exponential backoff
+
             # Extract explanation
             explanation_text = response.choices[0].message.content.strip()
-            
+
             # Analyze key factors from the order
             key_factors = self._extract_key_factors(order_event)
-            
+
             # Determine confidence level
             confidence_level = self._determine_confidence_level(order_event.confidence)
-            
+
             # Risk assessment
             risk_assessment = self._assess_risk_level(order_event)
-            
+
             processing_time = (datetime.now() - start_time).total_seconds() * 1000
-            
+
             explanation = TradeExplanation(
                 order_id=order_event.order_id,
                 symbol=order_event.symbol,
@@ -176,86 +293,94 @@ Format as a single paragraph suitable for a trading dashboard.
                 key_factors=key_factors,
                 risk_assessment=risk_assessment,
                 timestamp=datetime.now().isoformat(),
-                processing_time_ms=processing_time
+                processing_time_ms=processing_time,
             )
-            
-            OPENAI_EXPLAIN_CALLS.labels(status='success').inc()
-            EXPLANATIONS_GENERATED.labels(status='success').inc()
-            
-            logger.info(f"Generated explanation for order {order_event.order_id}: {explanation_text[:50]}...")
-            
+
+            OPENAI_EXPLAIN_CALLS.labels(status="success").inc()
+            EXPLANATIONS_GENERATED.labels(status="success").inc()
+
+            logger.info(
+                f"Generated explanation for order {order_event.order_id}: {explanation_text[:50]}..."
+            )
+
             return explanation
-            
+
         except Exception as e:
             logger.error(f"Error generating explanation: {e}")
-            OPENAI_EXPLAIN_CALLS.labels(status='error').inc()
-            EXPLANATIONS_GENERATED.labels(status='error').inc()
-            
+            OPENAI_EXPLAIN_CALLS.labels(status="error").inc()
+            EXPLANATIONS_GENERATED.labels(status="error").inc()
+
             # Fallback explanation
             processing_time = (datetime.now() - start_time).total_seconds() * 1000
-            
+
             return TradeExplanation(
                 order_id=order_event.order_id,
                 symbol=order_event.symbol,
                 explanation=f"Trade based on {order_event.edge_bps or 0:.1f}bp edge with {(order_event.confidence or 0)*100:.0f}% confidence. Analysis error: {str(e)[:30]}",
-                confidence_level=self._determine_confidence_level(order_event.confidence),
+                confidence_level=self._determine_confidence_level(
+                    order_event.confidence
+                ),
                 key_factors=["Analysis Error"],
                 risk_assessment="Unknown",
                 timestamp=datetime.now().isoformat(),
-                processing_time_ms=processing_time
+                processing_time_ms=processing_time,
             )
-    
+
     def _extract_key_factors(self, order_event: OrderEvent) -> List[str]:
         """Extract key factors driving the trade decision."""
         factors = []
-        
+
         # Edge magnitude
         if order_event.edge_bps and abs(order_event.edge_bps) > 20:
             factors.append(f"Strong edge ({order_event.edge_bps:.0f}bp)")
         elif order_event.edge_bps and abs(order_event.edge_bps) > 5:
             factors.append(f"Moderate edge ({order_event.edge_bps:.0f}bp)")
-        
+
         # Sentiment
         if order_event.sentiment_score:
-            if abs(order_event.sentiment_score) > 0.7:
-                sentiment_desc = "Positive" if order_event.sentiment_score > 0 else "Negative"
-                factors.append(f"Strong {sentiment_desc.lower()} sentiment")
-            elif abs(order_event.sentiment_score) > 0.3:
-                sentiment_desc = "Positive" if order_event.sentiment_score > 0 else "Negative"
-                factors.append(f"Moderate {sentiment_desc.lower()} sentiment")
-        
+            sentiment_desc = (
+                "Positive" if order_event.sentiment_score > 0 else "Negative"
+            )
+            factors.append(f"{sentiment_desc} sentiment")
+
         # Technical signals
         if order_event.technical_signal and order_event.technical_signal != "None":
             factors.append(f"Technical: {order_event.technical_signal}")
-        
+
         # Big bet flag
         if order_event.big_bet_flag:
-            factors.append("High-confidence big bet")
-        
+            factors.insert(0, "High-confidence big bet")
+
         # Position size
-        if order_event.position_size_pct and order_event.position_size_pct > 0.15:  # >15%
-            factors.append("Large position")
-        
+        if (
+            order_event.position_size_pct and order_event.position_size_pct >= 0.15
+        ):  # ≥15%
+            if order_event.big_bet_flag:
+                insert_at = 1 if factors else 0
+                factors.insert(insert_at, "Large position")
+            else:
+                factors.append("Large position")
+
         return factors[:3]  # Limit to top 3 factors
-    
+
     def _determine_confidence_level(self, confidence: Optional[float]) -> str:
         """Convert numeric confidence to descriptive level."""
         if not confidence:
             return "Low"
-        
-        if confidence >= 0.8:
+
+        if confidence >= 0.9:
             return "Very High"
-        elif confidence >= 0.6:
+        elif confidence >= 0.7:
             return "High"
-        elif confidence >= 0.4:
+        elif confidence >= 0.5:
             return "Moderate"
         else:
             return "Low"
-    
+
     def _assess_risk_level(self, order_event: OrderEvent) -> str:
         """Assess risk level of the trade."""
         risk_score = 0
-        
+
         # Position size risk
         if order_event.position_size_pct:
             if order_event.position_size_pct > 0.20:  # >20%
@@ -264,31 +389,31 @@ Format as a single paragraph suitable for a trading dashboard.
                 risk_score += 2
             elif order_event.position_size_pct > 0.05:  # >5%
                 risk_score += 1
-        
+
         # Confidence risk (lower confidence = higher risk)
         if order_event.confidence:
             if order_event.confidence < 0.4:
                 risk_score += 2
             elif order_event.confidence < 0.6:
                 risk_score += 1
-        
+
         # Big bet flag adds risk
         if order_event.big_bet_flag:
             risk_score += 1
-        
+
         # Market order adds execution risk
         if order_event.order_type == "market":
             risk_score += 1
-        
-        if risk_score >= 5:
+
+        if risk_score >= 4:
             return "High Risk"
-        elif risk_score >= 3:
+        elif risk_score >= 2:
             return "Moderate Risk"
         elif risk_score >= 1:
             return "Low Risk"
         else:
             return "Very Low Risk"
-    
+
     async def store_explanation(self, explanation: TradeExplanation):
         """Store explanation in Redis."""
         try:
@@ -296,30 +421,35 @@ Format as a single paragraph suitable for a trading dashboard.
             key = f"explain:{explanation.order_id}"
             value = json.dumps(asdict(explanation))
             await self.redis_client.setex(key, 604800, value)  # 7 days
-            
+
             # Also add to recent explanations list
             await self.redis_client.lpush("trades.explain.recent", value)
-            await self.redis_client.ltrim("trades.explain.recent", 0, 99)  # Keep last 100
-            
+            await self.redis_client.ltrim(
+                "trades.explain.recent", 0, 99
+            )  # Keep last 100
+
             logger.debug(f"Stored explanation for order {explanation.order_id}")
-            
+
         except Exception as e:
             logger.error(f"Error storing explanation: {e}")
+
 
 # FastAPI app
 app = FastAPI(
     title="Trade Explanation Service",
     description="GPT-4o powered trade explanation generator",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 explain_service = ExplainService()
+
 
 @app.on_event("startup")
 async def startup_event():
     """Initialize connections on startup."""
     await explain_service.init_redis()
     logger.info("Explain service started")
+
 
 @app.get("/health")
 async def health_check():
@@ -330,25 +460,27 @@ async def health_check():
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"Redis connection failed: {e}")
 
+
 @app.post("/explain")
 async def explain_order(order_data: Dict[str, Any]) -> Dict[str, Any]:
     """Generate explanation for a single order."""
     try:
         # Convert to OrderEvent
         order_event = OrderEvent(**order_data)
-        
+
         # Generate explanation
         with EXPLANATION_LATENCY.time():
             explanation = await explain_service.generate_explanation(order_event)
-        
+
         # Store in Redis
         await explain_service.store_explanation(explanation)
-        
+
         return asdict(explanation)
-        
+
     except Exception as e:
         logger.error(f"Explain endpoint error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.get("/explanation/{order_id}")
 async def get_explanation(order_id: str) -> Dict[str, Any]:
@@ -356,67 +488,78 @@ async def get_explanation(order_id: str) -> Dict[str, Any]:
     try:
         key = f"explain:{order_id}"
         explanation_json = await explain_service.redis_client.get(key)
-        
+
         if not explanation_json:
             raise HTTPException(status_code=404, detail="Explanation not found")
-        
+
         return json.loads(explanation_json)
-        
+
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Error retrieving explanation: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.get("/recent")
 async def get_recent_explanations(limit: int = 10) -> List[Dict[str, Any]]:
     """Get recent explanations."""
     try:
-        recent_list = await explain_service.redis_client.lrange("trades.explain.recent", 0, limit-1)
+        recent_list = await explain_service.redis_client.lrange(
+            "trades.explain.recent", 0, limit - 1
+        )
         return [json.loads(exp) for exp in recent_list]
-        
+
     except Exception as e:
         logger.error(f"Error getting recent explanations: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.get("/metrics")
 async def metrics():
     """Prometheus metrics endpoint."""
     return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
+
 # Background worker for processing order events
 async def order_event_worker():
     """Background worker that processes order events from Redis."""
     logger.info("Starting order event worker")
-    
+
     while True:
         try:
             # Listen for order events
-            result = await explain_service.redis_client.blpop("orders.filled", timeout=5)
-            
+            result = await explain_service.redis_client.blpop(
+                "orders.filled", timeout=5
+            )
+
             if result:
                 _, order_json = result
                 order_data = json.loads(order_json)
-                
+
                 # Convert to OrderEvent
                 order_event = OrderEvent(**order_data)
-                
+
                 # Generate explanation
                 explanation = await explain_service.generate_explanation(order_event)
-                
+
                 # Store explanation
                 await explain_service.store_explanation(explanation)
-                
-                logger.info(f"Processed order {order_event.order_id} for {order_event.symbol}")
-            
+
+                logger.info(
+                    f"Processed order {order_event.order_id} for {order_event.symbol}"
+                )
+
         except Exception as e:
             logger.error(f"Order event worker error: {e}")
             await asyncio.sleep(1)
+
 
 @app.on_event("startup")
 async def start_worker():
     """Start the background order event worker."""
     asyncio.create_task(order_event_worker())
+
 
 if __name__ == "__main__":
     uvicorn.run(
@@ -424,5 +567,5 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=8003,
         log_level="info",
-        reload=False
-    ) 
+        reload=False,
+    )

@@ -1,0 +1,21 @@
+{
+  "event_type": "emergency_rollback_m18",
+  "trigger_time": "2025-08-17T00:51:37.071179",
+  "completion_time": "2025-08-17T00:51:37.085394",
+  "violations": [
+    {
+      "metric": "decision_to_ack_p95_ms",
+      "current": 110.5850425401284,
+      "threshold": 110.0,
+      "severity": "critical"
+    }
+  ],
+  "rollback_reason": "m18_guard_breach",
+  "assets_affected": [
+    "BTC-USD",
+    "ETH-USD",
+    "NVDA"
+  ],
+  "user": "yanzewu",
+  "guard_version": "m18_20pct"
+}

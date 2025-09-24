@@ -1,0 +1,23 @@
+[Unit]
+Description=Weekly API Key Rotation
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=trading
+Group=trading
+WorkingDirectory=/opt/trading-system
+Environment=PYTHONPATH=/opt/trading-system
+Environment=ENVIRONMENT=production
+Environment=SLACK_WEBHOOK_URL=https://hooks.slack.com/services/YOUR/WEBHOOK/URL
+ExecStart=/opt/trading-system/scripts/weekly_key_rotation.sh
+StandardOutput=journal
+StandardError=journal
+
+# Security settings
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/log/trading /tmp

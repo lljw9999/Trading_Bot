@@ -1,0 +1,29 @@
+{
+  "model_type": "RandomForestRegressor",
+  "n_features": 18,
+  "feature_names": [
+    "vol_1m",
+    "vol_5m",
+    "spread_bps",
+    "depth_ratio",
+    "slip_p95",
+    "maker_fee_bps",
+    "taker_fee_bps",
+    "cost_per_5min",
+    "hour_of_day",
+    "minute_of_hour",
+    "day_of_week",
+    "asset_BTC-USD",
+    "asset_ETH-USD",
+    "asset_NVDA",
+    "asset_SOL-USD",
+    "venue_alpaca",
+    "venue_binance",
+    "venue_coinbase"
+  ],
+  "r2_cv_mean": 0.5958086078035114,
+  "r2_cv_std": 0.01260163385500981,
+  "mae_cv_mean": 19.64762029807087,
+  "mae_cv_std": 0.11244188112681563,
+  "ev_threshold_usd": 9.400197499999999
+}

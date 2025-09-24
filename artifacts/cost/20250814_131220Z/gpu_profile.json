@@ -1,0 +1,97 @@
+{
+  "timestamp": "2025-08-14T13:12:21.063901Z",
+  "profiling_duration_sec": 5,
+  "gpu_metrics": {
+    "gpu_available": true,
+    "total_memory_gb": 24.0,
+    "used_memory_gb": 20.4,
+    "memory_utilization_pct": 85.0,
+    "gpu_utilization_pct": 78.5,
+    "temperature_c": 72,
+    "power_draw_w": 220,
+    "gpu_name": "NVIDIA RTX 4090"
+  },
+  "inference_benchmark": [
+    {
+      "batch_size": 1,
+      "avg_latency_ms": 24.0,
+      "p95_latency_ms": 33.6,
+      "p99_latency_ms": 40.32,
+      "throughput_inf_per_s": 42.0,
+      "memory_usage_mb": 536,
+      "efficiency_score": 77.74
+    },
+    {
+      "batch_size": 4,
+      "avg_latency_ms": 9.6,
+      "p95_latency_ms": 13.44,
+      "p99_latency_ms": 16.13,
+      "throughput_inf_per_s": 417.0,
+      "memory_usage_mb": 608,
+      "efficiency_score": 685.31
+    },
+    {
+      "batch_size": 8,
+      "avg_latency_ms": 7.2,
+      "p95_latency_ms": 10.08,
+      "p99_latency_ms": 12.1,
+      "throughput_inf_per_s": 1111.0,
+      "memory_usage_mb": 704,
+      "efficiency_score": 1578.28
+    },
+    {
+      "batch_size": 16,
+      "avg_latency_ms": 6.0,
+      "p95_latency_ms": 8.4,
+      "p99_latency_ms": 10.08,
+      "throughput_inf_per_s": 2667.0,
+      "memory_usage_mb": 896,
+      "efficiency_score": 2976.19
+    },
+    {
+      "batch_size": 32,
+      "avg_latency_ms": 10.8,
+      "p95_latency_ms": 15.12,
+      "p99_latency_ms": 18.14,
+      "throughput_inf_per_s": 2963.0,
+      "memory_usage_mb": 1280,
+      "efficiency_score": 2314.81
+    },
+    {
+      "batch_size": 64,
+      "avg_latency_ms": 20.4,
+      "p95_latency_ms": 28.56,
+      "p99_latency_ms": 34.27,
+      "throughput_inf_per_s": 3137.0,
+      "memory_usage_mb": 2048,
+      "efficiency_score": 1531.86
+    }
+  ],
+  "tflops_estimate": {
+    "estimated_tflops": 0.95,
+    "model_params": 125000000.0,
+    "peak_gpu_tflops": 83.0,
+    "utilization_pct": 1.1
+  },
+  "optimal_configuration": {
+    "optimal_batch_size": 16,
+    "optimal_throughput": 2667.0,
+    "optimal_latency_p95": 8.4,
+    "memory_usage_mb": 896,
+    "efficiency_score": 2976.19
+  },
+  "recommendations": [
+    {
+      "type": "compute",
+      "priority": "MEDIUM",
+      "message": "Low GPU compute utilization (1.1%) - batching or model complexity could be improved",
+      "action": "optimize_batching"
+    },
+    {
+      "type": "cost",
+      "priority": "MEDIUM",
+      "message": "High power draw - consider power limiting or efficiency optimizations",
+      "action": "power_optimization"
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "timestamp": "2025-08-15T16:58:30.288469",
+  "config": {
+    "ceiling_config": {
+      "green_hi": {
+        "max_influence_pct": 20.0,
+        "ev_threshold_min": 15.0,
+        "confidence_min": 0.85,
+        "description": "High-confidence profitable windows"
+      },
+      "green_lo": {
+        "max_influence_pct": 17.0,
+        "ev_threshold_min": 9.4,
+        "confidence_min": 0.7,
+        "description": "Standard profitable windows"
+      },
+      "amber": {
+        "max_influence_pct": 12.0,
+        "ev_threshold_min": 5.0,
+        "confidence_min": 0.6,
+        "description": "Marginal profitability windows"
+      },
+      "red": {
+        "max_influence_pct": 0.0,
+        "ev_threshold_min": -999.0,
+        "confidence_min": 0.0,
+        "description": "Unprofitable windows - no trading"
+      }
+    },
+    "adjustment_factors": {
+      "market_volatility": {
+        "low": 1.0,
+        "medium": 0.9,
+        "high": 0.8
+      },
+      "execution_quality": {
+        "excellent": 1.1,
+        "good": 1.0,
+        "poor": 0.8
+      },
+      "risk_budget": {
+        "ample": 1.0,
+        "moderate": 0.9,
+        "limited": 0.7
+      }
+    }
+  },
+  "market_conditions": {
+    "market_volatility": "medium",
+    "execution_quality": "excellent",
+    "risk_budget": "ample"
+  },
+  "calendar_analysis": {
+    "total_windows": 4616,
+    "band_distribution": {
+      "green_lo": 4225,
+      "amber": 286,
+      "red": 105
+    },
+    "avg_ceiling_by_band": {
+      "amber": 11.598461538461539,
+      "green_lo": 16.50376094674556,
+      "red": 0.0
+    },
+    "max_ceiling_available": 17.0,
+    "calendar_file": "artifacts/ev_ceiling/calendar_with_ceilings_20250815_165830Z.parquet"
+  },
+  "current_asset_ceilings": {
+    "BTC-USD": {
+      "timestamp": "2025-08-15T16:58:30.661764",
+      "asset": "BTC-USD",
+      "ev_usd_per_hour": 13.57157541988734,
+      "confidence": 0.8,
+      "ev_band": "green_lo",
+      "base_ceiling_pct": 17.0,
+      "adjusted_ceiling_pct": 14.960000000000003,
+      "market_conditions": {
+        "market_volatility": "high",
+        "execution_quality": "excellent",
+        "risk_budget": "ample"
+      },
+      "band_config": {
+        "max_influence_pct": 17.0,
+        "ev_threshold_min": 9.4,
+        "confidence_min": 0.7,
+        "description": "Standard profitable windows"
+      },
+      "adjustment_applied": true,
+      "calendar_source": true,
+      "next_window_time": "2025-08-15T16:35:00+00:00"
+    },
+    "ETH-USD": {
+      "timestamp": "2025-08-15T16:58:30.665647",
+      "asset": "ETH-USD",
+      "ev_usd_per_hour": 13.300018724469004,
+      "confidence": 0.8,
+      "ev_band": "green_lo",
+      "base_ceiling_pct": 17.0,
+      "adjusted_ceiling_pct": 16.830000000000002,
+      "market_conditions": {
+        "market_volatility": "medium",
+        "execution_quality": "excellent",
+        "risk_budget": "ample"
+      },
+      "band_config": {
+        "max_influence_pct": 17.0,
+        "ev_threshold_min": 9.4,
+        "confidence_min": 0.7,
+        "description": "Standard profitable windows"
+      },
+      "adjustment_applied": true,
+      "calendar_source": true,
+      "next_window_time": "2025-08-15T16:35:00+00:00"
+    },
+    "SOL-USD": {
+      "timestamp": "2025-08-15T16:58:30.669387",
+      "asset": "SOL-USD",
+      "ev_usd_per_hour": 13.327218737636723,
+      "confidence": 0.8,
+      "ev_band": "green_lo",
+      "base_ceiling_pct": 17.0,
+      "adjusted_ceiling_pct": 17.0,
+      "market_conditions": {
+        "market_volatility": "low",
+        "execution_quality": "excellent",
+        "risk_budget": "ample"
+      },
+      "band_config": {
+        "max_influence_pct": 17.0,
+        "ev_threshold_min": 9.4,
+        "confidence_min": 0.7,
+        "description": "Standard profitable windows"
+      },
+      "adjustment_applied": false,
+      "calendar_source": true,
+      "next_window_time": "2025-08-15T16:35:00+00:00"
+    },
+    "NVDA": {
+      "timestamp": "2025-08-15T16:58:30.674712",
+      "asset": "NVDA",
+      "ev_usd_per_hour": 20.730606874302918,
+      "confidence": 0.8,
+      "ev_band": "green_lo",
+      "base_ceiling_pct": 17.0,
+      "adjusted_ceiling_pct": 16.830000000000002,
+      "market_conditions": {
+        "market_volatility": "medium",
+        "execution_quality": "excellent",
+        "risk_budget": "ample"
+      },
+      "band_config": {
+        "max_influence_pct": 17.0,
+        "ev_threshold_min": 9.4,
+        "confidence_min": 0.7,
+        "description": "Standard profitable windows"
+      },
+      "adjustment_applied": true,
+      "calendar_source": true,
+      "next_window_time": "2025-08-15T16:35:00+00:00"
+    }
+  }
+}

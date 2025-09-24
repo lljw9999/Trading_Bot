@@ -1,0 +1,85 @@
+{
+  "uid": "feature_gate_halt",
+  "title": "Feature Gate Halt",
+  "condition": "C",
+  "data": [
+    {
+      "refId": "A",
+      "queryType": "",
+      "relativeTimeRange": {
+        "from": 120,
+        "to": 0
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-uid"
+      },
+      "model": {
+        "expr": "metric_mode_halt",
+        "interval": "",
+        "legendFormat": "",
+        "refId": "A"
+      }
+    },
+    {
+      "refId": "C",
+      "queryType": "",
+      "relativeTimeRange": {
+        "from": 0,
+        "to": 0
+      },
+      "datasource": {
+        "type": "__expr__",
+        "uid": "__expr__"
+      },
+      "model": {
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [0.5],
+              "type": "gt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": ["A"]
+            },
+            "reducer": {
+              "params": [],
+              "type": "last"
+            },
+            "type": "query"
+          }
+        ],
+        "datasource": {
+          "type": "__expr__",
+          "uid": "__expr__"
+        },
+        "expression": "A > 0.5",
+        "hide": false,
+        "intervalMs": 1000,
+        "maxDataPoints": 43200,
+        "reducer": "last",
+        "refId": "C",
+        "type": "threshold"
+      }
+    }
+  ],
+  "intervalSeconds": 30,
+  "noDataState": "NoData",
+  "execErrState": "NoData",
+  "for": "1m",
+  "annotations": {
+    "description": "Trading system has been in halt mode for more than 1 minute. All trading activity is suspended due to feature gate activation.",
+    "runbook_url": "https://github.com/your-org/trading-runbooks/blob/main/alerts/feature-gates.md",
+    "summary": "Trading System Halted"
+  },
+  "labels": {
+    "team": "trading",
+    "severity": "critical",
+    "component": "feature_gates",
+    "slo": "system_availability"
+  },
+  "folderUID": "trading-alerts"
+}

@@ -1,0 +1,18 @@
+[Unit]
+Description=Pilot KRI Monitor - Auto-rollback on risk breaches
+After=network.target
+Wants=network.target
+
+[Service]
+Type=oneshot
+User=trader
+Group=trading
+WorkingDirectory=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D
+Environment=PYTHONPATH=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D
+ExecStart=/usr/bin/python3 scripts/pilot_kri_monitor.py
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=pilot-kri
+
+[Install]
+WantedBy=multi-user.target

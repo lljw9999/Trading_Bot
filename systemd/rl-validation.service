@@ -1,0 +1,13 @@
+[Unit]
+Description=RL Offline Validation (48h)
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D
+Environment=ART_ROOT=/tmp/rl_artifacts
+Environment=PYTHONPATH=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D
+ExecStart=/usr/bin/python3 /Users/yanzewu/PycharmProjects/NLP_Final_Project_D/scripts/schedule_validation.py
+User=yanzewu
+StandardOutput=journal
+StandardError=journal

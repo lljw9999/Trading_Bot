@@ -44,6 +44,7 @@ KAFKA_TOPIC = "market.raw.crypto.binance"
 # Connector Implementation
 # ----------------------------------------------------------------------------
 
+
 class BinanceConnector(BaseDataConnector):
     """Binance Spot bookTicker stream connector."""
 
@@ -52,7 +53,9 @@ class BinanceConnector(BaseDataConnector):
         super().__init__(symbols=symbols, exchange_name="binance", asset_type="crypto")
 
         self.ws_url: str = BINANCE_WS_URL  # Combined stream for 3 symbols
-        self.kafka_bootstrap = config.get("data_ingestion.kafka.bootstrap_servers", "localhost:9092")
+        self.kafka_bootstrap = config.get(
+            "data_ingestion.kafka.bootstrap_servers", "localhost:9092"
+        )
 
         # Kafka
         self.producer: Optional[AIOKafkaProducer] = None
@@ -94,7 +97,9 @@ class BinanceConnector(BaseDataConnector):
     # ------------------------------------------------------------------
 
     async def _connect_impl(self):
-        self.websocket = await websockets.connect(self.ws_url, ping_interval=30, ping_timeout=10)
+        self.websocket = await websockets.connect(
+            self.ws_url, ping_interval=30, ping_timeout=10
+        )
         self.logger.info("Connected to Binance WebSocket stream")
 
     async def _subscribe_impl(self):
@@ -185,9 +190,11 @@ class BinanceConnector(BaseDataConnector):
                 self.logger.error(f"Reconnect failed: {exc}")
                 backoff = min(backoff * 2, 60)
 
+
 # -----------------------------------------------------------------------------
 # Factory / CLI helper
 # -----------------------------------------------------------------------------
+
 
 def create_binance_connector(symbols: list[str] | None = None) -> BinanceConnector:
     return BinanceConnector(symbols)
@@ -214,9 +221,10 @@ async def test_binance_connector():
     await connector._connect_impl()
     await asyncio.wait_for(_run(), timeout=25)
 
-    median_latency = sorted(latencies)[len(latencies)//2]
+    median_latency = sorted(latencies)[len(latencies) // 2]
     assert median_latency < 3, f"Parsing latency {median_latency:.2f} ms exceeds 3 ms"
     print(f"✅ Median parsing latency: {median_latency:.2f} ms")
 
+
 if __name__ == "__main__":
-    asyncio.run(test_binance_connector()) 
+    asyncio.run(test_binance_connector())

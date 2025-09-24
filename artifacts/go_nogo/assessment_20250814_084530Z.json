@@ -1,0 +1,129 @@
+{
+  "timestamp": "2025-08-14T08:45:38.809642+00:00",
+  "results": {
+    "gates": {
+      "gates": {
+        "preflight": {
+          "command": "make preflight",
+          "return_code": 0,
+          "stdout": "\ud83d\ude80 Running preflight release checks...\npython scripts/preflight_release_check.py\n\ud83d\ude80 Running Preflight Release Checks...\n\u23f0 Timestamp: 2025-08-14T08:45:30.372688+00:00\n\n\ud83d\udcca Preflight Check Results:\n   Total Checks: 8\n   \u2705 Passed: 6\n   \u26a0\ufe0f  Warnings: 2\n   \u274c Failed: 0\n\ud83d\udccb Audit: artifacts/audit/2025-08-14T08_45_30.863564+00_00_preflight.json\n\n\u26a0\ufe0f  PREFLIGHT PASSED WITH WARNINGS\n   \u2022 git_status\n   \u2022 exporter_version\n",
+          "stderr": "Makefile:452: warning: overriding commands for target `go-live'\nMakefile:258: warning: ignoring old commands for target `go-live'\n",
+          "success": true
+        },
+        "ab_evaluation": {
+          "command": "make ab",
+          "return_code": 0,
+          "stdout": "\ud83d\udcca Running A/B evaluation...\nPYTHONPATH=/Users/yanzewu/PycharmProjects/NLP_Final_Project_D python analysis/ab_eval.py --baseline data/baseline_metrics.csv --policy data/policy_shadow_metrics.csv --out artifacts/ab\nLoading baseline data from: data/baseline_metrics.csv\nLoading policy data from: data/policy_shadow_metrics.csv\nMerging datasets on time...\nComputing PnL delta...\nSample size: 5\nRunning bootstrap analysis...\nAnalyzing secondary metrics...\n\u2705 A/B evaluation complete:\n   Verdict: PASS\n   PnL Delta: 0.0002 [0.0002, 0.0002]\n   Effect Size: 9525857678563660.000\n   Sample Size: 5\n   Results: artifacts/ab/20250814_084531Z/ab_results.json\n   Report: artifacts/ab/20250814_084531Z/ab_report.md\nPASS\n",
+          "stderr": "Makefile:452: warning: overriding commands for target `go-live'\nMakefile:258: warning: ignoring old commands for target `go-live'\n",
+          "success": true
+        },
+        "validation": {
+          "command": "make validate-48h-now",
+          "return_code": 0,
+          "stdout": "\ud83d\udd04 Running 48h validation cycle now...\npython scripts/schedule_validation.py\n\ud83d\ude80 Starting 48h RL Validation Cycle\n\ud83d\udcc1 Artifact root: artifacts\n\ud83d\udcc5 Timestamp: 2025-08-14T08:45:31.611050+00:00\n\ud83d\udce6 Created artifact directory: artifacts/20250814_084531Z/rl\n\ud83d\udcc2 Working directory: /Users/yanzewu/PycharmProjects/NLP_Final_Project_D\n\n\ud83d\udea6 Running offline gate evaluation...\nGate command exit code: 1\n\ud83d\udccb Gate stdout:\nape: (16,)\n  Episode 30/32 complete\nStarting episode 31/32\nReset successful, obs shape: (16,)\nStarting episode 32/32\nReset successful, obs shape: (16,)\n\u2705 Metrics saved to: artifacts/20250814_164531/rl/eval.json\n\u2705 Report saved to: artifacts/20250814_164531/rl/eval.md\n\n\ud83d\udcca Evaluation Summary:\n   Return: -187.742876 \u00b1 54.112910\n   Entropy: 1.421\n   Q-Spread: 34.4\n   NaN Detected: False\n\ud83d\udea6 Running gate check...\n\ud83d\udd0d Checking gate: sol_offline_gate\n\ud83d\udcca Eval results from: artifacts/20250814_164531/rl/eval.json\n\u26a0\ufe0f  No baseline found at: artifacts/last_good/rl/eval.json\n\n\ud83d\udea6 Applying gate rules...\n   Episodes: 32 >= 24 \u2705\n   Entropy: 1.421 in [1.0,2.0] \u2705\n   No NaNs: True \u2705\n   Grad Norm P95: 1.137 <= 1.25 \u2705\n   Return: -187.742876 >= -0.050000 \u274c\n   Q-Spread: 34.4 <= 68.8 \u2705\n\ud83d\udcdd Report saved to: artifacts/20250814_164531/rl/gate_report.md\n\n\ud83c\udfc1 Final Result:\n   \u274c GATE_FAIL: 1 check(s) failed\n      - return_mean -187.742876 < baseline 0.000000 + -0.05\nGATE_FAIL: return_mean -187.742876 < baseline 0.000000 + -0.05\n\n\ud83d\udcc4 Looking for gate report: artifacts/20250814_164531/rl/gate_report.md\n\u2705 Loaded gate report (367 chars)\n\ud83c\udfc1 Gate evaluation result: FAIL\n\u274c Gate FAILED - baseline unchanged\n\n\ud83d\udcf1 Preparing Slack notification...\n\u2139\ufe0f  No SLACK_WEBHOOK_URL configured, skipping notification\n\n\ud83d\udcdd Writing validation index...\n\u2705 Validation index written to: artifacts/20250814_084531Z/rl/index.md\n\n\ud83c\udfc1 48h Validation Cycle Complete\n   Status: FAIL\n   Artifacts: artifacts/20250814_084531Z/rl\n   Baseline: unchanged\n   Slack: \u274c\n",
+          "stderr": "Makefile:452: warning: overriding commands for target `go-live'\nMakefile:258: warning: ignoring old commands for target `go-live'\n",
+          "success": true
+        },
+        "unit_tests": {
+          "command": "make test",
+          "return_code": 2,
+          "stdout": "\ud83e\uddea Running Trading System Tests...\npython -m pytest tests/ -v --tb=short\n============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.1, pluggy-1.6.0 -- /Users/yanzewu/PycharmProjects/NLP_Final_Project_D/venv/bin/python\ncachedir: .pytest_cache\nrootdir: /Users/yanzewu/PycharmProjects/NLP_Final_Project_D\nplugins: anyio-4.9.0\ncollecting ... collected 341 items / 5 errors\n\n==================================== ERRORS ====================================\n______________ ERROR collecting tests/benchmarks/test_latency.py _______________\nImportError while importing test module '/Users/yanzewu/PycharmProjects/NLP_Final_Project_D/tests/benchmarks/test_latency.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/importlib/__init__.py:127: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\ntests/benchmarks/test_latency.py:25: in <module>\n    from src.models.onnx_runner import ONNXRunner, ModelManager\nsrc/models/onnx_runner.py:24: in <module>\n    import onnxruntime as ort\nE   ModuleNotFoundError: No module named 'onnxruntime'\n_______________ ERROR collecting tests/test_advanced_ensemble.py _______________\nImportError while importing test module '/Users/yanzewu/PycharmProjects/NLP_Final_Project_D/tests/test_advanced_ensemble.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/importlib/__init__.py:127: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\ntests/test_advanced_ensemble.py:14: in <module>\n    from src.layers.layer2_ensemble.ensemble_integrator import EnsembleIntegrator, EnsembleConfig\nsrc/layers/layer2_ensemble/ensemble_integrator.py:18: in <module>\n    from ..layer1_alpha_models.mean_reversion import MeanReversionAlpha\nE   ModuleNotFoundError: No module named 'src.layers.layer1_alpha_models.mean_reversion'\n------------------------------- Captured stdout --------------------------------\n2025-08-14 16:45:34,444 - root - INFO - Logging initialized - Level: INFO, File: logs/trading.log\n__________________ ERROR collecting tests/test_explain_api.py __________________\nImportError while importing test module '/Users/yanzewu/PycharmProjects/NLP_Final_Project_D/tests/test_explain_api.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/importlib/__init__.py:127: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\ntests/test_explain_api.py:19: in <module>\n    from src.services.explain_middleware import ExplainService, OrderEvent, TradeExplanation\nsrc/services/explain_middleware.py:23: in <module>\n    from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST\nE   ImportError: cannot import name 'CONTENT_TYPE_LATEST' from 'prometheus_client' (/Users/yanzewu/PycharmProjects/NLP_Final_Project_D/prometheus_client.py)\n__________________ ERROR collecting tests/test_onnx_runner.py __________________\nImportError while importing test module '/Users/yanzewu/PycharmProjects/NLP_Final_Project_D/tests/test_onnx_runner.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/importlib/__init__.py:127: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\ntests/test_onnx_runner.py:20: in <module>\n    from src.models.onnx_runner import ONNXRunner, ModelManager, get_model_manager\nsrc/models/onnx_runner.py:24: in <module>\n    import onnxruntime as ort\nE   ModuleNotFoundError: No module named 'onnxruntime'\n_______________ ERROR collecting tests/test_session_pipeline.py ________________\nImportError while importing test module '/Users/yanzewu/PycharmProjects/NLP_Final_Project_D/tests/test_session_pipeline.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/importlib/__init__.py:127: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\ntests/test_session_pipeline.py:10: in <module>\n    from src.layers.layer3_position_sizing.kelly_sizer import KellySizer\nE   ModuleNotFoundError: No module named 'src.layers.layer3_position_sizing.kelly_sizer'\n=============================== warnings summary ===============================\nsrc/layers/layer0_data_ingestion/nownodes_ws.py:15\n  /Users/yanzewu/PycharmProjects/NLP_Final_Project_D/src/layers/layer0_data_ingestion/nownodes_ws.py:15: DeprecationWarning: websockets.exceptions.InvalidStatusCode is deprecated\n    from websockets.exceptions import (\n\nvenv/lib/python3.9/site-packages/websockets/legacy/__init__.py:6\n  /Users/yanzewu/PycharmProjects/NLP_Final_Project_D/venv/lib/python3.9/site-packages/websockets/legacy/__init__.py:6: DeprecationWarning: websockets.legacy is deprecated; see https://websockets.readthedocs.io/en/stable/howto/upgrade.html for upgrade instructions\n    warnings.warn(  # deprecated in 14.0 - 2024-11-09\n\nsrc/layers/layer0_data_ingestion/nownodes_ws.py:132\n  /Users/yanzewu/PycharmProjects/NLP_Final_Project_D/src/layers/layer0_data_ingestion/nownodes_ws.py:132: DeprecationWarning: websockets.WebSocketServerProtocol is deprecated\n    ) -> Optional[websockets.WebSocketServerProtocol]:\n\ntests/test_binance_ws.py:12\n  /Users/yanzewu/PycharmProjects/NLP_Final_Project_D/tests/test_binance_ws.py:12: PytestUnknownMarkWarning: Unknown pytest.mark.asyncio - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.asyncio\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nERROR tests/benchmarks/test_latency.py\nERROR tests/test_advanced_ensemble.py\nERROR tests/test_explain_api.py\nERROR tests/test_onnx_runner.py\nERROR tests/test_session_pipeline.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 5 errors during collection !!!!!!!!!!!!!!!!!!!!\n======================== 4 warnings, 5 errors in 4.01s =========================\n",
+          "stderr": "Makefile:452: warning: overriding commands for target `go-live'\nMakefile:258: warning: ignoring old commands for target `go-live'\nmake: *** [test] Error 2\n",
+          "success": false
+        },
+        "smoke_tests": {
+          "command": "make smoke",
+          "return_code": 2,
+          "stdout": "",
+          "stderr": "Makefile:452: warning: overriding commands for target `go-live'\nMakefile:258: warning: ignoring old commands for target `go-live'\nmake: *** No rule to make target `smoke'.  Stop.\n",
+          "success": false
+        }
+      },
+      "passed": 3,
+      "total": 5,
+      "pass_rate": 0.6,
+      "overall_status": "FAIL"
+    },
+    "performance": {
+      "entropy": null,
+      "q_spread": null,
+      "heartbeat_age": null,
+      "alerts_count": 1,
+      "status": "UNAVAILABLE",
+      "error": "HTTPConnectionPool(host='localhost', port=9100): Max retries exceeded with url: /metrics (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x10164ea90>: Failed to establish a new connection: [Errno 61] Connection refused'))"
+    },
+    "infrastructure": {
+      "disk_space": "240.5 GB free",
+      "memory_usage": "82.2% used",
+      "services_running": [
+        "redis",
+        "grafana"
+      ],
+      "redis_available": true,
+      "exporter_available": false,
+      "status": "READY"
+    },
+    "security": {
+      "sbom_available": true,
+      "sbom_signed": true,
+      "audit_trails": 24,
+      "secrets_status": "pass",
+      "status": "COMPLIANT"
+    },
+    "operational": {
+      "runbook_available": true,
+      "monitoring_configured": true,
+      "alerts_configured": true,
+      "rollback_procedures": true,
+      "status": "READY"
+    },
+    "approvals": {
+      "model_risk_approval": "unknown",
+      "trading_risk_approval": "unknown",
+      "technology_approval": "unknown",
+      "final_signoff": "unknown",
+      "status": "PENDING"
+    }
+  },
+  "summary": {
+    "overall_score": 59.0,
+    "recommendation": "NO GO - Critical issues must be resolved",
+    "confidence": "HIGH",
+    "component_scores": [
+      {
+        "component": "Release Gates",
+        "score": 60.0,
+        "weight": 0.4
+      },
+      {
+        "component": "Model Performance",
+        "score": 0,
+        "weight": 0.25
+      },
+      {
+        "component": "Infrastructure",
+        "score": 100,
+        "weight": 0.15
+      },
+      {
+        "component": "Security",
+        "score": 100,
+        "weight": 0.15
+      },
+      {
+        "component": "Operational",
+        "score": 100,
+        "weight": 0.05
+      }
+    ],
+    "critical_blockers": [
+      "Failed release gates: unit_tests, smoke_tests",
+      "Model performance issues: UNAVAILABLE"
+    ],
+    "next_steps": [
+      "\u274c Do not proceed with deployment",
+      "\ud83d\udd27 Resolve all critical blockers",
+      "\ud83d\udd04 Re-run complete assessment after fixes"
+    ]
+  }
+}

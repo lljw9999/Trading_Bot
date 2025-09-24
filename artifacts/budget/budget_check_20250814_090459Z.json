@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-08-14T09:04:59.754192+00:00",
+  "budget_policy": {
+    "daily_loss_usd": 1000,
+    "weekly_loss_usd": 3000,
+    "monthly_cost_usd": 2500
+  },
+  "checks": {},
+  "breaches": [
+    "daily_loss"
+  ],
+  "actions_taken": [
+    "kill_switch: SUCCESS",
+    "audit_written: artifacts/audit/2025-08-14T09_04_59.825676+00_00_budget_trip.json",
+    "slack_alert: FAILED"
+  ],
+  "synthetic_test": true
+}

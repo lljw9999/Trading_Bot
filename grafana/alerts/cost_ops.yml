@@ -1,0 +1,115 @@
+groups:
+  - name: cost_ops_alerts
+    rules:
+      - alert: CostSpike
+        expr: aws_cost_spike_pct > 50
+        for: 15m
+        labels:
+          severity: warning
+          component: cost_monitoring
+        annotations:
+          summary: "AWS cost spike detected"
+          description: "Week-over-week cost increase of {{ $value }}% exceeds 50% threshold. Current daily cost trend requires investigation."
+          dashboard: "http://localhost:3000/d/cost-monitoring/aws-cost-monitoring"
+          runbook: "https://github.com/project/runbooks/cost-spike.md"
+        
+      - alert: CostSpikeHigh
+        expr: aws_cost_spike_pct > 100
+        for: 5m
+        labels:
+          severity: critical
+          component: cost_monitoring
+        annotations:
+          summary: "Critical AWS cost spike detected"
+          description: "Week-over-week cost increase of {{ $value }}% exceeds 100% threshold. Immediate investigation required."
+          dashboard: "http://localhost:3000/d/cost-monitoring/aws-cost-monitoring"
+          runbook: "https://github.com/project/runbooks/cost-spike.md"
+          action: "Consider emergency resource review"
+      
+      - alert: GPUIdleWaste
+        expr: |
+          (
+            aws_gpu_instances_idle > 0 
+            and 
+            aws_gpu_idle_cost_estimate_usd > 50
+          )
+        for: 30m
+        labels:
+          severity: warning
+          component: resource_optimization
+        annotations:
+          summary: "GPU instances potentially idle and wasting cost"
+          description: "{{ $value }} GPU instances appear idle for >2 hours with estimated waste of ${{ query \"aws_gpu_idle_cost_estimate_usd\" | first | value }}. Consider shutdown."
+          dashboard: "http://localhost:3000/d/gpu-monitoring/gpu-resource-monitoring"
+          runbook: "https://github.com/project/runbooks/gpu-idle-waste.md"
+          action: "Review GPU utilization and consider instance termination"
+      
+      - alert: HighDailyCost  
+        expr: aws_cost_daily_usd > 200
+        for: 1h
+        labels:
+          severity: warning
+          component: cost_monitoring
+        annotations:
+          summary: "High daily AWS cost detected"
+          description: "Daily cost of ${{ $value }} exceeds $200 threshold. Review resource usage."
+          dashboard: "http://localhost:3000/d/cost-monitoring/aws-cost-monitoring"
+          runbook: "https://github.com/project/runbooks/high-daily-cost.md"
+      
+      - alert: CostExporterDown
+        expr: aws_cost_exporter_up == 0
+        for: 5m
+        labels:
+          severity: critical
+          component: monitoring
+        annotations:
+          summary: "AWS cost exporter is down"
+          description: "Cost monitoring is unavailable. Cannot track spending or detect cost spikes."
+          runbook: "https://github.com/project/runbooks/cost-exporter-down.md"
+          action: "Restart cost exporter service"
+      
+      - alert: MonthlyBudgetWarning
+        expr: aws_cost_daily_usd * 30 > 5000
+        for: 2h
+        labels:
+          severity: warning
+          component: budget_monitoring
+        annotations:
+          summary: "Monthly budget projection warning"
+          description: "Current daily spending projects to ${{ $value }} monthly, exceeding $5000 budget."
+          dashboard: "http://localhost:3000/d/cost-monitoring/aws-cost-monitoring"
+          runbook: "https://github.com/project/runbooks/budget-projection.md"
+          
+  - name: resource_efficiency_alerts
+    rules:
+      - alert: HighCostPerTradeRatio
+        expr: |
+          (
+            aws_cost_daily_usd / 
+            (
+              rate(trade_executions_total[1d]) * 86400 + 1
+            )
+          ) > 5.0
+        for: 1h
+        labels:
+          severity: warning
+          component: cost_efficiency
+        annotations:
+          summary: "High cost per trade ratio detected"
+          description: "Cost per trade of ${{ $value }} exceeds $5 threshold. Review trading efficiency."
+          dashboard: "http://localhost:3000/d/trading-efficiency/cost-per-trade"
+          
+      - alert: UnderUtilizedResources
+        expr: |
+          (
+            aws_gpu_instances_running > 0 
+            and 
+            rate(model_inference_total[1h]) < 10
+          )
+        for: 2h
+        labels:
+          severity: info
+          component: resource_optimization
+        annotations:
+          summary: "GPU resources may be under-utilized"
+          description: "{{ query \"aws_gpu_instances_running\" | first | value }} GPU instances running but inference rate <10/hour"

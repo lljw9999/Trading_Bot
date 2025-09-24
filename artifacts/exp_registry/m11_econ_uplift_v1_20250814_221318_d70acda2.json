@@ -1,0 +1,107 @@
+{
+  "experiment_id": "m11_econ_uplift_v1_20250814_221318_d70acda2",
+  "name": "m11_econ_uplift_v1",
+  "created_at": "2025-08-14T22:13:18.073924Z",
+  "status": "INITIALIZED",
+  "config": {
+    "experiment": {
+      "name": "m11_econ_uplift_v1",
+      "assets": [
+        "SOL-USD",
+        "BTC-USD",
+        "ETH-USD",
+        "NVDA"
+      ],
+      "design": "switchback",
+      "block_minutes": 60,
+      "horizon_days": 14,
+      "min_days": 7,
+      "metrics": {
+        "primary": "net_pnl_usd_per_hour",
+        "secondaries": [
+          "slip_bps_p95",
+          "is_bps",
+          "fill_ratio",
+          "cost_ratio"
+        ]
+      },
+      "cuped_covariates": [
+        "pre_pnl",
+        "vol_5m",
+        "spread_bps",
+        "volume"
+      ],
+      "met_uplift_usd_per_day": 50,
+      "alpha": 0.05,
+      "power_target": 0.8,
+      "exclude_windows": [
+        {
+          "tz": "UTC",
+          "dow": [
+            6,
+            0
+          ],
+          "hours": [
+            0,
+            6
+          ]
+        }
+      ]
+    },
+    "governance": {
+      "require_go_flag": true,
+      "require_clean_alert_hours": 48,
+      "kri_guards": {
+        "entropy_floor": 0.9,
+        "qspread_ratio_max": 2.0
+      },
+      "cost_gate_ratio_max": 0.3
+    },
+    "artifacts_dir": "artifacts/experiments/m11_econ_uplift_v1"
+  },
+  "assets": [
+    "SOL-USD",
+    "BTC-USD",
+    "ETH-USD",
+    "NVDA"
+  ],
+  "design": "switchback",
+  "horizon_days": 14,
+  "min_days": 7,
+  "metrics": {
+    "primary": "net_pnl_usd_per_hour",
+    "secondaries": [
+      "slip_bps_p95",
+      "is_bps",
+      "fill_ratio",
+      "cost_ratio"
+    ]
+  },
+  "governance": {
+    "require_go_flag": true,
+    "require_clean_alert_hours": 48,
+    "kri_guards": {
+      "entropy_floor": 0.9,
+      "qspread_ratio_max": 2.0
+    },
+    "cost_gate_ratio_max": 0.3
+  },
+  "artifacts_dir": "artifacts/experiments/m11_econ_uplift_v1_20250814_221318_d70acda2",
+  "audit_trail": [
+    {
+      "timestamp": "2025-08-14T22:13:18.074031Z",
+      "action": "CREATED",
+      "description": "Experiment initialized",
+      "metadata": {
+        "config_path": "experiments/live_econ_exp.yaml",
+        "assets": [
+          "SOL-USD",
+          "BTC-USD",
+          "ETH-USD",
+          "NVDA"
+        ],
+        "horizon_days": 14
+      }
+    }
+  ]
+}

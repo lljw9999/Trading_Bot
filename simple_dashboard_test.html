@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Dashboard Test</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .price-display {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+        .loading {
+            color: orange;
+        }
+        .loaded {
+            color: lime;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Dashboard Data Loading Test</h1>
+    
+    <div id="status" class="loading">Loading data...</div>
+    
+    <div class="price-display">
+        BTC Price: <span id="btcPrice">$0.00</span>
+    </div>
+    
+    <div class="price-display">
+        ETH Price: <span id="ethPrice">$0.00</span>
+    </div>
+    
+    <div class="price-display">
+        BTC Position: <span id="btcPosition">0.000000</span>
+    </div>
+    
+    <div class="price-display">
+        ETH Position: <span id="ethPosition">0.000000</span>
+    </div>
+    
+    <div class="price-display">
+        Last Update: <span id="lastUpdate">Never</span>
+    </div>
+    
+    <div id="chart" style="width:100%;height:400px;margin-top:20px;"></div>
+    
+    <script>
+        console.log('Script started');
+        
+        class SimpleTest {
+            constructor() {
+                this.updateCounter = 0;
+                this.loadData();
+                this.startUpdates();
+            }
+            
+            async loadData() {
+                console.log('Loading data...');
+                const status = document.getElementById('status');
+                
+                try {
+                    // Test BTC data
+                    const btcResponse = await fetch('/api/data/BTCUSDT');
+                    console.log('BTC Response status:', btcResponse.status);
+                    
+                    if (btcResponse.ok) {
+                        const btcData = await btcResponse.json();
+                        console.log('BTC Data:', btcData);
+                        
+                        // Update BTC price
+                        document.getElementById('btcPrice').textContent = `$${btcData.current_price.toFixed(2)}`;
+                        
+                        // Update BTC position
+                        if (btcData.pnl_data) {
+                            document.getElementById('btcPosition').textContent = btcData.pnl_data.position_size.toFixed(6);
+                        }
+                    }
+                    
+                    // Test ETH data
+                    const ethResponse = await fetch('/api/data/ETHUSDT');
+                    console.log('ETH Response status:', ethResponse.status);
+                    
+                    if (ethResponse.ok) {
+                        const ethData = await ethResponse.json();
+                        console.log('ETH Data:', ethData);
+                        
+                        // Update ETH price
+                        document.getElementById('ethPrice').textContent = `$${ethData.current_price.toFixed(2)}`;
+                        
+                        // Update ETH position
+                        if (ethData.pnl_data) {
+                            document.getElementById('ethPosition').textContent = ethData.pnl_data.position_size.toFixed(6);
+                        }
+                    }
+                    
+                    status.textContent = 'Data loaded successfully!';
+                    status.className = 'loaded';
+                    
+                } catch (error) {
+                    console.error('Error loading data:', error);
+                    status.textContent = `Error: ${error.message}`;
+                    status.className = 'error';
+                }
+            }
+            
+            startUpdates() {
+                setInterval(() => {
+                    this.updateCounter++;
+                    document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
+                    console.log(`Update ${this.updateCounter} at ${new Date().toLocaleTimeString()}`);
+                    
+                    // Reload data every 5 seconds
+                    if (this.updateCounter % 5 === 0) {
+                        this.loadData();
+                    }
+                }, 1000);
+            }
+        }
+        
+        // Start the test when page loads
+        window.addEventListener('load', () => {
+            console.log('Page loaded, starting test...');
+            new SimpleTest();
+        });
+    </script>
+</body>
+</html>
