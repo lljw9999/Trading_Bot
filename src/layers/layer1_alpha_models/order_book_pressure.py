@@ -6,7 +6,7 @@ order book imbalance and pressure metrics.
 """
 
 import numpy as np
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Tuple, Optional, Dict, Any
 from decimal import Decimal
 from sklearn.linear_model import LogisticRegression
@@ -75,11 +75,11 @@ class OrderBookPressure:
             try:
                 timestamp_dt = datetime.fromisoformat(timestamp)
             except ValueError:
-                timestamp_dt = datetime.utcnow()
+                timestamp_dt = datetime.now(timezone.utc)
         elif isinstance(timestamp, datetime):
             timestamp_dt = timestamp
         else:
-            timestamp_dt = datetime.utcnow()
+            timestamp_dt = datetime.now(timezone.utc)
 
         price = getattr(data, "mid", None) or getattr(data, "price", None)
         mid_price = Decimal(str(price)) if price is not None else None
@@ -139,7 +139,7 @@ class OrderBookPressure:
                 edge_bps, confidence = self._heuristic_prediction(snapshot)
 
             self.prediction_count += 1
-            self.last_prediction_time = datetime.utcnow()
+            self.last_prediction_time = datetime.now(timezone.utc)
 
             self.logger.debug(
                 f"Prediction for {snapshot.symbol}: "
@@ -309,7 +309,7 @@ class OrderBookPressure:
                 "metadata": {
                     "model_name": self.model_name,
                     "prediction_count": self.prediction_count,
-                    "trained_at": datetime.utcnow().isoformat(),
+                    "trained_at": datetime.now(timezone.utc).isoformat(),
                 },
             }
 

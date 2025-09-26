@@ -9,7 +9,7 @@ import sys
 import time
 import json
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, Any, Optional
 
@@ -46,7 +46,7 @@ class CapitalRampGuard:
             history = {}
 
             for i in range(days):
-                date = datetime.utcnow() - timedelta(days=i)
+                date = datetime.now(timezone.utc) - timedelta(days=i)
                 date_str = date.strftime("%Y-%m-%d")
 
                 # Try to get greenlight result from Redis

@@ -10,7 +10,7 @@ import asyncio
 import argparse
 import sys
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from decimal import Decimal
 import time
 import json
@@ -150,7 +150,7 @@ class SmokeBacktest:
                 symbol=self.symbol,
                 exchange="synthetic",
                 asset_type="crypto",
-                timestamp=datetime.utcnow(),
+                timestamp=datetime.now(timezone.utc),
                 bid=bid_price,
                 ask=ask_price,
                 last=current_price,

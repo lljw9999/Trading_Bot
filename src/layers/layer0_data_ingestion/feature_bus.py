@@ -9,7 +9,7 @@ import asyncio
 import json
 import time
 from collections import deque, defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from typing import Dict, Any, Optional, Deque
 import numpy as np
@@ -74,7 +74,7 @@ class FeatureBus:
     ):
         """Update sentiment score for a symbol."""
         if timestamp is None:
-            timestamp = datetime.utcnow()
+            timestamp = datetime.now(timezone.utc)
 
         self.sentiment_history[symbol].append((timestamp, sentiment_score))
         self.logger.debug(f"Updated sentiment for {symbol}: {sentiment_score:.3f}")
@@ -84,7 +84,7 @@ class FeatureBus:
     ):
         """Update fundamental P/E ratio for a symbol."""
         if timestamp is None:
-            timestamp = datetime.utcnow()
+            timestamp = datetime.now(timezone.utc)
 
         self.fundamental_history[symbol].append((timestamp, pe_ratio))
         self.logger.debug(f"Updated P/E for {symbol}: {pe_ratio:.2f}")
@@ -511,7 +511,7 @@ class FeatureBusManager:
                 symbol=data["symbol"],
                 exchange=data["exchange"],
                 asset_type="crypto",
-                timestamp=datetime.utcnow(),
+                timestamp=datetime.now(timezone.utc),
                 bid=Decimal(str(data["bid"])) if data.get("bid") else None,
                 ask=Decimal(str(data["ask"])) if data.get("ask") else None,
                 bid_size=(
@@ -567,7 +567,7 @@ async def test_feature_bus():
             symbol="BTC-USD",
             exchange="test",
             asset_type="crypto",
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             bid=price - Decimal("5"),
             ask=price + Decimal("5"),
             volume=Decimal("100"),

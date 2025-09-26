@@ -7,7 +7,7 @@ import os
 import sys
 import json
 import yaml
-import datetime
+from datetime import datetime, timezone, timedelta
 import argparse
 import numpy as np
 import pandas as pd
@@ -186,7 +186,7 @@ class ExperimentMetricsCollector:
         metrics_file = daily_dir / f"metrics_{date_str}_{hour_str}.json"
 
         metrics_data = {
-            "collection_time": datetime.datetime.utcnow().isoformat() + "Z",
+            "collection_time": datetime.now(timezone.utc).isoformat() + "Z",
             "hour_start": hour_start.isoformat() + "Z",
             "experiment": self.exp_config["name"],
             "metrics": metrics,
@@ -300,7 +300,7 @@ class ExperimentMetricsCollector:
     def collect_current_hour(self) -> Dict[str, Any]:
         """Collect metrics for current hour."""
 
-        now = datetime.datetime.utcnow()
+        now = datetime.now(timezone.utc)
         hour_start = now.replace(minute=0, second=0, microsecond=0)
 
         print(
@@ -362,12 +362,12 @@ def main():
         if args.simulate_day:
             print("🔄 Simulating full day collection...")
 
-            start_hour = datetime.datetime.utcnow().replace(
+            start_hour = datetime.now(timezone.utc).replace(
                 minute=0, second=0, microsecond=0
-            ) - datetime.timedelta(hours=23)
+            ) - timedelta(hours=23)
 
             for hour_offset in range(24):
-                hour_start = start_hour + datetime.timedelta(hours=hour_offset)
+                hour_start = start_hour + timedelta(hours=hour_offset)
 
                 # Collect for this hour
                 metrics = collector.collect_trading_metrics(hour_start)
@@ -380,7 +380,7 @@ def main():
             return 0
 
         elif args.hour:
-            target_hour = datetime.datetime.strptime(args.hour, "%Y-%m-%d-%H")
+            target_hour = datetime.strptime(args.hour, "%Y-%m-%d-%H")
             print(
                 f"📊 Collecting metrics for {target_hour.strftime('%Y-%m-%d %H:00')}..."
             )

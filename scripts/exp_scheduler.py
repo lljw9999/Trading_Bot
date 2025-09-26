@@ -8,7 +8,7 @@ import sys
 import json
 import yaml
 import random
-import datetime
+from datetime import datetime, timezone, time
 import argparse
 from pathlib import Path
 from typing import Dict, List, Tuple, Any
@@ -57,7 +57,7 @@ class SwitchbackScheduler:
         block_minutes = self.exp_config["block_minutes"]
         blocks = []
 
-        current_dt = datetime.datetime.combine(start_date, datetime.time(0, 0))
+        current_dt = datetime.combine(start_date, time(0, 0))
         end_dt = current_dt + datetime.timedelta(days=num_days)
 
         while current_dt < end_dt:
@@ -188,7 +188,7 @@ class SwitchbackScheduler:
         assignment_data = {
             "date": target_date.isoformat(),
             "experiment": self.exp_config["name"],
-            "generated_at": datetime.datetime.utcnow().isoformat() + "Z",
+            "generated_at": datetime.now(timezone.utc).isoformat() + "Z",
             "block_minutes": self.exp_config["block_minutes"],
             "assignments": assignments,
             "summary": self.generate_assignment_summary(assignments),
@@ -295,7 +295,7 @@ def main():
 
         # Generate assignments for target date
         if args.date:
-            target_date = datetime.datetime.strptime(args.date, "%Y-%m-%d").date()
+            target_date = datetime.strptime(args.date, "%Y-%m-%d").date()
         else:
             target_date = datetime.date.today()
 

@@ -7,7 +7,7 @@ Tag alphas as boost/fade/pause based on performance.
 import os
 import sys
 import json
-import datetime
+from datetime import datetime, timezone, timedelta
 import pathlib
 import numpy as np
 import pandas as pd
@@ -37,7 +37,7 @@ class AlphaMetrics:
 class AlphaAttributor:
     def __init__(self, window_days: int = 14):
         self.window_days = window_days
-        self.cutoff_date = datetime.datetime.now() - datetime.timedelta(
+        self.cutoff_date = datetime.now() - timedelta(
             days=window_days
         )
 
@@ -57,7 +57,7 @@ class AlphaAttributor:
 
         # Generate synthetic signal history
         dates = pd.date_range(
-            end=datetime.datetime.now(), periods=self.window_days * 24, freq="H"
+            end=datetime.now(), periods=self.window_days * 24, freq="H"
         )
 
         for alpha in alpha_names:
@@ -391,7 +391,7 @@ def generate_report_json(
 ) -> Dict[str, Any]:
     """Generate JSON report."""
     return {
-        "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
         "analysis_metadata": metadata,
         "alpha_metrics": [
             {
@@ -421,7 +421,7 @@ def generate_report_markdown(
 
     md = f"""# Alpha Attribution Analysis
 
-**Analysis Date:** {datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}  
+**Analysis Date:** {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}  
 **Window:** {summary['analysis_window_days']} days  
 **Total Alphas:** {summary['total_alphas']}
 
@@ -523,7 +523,7 @@ def main():
 
     try:
         # Create output directory
-        timestamp = datetime.datetime.utcnow().strftime("%Y%m%d_%H%M%SZ")
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%SZ")
         output_dir = Path(args.out) / timestamp
         output_dir.mkdir(parents=True, exist_ok=True)
 

@@ -6,6 +6,7 @@ Automated off-site backup of model deltas and Redis data
 
 import boto3
 import datetime
+from datetime import timezone
 import os
 import subprocess
 import logging
@@ -33,7 +34,7 @@ class TradingBotBackup:
         """
         self.bucket_name = bucket_name
         self.region = region
-        self.date_stamp = datetime.datetime.utcnow().strftime("%F-%H%M")
+        self.date_stamp = datetime.datetime.now(timezone.utc).strftime("%F-%H%M")
 
         try:
             self.s3 = boto3.client("s3", region_name=region)

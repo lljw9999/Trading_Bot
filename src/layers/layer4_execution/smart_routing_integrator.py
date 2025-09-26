@@ -7,7 +7,7 @@ providing a unified interface for multi-exchange execution.
 """
 
 import asyncio
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 from typing import Dict, List, Optional, Any
 import json
@@ -199,7 +199,7 @@ class SmartRoutingIntegrator:
 
             # Record routing decision
             routing_decision = {
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "symbol": symbol,
                 "order_size_dollars": float(size),
                 "routing_method": "smart",
@@ -254,7 +254,7 @@ class SmartRoutingIntegrator:
                 symbol, current_price
             )
             routing_decision = {
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "symbol": symbol,
                 "order_size_dollars": float(abs(position_delta)),
                 "routing_method": "traditional",

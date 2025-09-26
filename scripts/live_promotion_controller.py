@@ -10,7 +10,7 @@ import json
 import time
 import logging
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 # Add project root to path
@@ -240,7 +240,7 @@ class LivePromotionController:
             # Store promotion record
             promotion_record = {
                 "feature": feature,
-                "promoted_at": datetime.utcnow().isoformat(),
+                "promoted_at": datetime.now(timezone.utc).isoformat(),
                 "consecutive_passes": self.get_last_4_passes(feature),
                 "evaluation_summary": evaluation,
                 "controller": "live_promotion_controller",

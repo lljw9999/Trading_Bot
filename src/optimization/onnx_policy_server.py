@@ -10,6 +10,7 @@ import time
 import json
 import logging
 import asyncio
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Tuple
 from concurrent.futures import ThreadPoolExecutor
@@ -436,27 +437,14 @@ class ONNXPolicyServer:
             return {"error": str(e)}
 
 
-# FastAPI app
-app = FastAPI(
-    title="ONNX Policy Server",
-    description="High-performance policy inference using ONNX",
-    version="1.0.0",
-)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["GET", "POST"],
-    allow_headers=["*"],
-)
-
 # Global server instance
 policy_server = ONNXPolicyServer()
 
 
-@app.on_event("startup")
-async def startup_event():
-    """Initialize models on startup."""
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Lifespan context manager for startup and shutdown."""
+    # Startup
     logger.info("🚀 Starting ONNX Policy Server...")
 
     # Try to load ONNX model first, fallback to PyTorch
@@ -465,6 +453,27 @@ async def startup_event():
         if not policy_server.load_pytorch_model():
             logger.error("❌ Both ONNX and PyTorch model loading failed")
             raise Exception("No model could be loaded")
+
+    yield
+
+    # Shutdown would go here if needed
+    logger.info("🔽 ONNX Policy Server shutting down")
+
+
+# FastAPI app
+app = FastAPI(
+    title="ONNX Policy Server",
+    description="High-performance policy inference using ONNX",
+    version="1.0.0",
+    lifespan=lifespan,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["GET", "POST"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/health")

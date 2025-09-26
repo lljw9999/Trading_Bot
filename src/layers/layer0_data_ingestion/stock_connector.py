@@ -6,7 +6,7 @@ Implements market data polling from IEX Cloud for stock data.
 
 import asyncio
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from typing import Optional, Dict, Any, AsyncIterator
 import aiohttp
@@ -39,7 +39,7 @@ class IEXStockConnector(BaseDataConnector):
         self.rate_limit = config.get(
             "data_ingestion.sources.stocks.iex.rate_limit", 100
         )
-        self.last_request_time = datetime.utcnow()
+        self.last_request_time = datetime.now(timezone.utc)
 
         self.logger.info(f"IEX connector initialized for {len(symbols)} symbols")
 
@@ -115,7 +115,7 @@ class IEXStockConnector(BaseDataConnector):
                                 yield {
                                     "symbol": symbol,
                                     "quote": symbol_data["quote"],
-                                    "timestamp": datetime.utcnow(),
+                                    "timestamp": datetime.now(timezone.utc),
                                 }
                     else:
                         self.logger.error(
@@ -185,7 +185,7 @@ class IEXStockConnector(BaseDataConnector):
 
     async def _rate_limit_delay(self) -> None:
         """Implement rate limiting for API requests."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         time_since_last = (now - self.last_request_time).total_seconds()
         min_interval = 1.0 / self.rate_limit  # seconds between requests
 
@@ -193,7 +193,7 @@ class IEXStockConnector(BaseDataConnector):
             delay = min_interval - time_since_last
             await asyncio.sleep(delay)
 
-        self.last_request_time = datetime.utcnow()
+        self.last_request_time = datetime.now(timezone.utc)
 
 
 async def test_iex_connector():

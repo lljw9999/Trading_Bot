@@ -9,7 +9,7 @@ import sys
 import time
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Any, Tuple
 
@@ -267,7 +267,7 @@ class MorningGreenlight:
 
             result = {
                 "timestamp": time.time(),
-                "date": datetime.utcnow().strftime("%Y-%m-%d"),
+                "date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
                 "overall_status": overall_status,
                 "status_emoji": status_emoji,
                 "weighted_score": final_score,
@@ -424,7 +424,7 @@ class MorningGreenlight:
             reports_dir.mkdir(parents=True, exist_ok=True)
 
             # Generate report filename
-            date_str = result.get("date", datetime.utcnow().strftime("%Y-%m-%d"))
+            date_str = result.get("date", datetime.now(timezone.utc).strftime("%Y-%m-%d"))
             report_file = reports_dir / f"greenlight_{date_str}.json"
 
             # Save result as JSON

@@ -16,7 +16,7 @@ Features:
 
 import asyncio
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from typing import Dict, List, Optional, Any, Tuple, NamedTuple
 from enum import Enum
@@ -66,7 +66,7 @@ class LiquidityLevel:
     size: Decimal
     cumulative_size: Decimal
     exchange: str
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -95,7 +95,7 @@ class ExecutionPlan:
     estimated_cost_bps: float
     estimated_fill_time_seconds: float
     confidence_score: float
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class SmartOrderRouter:

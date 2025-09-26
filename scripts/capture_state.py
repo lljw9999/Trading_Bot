@@ -12,7 +12,7 @@ import tarfile
 import tempfile
 import subprocess
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 
@@ -391,7 +391,7 @@ class StateCapture:
             state_bundle = {
                 "snapshot_metadata": {
                     "timestamp": time.time(),
-                    "datetime_utc": datetime.utcnow().isoformat() + "Z",
+                    "datetime_utc": datetime.now(timezone.utc).isoformat() + "Z",
                     "hostname": os.uname().nodename,
                     "system": os.uname().sysname,
                     "capture_version": "1.0.0",
@@ -459,7 +459,7 @@ class StateCapture:
         try:
             tarball_name = Path(tarball_path).name
             s3_key = (
-                f"incidents/{datetime.utcnow().strftime('%Y/%m/%d')}/{tarball_name}"
+                f"incidents/{datetime.now(timezone.utc).strftime('%Y/%m/%d')}/{tarball_name}"
             )
 
             self.s3_client.upload_file(tarball_path, self.config["s3_bucket"], s3_key)

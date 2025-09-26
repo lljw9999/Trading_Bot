@@ -7,7 +7,7 @@ import os
 import sys
 import json
 import yaml
-import datetime
+from datetime import datetime, timezone, timedelta
 import argparse
 import hashlib
 from pathlib import Path
@@ -32,7 +32,7 @@ class ExperimentRegistry:
     def generate_experiment_id(self) -> str:
         """Generate unique experiment ID."""
         exp_name = self.config["experiment"]["name"]
-        timestamp = datetime.datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
         config_hash = hashlib.md5(str(self.config).encode()).hexdigest()[:8]
         return f"{exp_name}_{timestamp}_{config_hash}"
 
@@ -47,7 +47,7 @@ class ExperimentRegistry:
         experiment = {
             "experiment_id": exp_id,
             "name": exp_config["name"],
-            "created_at": datetime.datetime.utcnow().isoformat() + "Z",
+            "created_at": datetime.now(timezone.utc).isoformat() + "Z",
             "status": "INITIALIZED",
             "config": self.config,
             "assets": exp_config["assets"],
@@ -122,7 +122,7 @@ class ExperimentRegistry:
 
         # Update status
         experiment["status"] = "RUNNING"
-        experiment["started_at"] = datetime.datetime.utcnow().isoformat() + "Z"
+        experiment["started_at"] = datetime.now(timezone.utc).isoformat() + "Z"
 
         # Add audit entry
         self.add_audit_entry(
@@ -153,13 +153,13 @@ class ExperimentRegistry:
 
         # Update status
         experiment["status"] = "STOPPED"
-        experiment["stopped_at"] = datetime.datetime.utcnow().isoformat() + "Z"
+        experiment["stopped_at"] = datetime.now(timezone.utc).isoformat() + "Z"
 
         # Calculate duration
-        started_at = datetime.datetime.fromisoformat(
+        started_at = datetime.fromisoformat(
             experiment["started_at"].replace("Z", "+00:00")
         )
-        stopped_at = datetime.datetime.fromisoformat(
+        stopped_at = datetime.fromisoformat(
             experiment["stopped_at"].replace("Z", "+00:00")
         )
         duration_hours = (stopped_at - started_at).total_seconds() / 3600
@@ -198,11 +198,11 @@ class ExperimentRegistry:
 
         if alert_files:
             # Check if any alerts in last N hours
-            cutoff = datetime.datetime.now() - datetime.timedelta(hours=clean_hours)
+            cutoff = datetime.now() - timedelta(hours=clean_hours)
             recent_alerts = []
 
             for alert_file in alert_files:
-                mtime = datetime.datetime.fromtimestamp(alert_file.stat().st_mtime)
+                mtime = datetime.fromtimestamp(alert_file.stat().st_mtime)
                 if mtime > cutoff:
                     recent_alerts.append(str(alert_file))
 
@@ -250,7 +250,7 @@ class ExperimentRegistry:
     ):
         """Add audit trail entry."""
         audit_entry = {
-            "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
             "action": action,
             "description": description,
             "metadata": metadata or {},
@@ -302,10 +302,10 @@ class ExperimentRegistry:
             status["started_at"] = experiment["started_at"]
 
             if experiment["status"] == "RUNNING":
-                started = datetime.datetime.fromisoformat(
+                started = datetime.fromisoformat(
                     experiment["started_at"].replace("Z", "+00:00")
                 )
-                now = datetime.datetime.now(datetime.timezone.utc)
+                now = datetime.now(timezone.utc)
                 status["running_hours"] = (now - started).total_seconds() / 3600
 
         if "stopped_at" in experiment:

@@ -6,7 +6,7 @@ Online logistic blend with regime features (vol bucket, trend, liquidity) and Th
 import os
 import sys
 import json
-import datetime
+from datetime import datetime, timezone
 import numpy as np
 import pandas as pd
 import redis
@@ -48,7 +48,7 @@ class OnlineMetaLearner:
             # In production: pull from market data feed
 
             # Mock regime detection
-            current_hour = datetime.datetime.now().hour
+            current_hour = datetime.now().hour
 
             # Vol bucket based on time of day (proxy for activity)
             if 9 <= current_hour <= 16:  # Market hours
@@ -68,7 +68,7 @@ class OnlineMetaLearner:
                 vol_bucket=vol_bucket,
                 trend=trend,
                 liquidity=liquidity,
-                timestamp=datetime.datetime.now(),
+                timestamp=datetime.now(),
             )
 
         except Exception as e:
@@ -77,7 +77,7 @@ class OnlineMetaLearner:
                 vol_bucket="medium",
                 trend=0.0,
                 liquidity=0.5,
-                timestamp=datetime.datetime.now(),
+                timestamp=datetime.now(),
             )
 
     def get_alpha_performance_data(self) -> pd.DataFrame:
@@ -94,7 +94,7 @@ class OnlineMetaLearner:
 
         # Generate synthetic performance data
         hours_ago = pd.date_range(
-            end=datetime.datetime.now(), periods=self.lookback_hours, freq="H"
+            end=datetime.now(), periods=self.lookback_hours, freq="H"
         )
 
         data = []
@@ -340,7 +340,7 @@ class OnlineMetaLearner:
 
             # Store metadata
             metadata = {
-                "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+                "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
                 "total_weight": sum(weights.values()),
                 "max_weight": max(weights.values()),
                 "min_weight": min(weights.values()),
@@ -363,7 +363,7 @@ class OnlineMetaLearner:
             model_dir = Path("artifacts/meta_learner")
             model_dir.mkdir(parents=True, exist_ok=True)
 
-            timestamp = datetime.datetime.utcnow().strftime("%Y%m%d_%H%M%SZ")
+            timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%SZ")
 
             # Save model and scaler
             model_path = model_dir / f"model_{timestamp}.pkl"
@@ -446,7 +446,7 @@ class OnlineMetaLearner:
 
             # Generate results
             results = {
-                "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+                "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
                 "regime": {
                     "vol_bucket": current_regime.vol_bucket,
                     "trend": current_regime.trend,
@@ -471,7 +471,7 @@ class OnlineMetaLearner:
 
         else:
             return {
-                "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+                "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
                 "status": "failed",
                 "error": training_results,
             }
@@ -490,7 +490,7 @@ def main():
 
     try:
         # Create output directory
-        timestamp = datetime.datetime.utcnow().strftime("%Y%m%d_%H%M%SZ")
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%SZ")
         output_dir = Path(args.output) / timestamp
         output_dir.mkdir(parents=True, exist_ok=True)
 

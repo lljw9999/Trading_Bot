@@ -10,7 +10,7 @@ import json
 import time
 import math
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
 
@@ -446,7 +446,7 @@ class TCAReport:
             # Header
             markdown = f"""# TCA & Venue Scorecard - {report_date}
 
-**Generated:** {datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")}
+**Generated:** {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")}
 **Period:** {datetime.fromtimestamp(start_time).strftime("%H:%M")} - {datetime.fromtimestamp(end_time).strftime("%H:%M")} UTC
 
 ## Executive Summary

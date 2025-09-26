@@ -9,7 +9,7 @@ import logging
 import numpy as np
 from typing import Dict, Optional, Tuple, Any
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 logger = logging.getLogger(__name__)
 
@@ -142,7 +142,7 @@ class TailRiskHedgeOverlay:
                 symbol=symbol,
                 size=size,
                 entry_price=current_price,
-                entry_time=datetime.utcnow(),
+                entry_time=datetime.now(timezone.utc),
                 position_type=position_type,
             )
 
@@ -326,7 +326,7 @@ class TailRiskHedgeOverlay:
                         "type": pos.position_type,
                         "pnl": pos.pnl,
                         "age_minutes": int(
-                            (datetime.utcnow() - pos.entry_time).total_seconds() / 60
+                            (datetime.now(timezone.utc) - pos.entry_time).total_seconds() / 60
                         ),
                     }
                     for pos in self.active_hedges.values()

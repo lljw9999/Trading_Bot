@@ -7,7 +7,7 @@ from ensemble alpha predictions.
 
 import numpy as np
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Tuple, Optional, Any
 from decimal import Decimal
 
@@ -289,7 +289,7 @@ class KellySizing:
         """Update performance statistics with realized trade return."""
         try:
             trade_record = {
-                "timestamp": datetime.utcnow(),
+                "timestamp": datetime.now(timezone.utc),
                 "symbol": symbol,
                 "return": realized_return,
                 "is_win": realized_return > 0,
@@ -361,7 +361,7 @@ class KellySizing:
         self.current_positions[symbol] = new_position
 
         position_record = {
-            "timestamp": datetime.utcnow(),
+            "timestamp": datetime.now(timezone.utc),
             "symbol": symbol,
             "position_size": new_position,
         }
@@ -415,7 +415,7 @@ class KellySizing:
                 [
                     p
                     for p in self.position_history
-                    if p["timestamp"] > datetime.utcnow() - timedelta(hours=24)
+                    if p["timestamp"] > datetime.now(timezone.utc) - timedelta(hours=24)
                 ]
             ),
         }

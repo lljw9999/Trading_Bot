@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import asyncio
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 from typing import Dict, Any, AsyncIterator, Optional
 
@@ -162,8 +162,8 @@ class BinanceConnector(BaseDataConnector):
             symbol=symbol,
             exchange="binance",
             asset_type="crypto",
-            timestamp=datetime.utcnow(),
-            exchange_timestamp=datetime.utcnow(),  # Binance bookTicker has no explicit ts
+            timestamp=datetime.now(timezone.utc),
+            exchange_timestamp=datetime.now(timezone.utc),  # Binance bookTicker has no explicit ts
             bid=Decimal(str(bid)),
             ask=Decimal(str(ask)),
             bid_size=Decimal(str(bid_size)),

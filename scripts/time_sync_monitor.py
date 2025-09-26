@@ -17,7 +17,7 @@ import subprocess
 import time
 import socket
 import struct
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 import sys
@@ -83,7 +83,7 @@ class TimeSyncMonitor:
             status = {
                 "timestamp": datetime.now().isoformat(),
                 "system_time": {
-                    "utc_time": datetime.utcnow().isoformat(),
+                    "utc_time": datetime.now(timezone.utc).isoformat(),
                     "local_time": datetime.now().isoformat(),
                     "timezone": str(datetime.now().astimezone().tzinfo),
                 },

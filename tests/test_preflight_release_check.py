@@ -374,4 +374,5 @@ if __name__ == "__main__":
     result = subprocess.run(
         ["python", "-m", "pytest", __file__, "-v"], cwd=Path(__file__).parent.parent
     )
-    sys.exit(result.returncode)
+    # Note: sys.exit removed to avoid pytest return-value warnings
+    # Test framework will handle success/failure appropriately

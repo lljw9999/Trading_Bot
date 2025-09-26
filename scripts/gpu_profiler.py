@@ -7,7 +7,7 @@ import os
 import sys
 import time
 import json
-import datetime
+from datetime import datetime, timezone
 import pathlib
 import numpy as np
 from pathlib import Path
@@ -135,7 +135,7 @@ def generate_profile_report(
 ):
     """Generate comprehensive profiling report."""
 
-    timestamp = datetime.datetime.utcnow()
+    timestamp = datetime.now(timezone.utc)
 
     profile_data = {
         "timestamp": timestamp.isoformat() + "Z",
@@ -310,7 +310,7 @@ def main():
 
     try:
         # Create output directory
-        timestamp = datetime.datetime.utcnow().strftime("%Y%m%d_%H%M%SZ")
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%SZ")
         output_dir = Path(args.output) / timestamp
         output_dir.mkdir(parents=True, exist_ok=True)
 

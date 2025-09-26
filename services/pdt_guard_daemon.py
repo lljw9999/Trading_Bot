@@ -11,7 +11,7 @@ import json
 import os
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import redis
@@ -120,7 +120,7 @@ class PDTGuardDaemon:
                     "type": "PDT_VIOLATION",
                     "message": f"PDT block: equity ${account_equity:,.0f}, daytrades {daytrades_5d}",
                     "pdt_status": pdt_result,
-                    "timestamp": datetime.utcnow().isoformat(),
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
                 }
                 self.redis_client.xadd("alerts:pdt", alert)
             else:
@@ -150,7 +150,7 @@ class PDTGuardDaemon:
 
         try:
             # Get orders from last 5 days
-            end_date = datetime.now()
+            end_date = datetime.now(timezone.utc)
             start_date = end_date - timedelta(
                 days=7
             )  # Get extra days to account for weekends

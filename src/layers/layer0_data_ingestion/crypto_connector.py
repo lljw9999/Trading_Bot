@@ -10,7 +10,7 @@ Falls back to simulation mode when WebSocket connections fail.
 import asyncio
 import time
 import random
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 from typing import Optional, Dict, Any, AsyncIterator
 import websockets
@@ -204,7 +204,7 @@ class CoinbaseConnector(BaseDataConnector):
                     "best_ask_size": f"{random.uniform(0.1, 2.0):.4f}",
                     "price": f"{new_price:.2f}",
                     "volume_24h": f"{random.uniform(1000, 5000):.2f}",
-                    "time": datetime.utcnow().isoformat() + "Z",
+                    "time": datetime.now(timezone.utc).isoformat() + "Z",
                     "sequence": 1000000 + tick_count,
                     "trade_id": 5000000 + tick_count,
                 }
@@ -329,7 +329,7 @@ class CoinbaseConnector(BaseDataConnector):
                     symbol=symbol,
                     exchange=self.exchange_name,
                     asset_type=self.asset_type,
-                    timestamp=datetime.utcnow(),
+                    timestamp=datetime.now(timezone.utc),
                     exchange_timestamp=datetime.fromisoformat(
                         raw_data["time"].replace("Z", "+00:00")
                     ),
@@ -656,7 +656,7 @@ async def simulate_coinbase_connector(symbols: list[str], logger):
             "best_ask_size": "0.8",
             "price": f"{50002 + (i % 1000)}",
             "volume_24h": "1000.5",
-            "time": datetime.utcnow().isoformat() + "Z",
+            "time": datetime.now(timezone.utc).isoformat() + "Z",
             "sequence": 100000 + i,
         }
 

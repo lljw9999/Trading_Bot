@@ -6,7 +6,7 @@ Blocks orders when halted and throttles when near LULD bands.
 """
 
 from typing import Dict, Any, Optional, List
-from datetime import datetime
+from datetime import datetime, timezone
 
 from ...utils.logger import get_logger
 
@@ -57,7 +57,7 @@ class HaltLULDMonitor:
             return {
                 "symbol": symbol,
                 "price": price,
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "luld_status": luld_status,
                 "halt_status": halt_status,
                 "should_block_orders": halt_status["is_halted"],
@@ -120,7 +120,7 @@ class HaltLULDMonitor:
         return {
             "is_halted": is_halted,
             "halt_reason": "MOCK_HALT" if is_halted else None,
-            "halt_start_time": datetime.utcnow().isoformat() if is_halted else None,
+            "halt_start_time": datetime.now(timezone.utc).isoformat() if is_halted else None,
             "estimated_resume_time": None,
         }
 

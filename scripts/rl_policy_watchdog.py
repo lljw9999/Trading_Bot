@@ -13,7 +13,7 @@ import json
 import logging
 import subprocess
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, Optional
 import sys
@@ -114,26 +114,42 @@ class RLPolicyWatchdog:
     def _check_policy_staleness(self) -> Dict[str, any]:
         """Check if policy updates are stale."""
         try:
-            # Get last update timestamp
-            last_update_str = self.redis_client.get("policy:last_update")
+            # Get last update timestamp (prefer epoch key)
+            last_update_time: Optional[datetime] = None
 
-            if not last_update_str:
+            last_update_ts = self.redis_client.get("policy:last_update_ts")
+            if last_update_ts:
+                try:
+                    last_update_time = datetime.fromtimestamp(
+                        float(last_update_ts), tz=timezone.utc
+                    )
+                except (TypeError, ValueError):
+                    last_update_time = None
+
+            if last_update_time is None:
+                last_update_str = self.redis_client.get("policy:last_update")
+                if last_update_str:
+                    try:
+                        last_update_time = datetime.fromisoformat(
+                            last_update_str.replace("Z", "+00:00")
+                        )
+                    except ValueError:
+                        try:
+                            last_update_time = datetime.fromtimestamp(
+                                float(last_update_str), tz=timezone.utc
+                            )
+                        except (TypeError, ValueError):
+                            last_update_time = None
+
+            if last_update_time is None:
                 return {
                     "healthy": False,
                     "reason": "No policy:last_update timestamp found",
                     "minutes_since_update": None,
                 }
 
-            try:
-                last_update_time = datetime.fromisoformat(
-                    last_update_str.replace("Z", "+00:00")
-                )
-            except:
-                # Try parsing as Unix timestamp
-                last_update_time = datetime.fromtimestamp(float(last_update_str))
-
             minutes_since_update = (
-                datetime.now() - last_update_time.replace(tzinfo=None)
+                datetime.now(timezone.utc) - last_update_time
             ).total_seconds() / 60
 
             is_stale = minutes_since_update > self.config["stale_threshold_minutes"]

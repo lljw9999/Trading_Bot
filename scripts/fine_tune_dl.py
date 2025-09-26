@@ -11,7 +11,7 @@ import time
 import hashlib
 import logging
 import subprocess
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 # Add project root to path
@@ -365,7 +365,7 @@ class DLFineTuner:
             metadata = {
                 "model_name": model_name,
                 "model_hash": model_hash,
-                "promoted_at": datetime.utcnow().isoformat(),
+                "promoted_at": datetime.now(timezone.utc).isoformat(),
                 "performance": evaluation,
                 "source_path": str(model_path),
             }

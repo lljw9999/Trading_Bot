@@ -14,6 +14,7 @@ from typing import Dict, Any
 from peft import LoraConfig, get_peft_model, get_peft_model_state_dict
 import logging
 import pynvml
+from datetime import datetime, timezone
 
 
 class ActorModel(nn.Module):
@@ -337,8 +338,11 @@ class PolicyDaemonWithLora:
             torch.distributions.Normal(mean, log_std.exp()).entropy().mean().item()
         )
 
-        # Update heartbeat with TTL
-        self.r.setex("policy:last_update_ts", 48 * 3600, current_ts)  # 48h TTL
+        # Update heartbeat with TTL and ISO timestamp for downstream monitors
+        current_iso = datetime.fromtimestamp(current_ts, tz=timezone.utc).isoformat()
+        ttl_seconds = 48 * 3600
+        self.r.setex("policy:last_update_ts", ttl_seconds, current_ts)
+        self.r.setex("policy:last_update", ttl_seconds, current_iso)
 
         # Update current stats
         self.r.hset(

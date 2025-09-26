@@ -11,7 +11,7 @@ import time
 import logging
 import numpy as np
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 # Add project root to path
@@ -210,7 +210,7 @@ class LLMSignalEvaluator:
             detailed_key = "llm:corr:detailed"
             detailed_result = {
                 **result,
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "evaluator": "llm_signal_eval",
             }
             self.redis.set(detailed_key, json.dumps(detailed_result))

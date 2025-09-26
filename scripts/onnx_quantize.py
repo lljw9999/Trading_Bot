@@ -7,7 +7,7 @@ import os
 import sys
 import time
 import json
-import datetime
+from datetime import datetime, timezone
 import pathlib
 import numpy as np
 import subprocess
@@ -291,7 +291,7 @@ def generate_quantization_report(
 ):
     """Generate comprehensive quantization report."""
 
-    timestamp = datetime.datetime.utcnow()
+    timestamp = datetime.now(timezone.utc)
 
     # Find optimal configuration
     optimal_precision = "fp16"  # Based on balance of performance and accuracy
@@ -426,7 +426,7 @@ def main():
 
     try:
         # Create output directory
-        timestamp = datetime.datetime.utcnow().strftime("%Y%m%d_%H%M%SZ")
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%SZ")
         output_dir = Path(args.output) / "quant" / timestamp
         output_dir.mkdir(parents=True, exist_ok=True)
 

@@ -7,7 +7,7 @@ import argparse
 import json
 import os
 import pathlib
-import datetime
+from datetime import datetime, timezone
 import numpy as np
 
 
@@ -186,7 +186,7 @@ def generate_detailed_report(results, secondary_analysis):
 
     report = f"""# A/B Test Report: Policy vs. Baseline
 
-**Generated:** {datetime.datetime.utcnow().isoformat()}Z
+**Generated:** {datetime.now(timezone.utc).isoformat()}Z
 **Sample Size:** {n} aligned observations
 
 ## Primary Analysis (PnL)
@@ -327,12 +327,12 @@ def main():
     secondary_analysis = analyze_secondary_metrics(m)
 
     # Create output directory
-    outdir = f'{args.out}/{datetime.datetime.utcnow().strftime("%Y%m%d_%H%M%SZ")}'
+    outdir = f'{args.out}/{datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%SZ")}'
     pathlib.Path(outdir).mkdir(parents=True, exist_ok=True)
 
     # Compile results
     results = {
-        "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
         "delta_pnl_mean": mean,
         "ci95": [lo, hi],
         "verdict": verdict,

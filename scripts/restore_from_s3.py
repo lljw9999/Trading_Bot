@@ -13,7 +13,7 @@ import redis
 import logging
 import subprocess
 import shutil
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 
@@ -116,7 +116,7 @@ class DisasterRecoveryRestore:
                             "backup_timestamp": backup_timestamp,
                             "backup_time": backup_time,
                             "age_minutes": (
-                                datetime.utcnow() - backup_time
+                                datetime.now(timezone.utc) - backup_time
                             ).total_seconds()
                             / 60,
                             "files": found_files,

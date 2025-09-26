@@ -7,7 +7,7 @@ import os
 import sys
 import json
 import yaml
-import datetime
+from datetime import datetime, timezone, timedelta
 import argparse
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
@@ -204,7 +204,7 @@ class ExperimentDecider:
         print("🎯 Making experiment decision...")
 
         decision = {
-            "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
             "experiment": self.exp_config["name"],
             "decision": "EXTEND",  # Default
             "reasons": [],
@@ -334,7 +334,7 @@ class ExperimentDecider:
             "decision": decision["decision"],
             "timestamp": decision["timestamp"],
             "valid_until": (
-                datetime.datetime.utcnow() + datetime.timedelta(days=30)
+                datetime.now(timezone.utc) + timedelta(days=30)
             ).isoformat()
             + "Z",
             "decision_summary": decision["final_recommendation"],
@@ -487,7 +487,7 @@ def main():
         if args.output:
             output_dir = Path(args.output)
         else:
-            timestamp = datetime.datetime.utcnow().strftime("%Y%m%d_%H%M%SZ")
+            timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%SZ")
             output_dir = decider.artifacts_dir / timestamp
 
         output_dir.mkdir(parents=True, exist_ok=True)

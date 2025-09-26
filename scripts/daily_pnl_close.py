@@ -10,7 +10,7 @@ import json
 import time
 import logging
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
 
@@ -59,7 +59,7 @@ class DailyPnLClose:
         """Get start/end timestamps for a trading day."""
         try:
             if target_date is None:
-                target_date = datetime.utcnow().date()
+                target_date = datetime.now(timezone.utc).date()
             elif isinstance(target_date, str):
                 target_date = datetime.strptime(target_date, "%Y-%m-%d").date()
 
@@ -189,7 +189,7 @@ class DailyPnLClose:
             # Header
             markdown = f"""# Daily P&L Close - {report_date}
 
-**Generated:** {datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")}
+**Generated:** {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")}
 
 ## Executive Summary
 

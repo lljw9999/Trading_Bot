@@ -7,7 +7,7 @@ import os
 import sys
 import time
 import json
-import datetime
+from datetime import datetime, timezone
 import pathlib
 import subprocess
 import redis
@@ -40,11 +40,11 @@ class IdleReaper:
             system_start = self.r.get("system:start_time")
             uptime_hours = 0
             if system_start:
-                start_time = datetime.datetime.fromisoformat(
+                start_time = datetime.fromisoformat(
                     system_start.replace("Z", "+00:00")
                 )
                 uptime_hours = (
-                    datetime.datetime.now(datetime.timezone.utc) - start_time
+                    datetime.now(timezone.utc) - start_time
                 ).total_seconds() / 3600
 
             return {
@@ -54,7 +54,7 @@ class IdleReaper:
                 "recent_signals": recent_signals,
                 "recent_trades": recent_trades,
                 "uptime_hours": uptime_hours,
-                "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+                "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
             }
 
         except Exception as e:
@@ -66,7 +66,7 @@ class IdleReaper:
                 "recent_signals": 0,
                 "recent_trades": 0,
                 "uptime_hours": 0,
-                "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+                "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
             }
 
     def check_idle_conditions(self, metrics, idle_threshold_minutes=30):
@@ -92,10 +92,10 @@ class IdleReaper:
             idle_conditions["idle_duration_met"] = False
             idle_duration_minutes = 0
         else:
-            last_time = datetime.datetime.fromisoformat(
+            last_time = datetime.fromisoformat(
                 last_activity.replace("Z", "+00:00")
             )
-            current_time = datetime.datetime.fromisoformat(
+            current_time = datetime.fromisoformat(
                 metrics["timestamp"].replace("Z", "+00:00")
             )
             idle_duration_minutes = (current_time - last_time).total_seconds() / 60

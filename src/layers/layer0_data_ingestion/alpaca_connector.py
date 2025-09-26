@@ -15,7 +15,7 @@ from __future__ import annotations
 import os
 import asyncio
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 from typing import Dict, Any, AsyncIterator, Optional
 
@@ -173,8 +173,8 @@ class AlpacaConnector(BaseDataConnector):
             symbol=symbol,
             exchange="alpaca",
             asset_type="stock",
-            timestamp=datetime.utcnow(),
-            exchange_timestamp=datetime.fromtimestamp(msg["t"] / 1e9),
+            timestamp=datetime.now(timezone.utc),
+            exchange_timestamp=datetime.fromtimestamp(msg["t"] / 1e9, tz=timezone.utc),
             bid=Decimal(str(bid)),
             ask=Decimal(str(ask)),
             bid_size=Decimal(str(size)),

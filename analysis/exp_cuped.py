@@ -7,7 +7,7 @@ import os
 import sys
 import json
 import yaml
-import datetime
+from datetime import datetime, timezone
 import argparse
 import numpy as np
 import pandas as pd
@@ -279,7 +279,7 @@ class CUPEDAnalyzer:
         primary_metric = self.exp_config["metrics"]["primary"]
 
         summary = {
-            "analysis_timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+            "analysis_timestamp": datetime.now(timezone.utc).isoformat() + "Z",
             "experiment": self.exp_config["name"],
             "primary_metric": primary_metric,
             "cuped_adjustment": cuped_info,
@@ -379,7 +379,7 @@ def main():
         if args.output:
             output_path = Path(args.output)
         else:
-            timestamp = datetime.datetime.utcnow().strftime("%Y%m%d_%H%M%SZ")
+            timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%SZ")
             output_path = analyzer.artifacts_dir / f"cuped_analysis_{timestamp}.json"
 
         output_path.parent.mkdir(parents=True, exist_ok=True)

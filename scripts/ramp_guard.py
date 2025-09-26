@@ -9,7 +9,7 @@ import sys
 import time
 import os
 import redis
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 
@@ -222,7 +222,7 @@ def main():
         audit_path.mkdir(parents=True, exist_ok=True)
 
         audit_data = {
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
             "event": "ramp_guard_pass",
             "checks": [
                 {"name": name, "passed": passed, "message": msg}
@@ -251,7 +251,7 @@ def main():
         audit_path.mkdir(parents=True, exist_ok=True)
 
         audit_data = {
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
             "event": "ramp_guard_fail",
             "checks": [
                 {"name": name, "passed": passed, "message": msg}

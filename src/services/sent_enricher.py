@@ -15,7 +15,9 @@ import sys
 import json
 import asyncio
 import logging
-from datetime import datetime
+from contextlib import asynccontextmanager
+from datetime import datetime, timezone
+import time
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass, asdict
 
@@ -129,7 +131,7 @@ Return only the JSON, no other text.
 
     async def analyze_sentiment(self, text: str, symbol: str) -> Dict[str, Any]:
         """Analyze sentiment using GPT-4o."""
-        start_time = datetime.now()
+        start_time = time.perf_counter()
 
         try:
             # Prepare prompt
@@ -174,7 +176,7 @@ Return only the JSON, no other text.
                 result["confidence"] = max(0.0, min(1.0, float(result["confidence"])))
 
                 OPENAI_API_CALLS.labels(status="success").inc()
-                processing_time = (datetime.now() - start_time).total_seconds()
+                processing_time = time.perf_counter() - start_time
 
                 return {
                     "sentiment_score": result["sentiment_score"],
@@ -192,7 +194,7 @@ Return only the JSON, no other text.
                     "sentiment_score": 0.0,
                     "rationale": "Analysis failed - neutral default",
                     "confidence": 0.1,
-                    "processing_time": (datetime.now() - start_time).total_seconds(),
+                    "processing_time": time.perf_counter() - start_time,
                 }
 
         except Exception as e:
@@ -204,7 +206,7 @@ Return only the JSON, no other text.
                 "sentiment_score": 0.0,
                 "rationale": f"API error: {str(e)[:50]}",
                 "confidence": 0.0,
-                "processing_time": (datetime.now() - start_time).total_seconds(),
+                "processing_time": time.perf_counter() - start_time,
             }
 
     async def enrich_document(self, doc_data: Dict[str, Any]) -> EnrichedDocument:
@@ -239,21 +241,36 @@ Return only the JSON, no other text.
                 raise
 
 
+enricher = SentimentEnricher()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Lifespan context manager for startup and shutdown."""
+    # Startup
+    await enricher.init_redis()
+    logger.info("Sentiment enricher service started")
+
+    # Start background worker
+    worker_task = asyncio.create_task(redis_worker())
+
+    yield
+
+    # Shutdown
+    worker_task.cancel()
+    try:
+        await worker_task
+    except asyncio.CancelledError:
+        pass
+
+
 # FastAPI app
 app = FastAPI(
     title="Sentiment Enrichment Service",
     description="GPT-4o powered sentiment analysis for financial news",
     version="1.0.0",
+    lifespan=lifespan,
 )
-
-enricher = SentimentEnricher()
-
-
-@app.on_event("startup")
-async def startup_event():
-    """Initialize connections on startup."""
-    await enricher.init_redis()
-    logger.info("Sentiment enricher service started")
 
 
 @app.get("/health")
@@ -261,7 +278,10 @@ async def health_check():
     """Health check endpoint."""
     try:
         await enricher.redis_client.ping()
-        return {"status": "healthy", "timestamp": datetime.now().isoformat()}
+        return {
+            "status": "healthy",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"Redis connection failed: {e}")
 
@@ -295,10 +315,13 @@ async def get_stats():
             "redis_connected": True,
             "raw_queue_length": queue_length,
             "redis_memory_used": redis_info.get("used_memory_human", "unknown"),
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
         }
     except Exception as e:
-        return {"error": str(e), "timestamp": datetime.now().isoformat()}
+        return {
+            "error": str(e),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
 
 
 # Background worker for processing Redis queue
@@ -331,10 +354,6 @@ async def redis_worker():
             await asyncio.sleep(1)
 
 
-@app.on_event("startup")
-async def start_worker():
-    """Start the background Redis worker."""
-    asyncio.create_task(redis_worker())
 
 
 if __name__ == "__main__":

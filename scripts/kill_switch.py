@@ -5,7 +5,7 @@ Immediately sets policy influence to 0% for emergency situations
 """
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from src.rl.influence_controller import InfluenceController
 import logging
@@ -15,7 +15,7 @@ import json
 def main():
     """Execute emergency kill-switch."""
     print("🚨 RL POLICY KILL-SWITCH ACTIVATED")
-    print(f"⏰ Timestamp: {datetime.utcnow().isoformat()}Z")
+    print(f"⏰ Timestamp: {datetime.now(timezone.utc).isoformat()}Z")
     print()
 
     try:
@@ -54,7 +54,7 @@ def main():
 
         # Create audit trail
         audit_data = {
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
             "event": "kill_switch_executed",
             "actor": "kill_switch.py",
             "influence_before": current_pct,

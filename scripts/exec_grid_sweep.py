@@ -6,7 +6,7 @@ Grid search over execution parameters to optimize TCA metrics (IS, slippage, fil
 import os
 import sys
 import json
-import datetime
+from datetime import datetime, timezone
 import numpy as np
 import pandas as pd
 import itertools
@@ -54,9 +54,9 @@ class ExecutionSimulator:
     def generate_market_data(self, duration_minutes: int) -> pd.DataFrame:
         """Generate synthetic market data for simulation."""
         timestamps = pd.date_range(
-            start=datetime.datetime.now()
+            start=datetime.now()
             - datetime.timedelta(minutes=duration_minutes),
-            end=datetime.datetime.now(),
+            end=datetime.now(),
             freq="1min",
         )
 
@@ -615,7 +615,7 @@ def main():
 
     try:
         # Create output directory
-        timestamp = datetime.datetime.utcnow().strftime("%Y%m%d_%H%M%SZ")
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%SZ")
         output_dir = Path(args.out) / timestamp
         output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -632,7 +632,7 @@ def main():
 
         # Save results
         all_results = {
-            "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
             "sweep_parameters": {
                 "hours_lookback": args.hours,
                 "total_configs": len(results),

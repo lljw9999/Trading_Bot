@@ -11,10 +11,11 @@ import json
 import os
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import redis
+from typing import Optional
 
 # Add project root to Python path
 project_root = Path(__file__).parent.parent
@@ -104,7 +105,7 @@ class SSRGuardDaemon:
                         "symbol": symbol,
                         "message": f"SSR activated for {symbol}: {ssr_result['price_change_pct']:.1f}% drop",
                         "ssr_status": ssr_result,
-                        "timestamp": datetime.utcnow().isoformat(),
+                        "timestamp": datetime.now(timezone.utc).isoformat(),
                     }
                     self.redis_client.xadd("alerts:ssr", alert)
                     self.redis_client.setex(f"ssr:alerted:{symbol}", 86400, "1")

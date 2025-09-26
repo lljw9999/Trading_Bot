@@ -11,7 +11,7 @@ import json
 import logging
 import subprocess
 import signal
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 
@@ -142,7 +142,7 @@ class SecretsRotation:
                 Name=parameter_name,
                 Value=new_value,
                 Type="SecureString",
-                Description=f"Rotated on {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}",
+                Description=f"Rotated on {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}",
                 Overwrite=True,
             )
 
@@ -187,7 +187,7 @@ class SecretsRotation:
             # Write back to file
             with open(env_path, "w") as f:
                 f.write(
-                    f"# Auto-generated environment file - rotated {datetime.utcnow()}\n"
+                    f"# Auto-generated environment file - rotated {datetime.now(timezone.utc)}\n"
                 )
                 for key, value in sorted(env_vars.items()):
                     f.write(f"{key}={value}\n")

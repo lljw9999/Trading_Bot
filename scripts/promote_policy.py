@@ -9,7 +9,7 @@ import redis
 import os
 import sys
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 def main():
@@ -48,7 +48,7 @@ def main():
 
     # Create audit entry
     audit_entry = {
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
         "action": "policy_promotion",
         "previous_pct": current_pct,
         "new_pct": pct,
@@ -71,7 +71,7 @@ def main():
 
         # Store audit trail (WORM-style - append only)
         audit_key = (
-            f"audit:policy_promotion:{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}"
+            f"audit:policy_promotion:{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
         )
         r.hset(audit_key, mapping=audit_entry)
         r.expire(audit_key, 365 * 24 * 3600)  # 1 year retention

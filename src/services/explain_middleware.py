@@ -11,7 +11,9 @@ import sys
 import json
 import asyncio
 import logging
-from datetime import datetime
+from contextlib import asynccontextmanager
+from datetime import datetime, timezone
+import time
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass, asdict
 
@@ -220,7 +222,7 @@ Format as a single paragraph suitable for a trading dashboard.
 
     async def generate_explanation(self, order_event: OrderEvent) -> TradeExplanation:
         """Generate explanation for a trade order."""
-        start_time = datetime.now()
+        start_time = time.perf_counter()
 
         try:
             # Prepare prompt with order context
@@ -283,7 +285,7 @@ Format as a single paragraph suitable for a trading dashboard.
             # Risk assessment
             risk_assessment = self._assess_risk_level(order_event)
 
-            processing_time = (datetime.now() - start_time).total_seconds() * 1000
+            processing_time = (time.perf_counter() - start_time) * 1000
 
             explanation = TradeExplanation(
                 order_id=order_event.order_id,
@@ -292,7 +294,7 @@ Format as a single paragraph suitable for a trading dashboard.
                 confidence_level=confidence_level,
                 key_factors=key_factors,
                 risk_assessment=risk_assessment,
-                timestamp=datetime.now().isoformat(),
+                timestamp=datetime.now(timezone.utc).isoformat(),
                 processing_time_ms=processing_time,
             )
 
@@ -311,7 +313,7 @@ Format as a single paragraph suitable for a trading dashboard.
             EXPLANATIONS_GENERATED.labels(status="error").inc()
 
             # Fallback explanation
-            processing_time = (datetime.now() - start_time).total_seconds() * 1000
+            processing_time = (time.perf_counter() - start_time) * 1000
 
             return TradeExplanation(
                 order_id=order_event.order_id,
@@ -322,7 +324,7 @@ Format as a single paragraph suitable for a trading dashboard.
                 ),
                 key_factors=["Analysis Error"],
                 risk_assessment="Unknown",
-                timestamp=datetime.now().isoformat(),
+                timestamp=datetime.now(timezone.utc).isoformat(),
                 processing_time_ms=processing_time,
             )
 
@@ -434,21 +436,31 @@ Format as a single paragraph suitable for a trading dashboard.
             logger.error(f"Error storing explanation: {e}")
 
 
+# Global service instance
+explain_service = ExplainService()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Lifespan context manager for startup and shutdown."""
+    # Startup
+    await explain_service.init_redis()
+    asyncio.create_task(order_event_worker())
+    logger.info("Explain service started")
+
+    yield
+
+    # Shutdown would go here if needed
+    logger.info("Explain service shutting down")
+
+
 # FastAPI app
 app = FastAPI(
     title="Trade Explanation Service",
     description="GPT-4o powered trade explanation generator",
     version="1.0.0",
+    lifespan=lifespan,
 )
-
-explain_service = ExplainService()
-
-
-@app.on_event("startup")
-async def startup_event():
-    """Initialize connections on startup."""
-    await explain_service.init_redis()
-    logger.info("Explain service started")
 
 
 @app.get("/health")
@@ -456,7 +468,10 @@ async def health_check():
     """Health check endpoint."""
     try:
         await explain_service.redis_client.ping()
-        return {"status": "healthy", "timestamp": datetime.now().isoformat()}
+        return {
+            "status": "healthy",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"Redis connection failed: {e}")
 
@@ -555,10 +570,6 @@ async def order_event_worker():
             await asyncio.sleep(1)
 
 
-@app.on_event("startup")
-async def start_worker():
-    """Start the background order event worker."""
-    asyncio.create_task(order_event_worker())
 
 
 if __name__ == "__main__":

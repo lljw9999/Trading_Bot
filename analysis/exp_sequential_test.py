@@ -7,7 +7,7 @@ import os
 import sys
 import json
 import yaml
-import datetime
+from datetime import datetime, timezone
 import argparse
 import numpy as np
 import pandas as pd
@@ -270,7 +270,7 @@ class SequentialTester:
                 "reason": "No data available for analysis",
                 "always_valid_p_value": 1.0,
                 "confidence_interval": [0, 0],
-                "analysis_timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+                "analysis_timestamp": datetime.now(timezone.utc).isoformat() + "Z",
                 "data_available": False,
             }
 
@@ -280,7 +280,7 @@ class SequentialTester:
         # Add metadata
         sequential_results.update(
             {
-                "analysis_timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+                "analysis_timestamp": datetime.now(timezone.utc).isoformat() + "Z",
                 "experiment": self.exp_config["name"],
                 "data_available": True,
                 "alpha": self.alpha,
@@ -308,7 +308,7 @@ def main():
         if args.output:
             output_path = Path(args.output)
         else:
-            timestamp = datetime.datetime.utcnow().strftime("%Y%m%d_%H%M%SZ")
+            timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%SZ")
             output_path = tester.artifacts_dir / f"sequential_test_{timestamp}.json"
 
         output_path.parent.mkdir(parents=True, exist_ok=True)

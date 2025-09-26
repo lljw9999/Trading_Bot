@@ -11,7 +11,7 @@ import json
 import os
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import redis
@@ -95,7 +95,7 @@ class MarketHoursGuardDaemon:
                         "type": "MARKET_HOURS_HALT",
                         "message": "Trading halted - market closed",
                         "status": status,
-                        "timestamp": datetime.utcnow().isoformat(),
+                        "timestamp": datetime.now(timezone.utc).isoformat(),
                         "previous_mode": current_mode,
                     }
                     self.redis_client.xadd("alerts:market_hours", alert)

@@ -8,7 +8,7 @@ import asyncio
 import json
 import logging
 from abc import ABC, abstractmethod
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, AsyncIterator, Dict, Any, Callable
 import aiohttp
 
@@ -143,7 +143,7 @@ class BaseDataConnector(ABC):
         try:
             async for tick in self._stream_data():
                 self.ticks_received += 1
-                self.last_tick_time = datetime.utcnow()
+                self.last_tick_time = datetime.now(timezone.utc)
 
                 try:
                     # Parse the raw data into MarketTick

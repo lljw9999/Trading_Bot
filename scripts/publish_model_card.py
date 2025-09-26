@@ -1,8 +1,9 @@
-import json, datetime, os, mlflow
+import json, os, mlflow
+from datetime import datetime, timezone
 
 meta = {
     "checkpoint": os.environ["NEW_HASH"],
-    "date": str(datetime.datetime.utcnow()),
+    "date": str(datetime.now(timezone.utc)),
     "sharpe_1h": os.environ["NEW_SHARPE"],
     "max_dd": os.environ["NEW_DD"],
     "entropy_mean": os.environ["ENT_MEAN"],

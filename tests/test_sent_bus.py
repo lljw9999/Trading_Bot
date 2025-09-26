@@ -8,7 +8,7 @@ with the feature bus system.
 
 import unittest
 import asyncio
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from unittest.mock import Mock, patch
 import sys
 import os
@@ -27,7 +27,7 @@ class TestSentimentBus(unittest.TestCase):
         """Set up test fixtures."""
         self.feature_bus = FeatureBus()
         self.test_symbol = "BTC-USD"
-        self.base_time = datetime.utcnow()
+        self.base_time = datetime.now(timezone.utc)
 
     def test_sentiment_lookup_within_window(self):
         """Test that sentiment lookup returns correct data within ±90s window."""
@@ -211,7 +211,7 @@ class TestSentimentBusAsync(unittest.TestCase):
 
         async def run_test():
             sentiment_score = 0.9
-            timestamp = datetime.utcnow()
+            timestamp = datetime.now(timezone.utc)
 
             # Update sentiment asynchronously
             await self.feature_bus.update_sentiment(
@@ -229,7 +229,7 @@ class TestSentimentBusAsync(unittest.TestCase):
 
         async def run_test():
             pe_ratio = 22.4
-            timestamp = datetime.utcnow()
+            timestamp = datetime.now(timezone.utc)
 
             # Update fundamental asynchronously
             await self.feature_bus.update_fundamental(

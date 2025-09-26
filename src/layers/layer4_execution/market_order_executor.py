@@ -6,7 +6,7 @@ Includes order management, fill tracking, and transaction cost analysis.
 """
 
 import asyncio
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from typing import Dict, List, Optional, Any, Tuple
 from enum import Enum
@@ -66,7 +66,7 @@ class Order:
         self.avg_fill_price = None
         self.commission = Decimal("0")
 
-        self.created_at = datetime.utcnow()
+        self.created_at = datetime.now(timezone.utc)
         self.submitted_at = None
         self.filled_at = None
 
@@ -90,7 +90,7 @@ class Fill:
         self.quantity = quantity
         self.price = price
         self.commission = commission
-        self.timestamp = datetime.utcnow()
+        self.timestamp = datetime.now(timezone.utc)
 
 
 class MarketOrderExecutor:
@@ -216,7 +216,7 @@ class MarketOrderExecutor:
         """
         try:
             order.status = OrderStatus.SUBMITTED
-            order.submitted_at = datetime.utcnow()
+            order.submitted_at = datetime.now(timezone.utc)
             self.orders[order.order_id] = order
 
             if self.paper_trading:
@@ -316,7 +316,7 @@ class MarketOrderExecutor:
             order.avg_fill_price = execution_price
             order.commission = commission
             order.status = OrderStatus.FILLED
-            order.filled_at = datetime.utcnow()
+            order.filled_at = datetime.now(timezone.utc)
             order.fills.append(fill)
 
             # Update positions
@@ -422,7 +422,7 @@ class MarketOrderExecutor:
         self, symbol: Optional[str] = None, days: int = 30
     ) -> List[Order]:
         """Get trade history."""
-        cutoff_date = datetime.utcnow() - timedelta(days=days)
+        cutoff_date = datetime.now(timezone.utc) - timedelta(days=days)
 
         trades = [
             order
