@@ -38,10 +38,10 @@ def test_complete_dashboard():
             print(f"   ✅ Features: {', '.join(health_data['features'])}")
         else:
             print(f"   ❌ Health check failed: {response.status_code}")
-            pytest.fail('Dashboard validation failed; see console output')
+            pytest.fail("Dashboard validation failed; see console output")
     except Exception as e:
         print(f"   ❌ Health check error: {e}")
-        pytest.fail('Dashboard validation failed; see console output')
+        pytest.fail("Dashboard validation failed; see console output")
 
     # Test 2: Enhanced Alpha Signals
     print("\n2. Testing enhanced Alpha Signals...")
@@ -79,13 +79,13 @@ def test_complete_dashboard():
 
             else:
                 print(f"   ❌ Expected 8-10 signals, got {len(signals)}")
-                pytest.fail('Dashboard validation failed; see console output')
+                pytest.fail("Dashboard validation failed; see console output")
         else:
             print(f"   ❌ Alpha signals failed: {response.status_code}")
-            pytest.fail('Dashboard validation failed; see console output')
+            pytest.fail("Dashboard validation failed; see console output")
     except Exception as e:
         print(f"   ❌ Alpha signals error: {e}")
-        pytest.fail('Dashboard validation failed; see console output')
+        pytest.fail("Dashboard validation failed; see console output")
 
     # Test 3: Market vs Model comparison endpoints
     print("\n3. Testing Market vs Model comparison data...")
@@ -129,18 +129,18 @@ def test_complete_dashboard():
                         )
                     else:
                         print(f"   ❌ Missing required fields in {timeframe} data")
-                        pytest.fail('Dashboard validation failed; see console output')
+                        pytest.fail("Dashboard validation failed; see console output")
                 else:
                     print(
                         f"   ❌ {timeframe} data: expected {expected_points} points, got {len(data) if isinstance(data, list) else 'non-list'}"
                     )
-                    pytest.fail('Dashboard validation failed; see console output')
+                    pytest.fail("Dashboard validation failed; see console output")
             else:
                 print(f"   ❌ {timeframe} endpoint failed: {response.status_code}")
-                pytest.fail('Dashboard validation failed; see console output')
+                pytest.fail("Dashboard validation failed; see console output")
         except Exception as e:
             print(f"   ❌ {timeframe} endpoint error: {e}")
-            pytest.fail('Dashboard validation failed; see console output')
+            pytest.fail("Dashboard validation failed; see console output")
 
     # Test 4: News sentiment integration
     print("\n4. Testing news sentiment integration...")
@@ -165,13 +165,13 @@ def test_complete_dashboard():
                     print(f"   ✅ Market sentiment: {market['market_sentiment']:.3f}")
             else:
                 print("   ❌ Missing BTC/ETH sentiment data")
-                pytest.fail('Dashboard validation failed; see console output')
+                pytest.fail("Dashboard validation failed; see console output")
         else:
             print(f"   ❌ News sentiment failed: {response.status_code}")
-            pytest.fail('Dashboard validation failed; see console output')
+            pytest.fail("Dashboard validation failed; see console output")
     except Exception as e:
         print(f"   ❌ News sentiment error: {e}")
-        pytest.fail('Dashboard validation failed; see console output')
+        pytest.fail("Dashboard validation failed; see console output")
 
     # Test 5: Dashboard HTML structure for new features
     print("\n5. Testing dashboard HTML structure...")
@@ -210,14 +210,14 @@ def test_complete_dashboard():
                 print("   ✅ All new dashboard elements found")
             else:
                 print(f"   ❌ Missing elements: {missing[:5]}...")  # Show first 5
-                pytest.fail('Dashboard validation failed; see console output')
+                pytest.fail("Dashboard validation failed; see console output")
 
         else:
             print(f"   ❌ Dashboard HTML failed: {response.status_code}")
-            pytest.fail('Dashboard validation failed; see console output')
+            pytest.fail("Dashboard validation failed; see console output")
     except Exception as e:
         print(f"   ❌ Dashboard HTML error: {e}")
-        pytest.fail('Dashboard validation failed; see console output')
+        pytest.fail("Dashboard validation failed; see console output")
 
     print("\n" + "=" * 80)
     print("🎉 COMPLETE DASHBOARD TEST RESULTS")

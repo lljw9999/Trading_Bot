@@ -26,7 +26,9 @@ def test_real_time_dashboard():
     except Exception as exc:
         pytest.fail(f"Error accessing dashboard: {exc}")
 
-    assert response.status_code == 200, f"Dashboard not accessible: {response.status_code}"
+    assert (
+        response.status_code == 200
+    ), f"Dashboard not accessible: {response.status_code}"
     html_content = response.text
 
     required_charts = [

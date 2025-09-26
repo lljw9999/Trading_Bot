@@ -19,14 +19,11 @@ def test_port_8000():
     print("1. Testing basic connectivity...")
     try:
         response = requests.get("http://localhost:8000/api/health")
-        if response.status_code == 200:
-            print("   ✅ Dashboard is accessible on port 8000")
-        else:
-            print(f"   ❌ Dashboard not accessible: {response.status_code}")
-            return False
+        assert response.status_code == 200, f"Dashboard not accessible: {response.status_code}"
+        print("   ✅ Dashboard is accessible on port 8000")
     except Exception as e:
         print(f"   ❌ Connection failed: {e}")
-        return False
+        assert False, f"Connection failed: {e}"
 
     # Test 2: Check data availability
     print("\n2. Testing data availability...")
@@ -59,37 +56,28 @@ def test_port_8000():
 
     except Exception as e:
         print(f"   ❌ Data test failed: {e}")
-        return False
+        assert False, f"Data test failed: {e}"
 
     # Test 3: Check dashboard HTML
     print("\n3. Testing dashboard HTML...")
     try:
         response = requests.get("http://localhost:8000/")
-        if response.status_code == 200:
-            html = response.text
+        assert response.status_code == 200, f"Dashboard HTML not accessible: {response.status_code}"
+        html = response.text
 
-            # Check for key elements
-            if "btcPrice" in html and "ethPrice" in html:
-                print("   ✅ Price display elements found")
-            else:
-                print("   ❌ Price display elements missing")
+        # Check for key elements
+        assert "btcPrice" in html and "ethPrice" in html, "Price display elements missing"
+        print("   ✅ Price display elements found")
 
-            if "portfolioChart" in html and "pnlChart" in html:
-                print("   ✅ Chart elements found")
-            else:
-                print("   ❌ Chart elements missing")
+        assert "portfolioChart" in html and "pnlChart" in html, "Chart elements missing"
+        print("   ✅ Chart elements found")
 
-            if "loadInitialData" in html:
-                print("   ✅ Data loading functions found")
-            else:
-                print("   ❌ Data loading functions missing")
+        assert "loadInitialData" in html, "Data loading functions missing"
+        print("   ✅ Data loading functions found")
 
-        else:
-            print(f"   ❌ Dashboard HTML not accessible: {response.status_code}")
-            return False
     except Exception as e:
         print(f"   ❌ HTML test failed: {e}")
-        return False
+        assert False, f"HTML test failed: {e}"
 
     print("\n" + "=" * 50)
     print("🎯 PORT 8000 TEST RESULTS")
@@ -98,8 +86,6 @@ def test_port_8000():
     print(f"🌐 URL: http://localhost:8000")
     print("📊 All data endpoints are working")
     print("🎨 All HTML elements are present")
-
-    return True
 
 
 def open_dashboard_8000():
