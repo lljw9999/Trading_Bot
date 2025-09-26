@@ -424,7 +424,9 @@ class MorningGreenlight:
             reports_dir.mkdir(parents=True, exist_ok=True)
 
             # Generate report filename
-            date_str = result.get("date", datetime.now(timezone.utc).strftime("%Y-%m-%d"))
+            date_str = result.get(
+                "date", datetime.now(timezone.utc).strftime("%Y-%m-%d")
+            )
             report_file = reports_dir / f"greenlight_{date_str}.json"
 
             # Save result as JSON

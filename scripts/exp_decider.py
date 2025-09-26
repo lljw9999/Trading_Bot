@@ -333,9 +333,7 @@ class ExperimentDecider:
             "experiment": self.exp_config["name"],
             "decision": decision["decision"],
             "timestamp": decision["timestamp"],
-            "valid_until": (
-                datetime.now(timezone.utc) + timedelta(days=30)
-            ).isoformat()
+            "valid_until": (datetime.now(timezone.utc) + timedelta(days=30)).isoformat()
             + "Z",
             "decision_summary": decision["final_recommendation"],
         }

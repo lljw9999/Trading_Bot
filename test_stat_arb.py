@@ -107,7 +107,7 @@ async def test_statistical_arbitrage():
                 )
         else:
             print("❌ Statistical arbitrage analysis failed")
-            return False
+            assert False, "Statistical arbitrage analysis failed"
 
         print("\n🎉 Statistical Arbitrage Implementation Test Results:")
         print("=" * 80)
@@ -123,14 +123,14 @@ async def test_statistical_arbitrage():
         print("✅ Portfolio risk metrics calculation operational")
         print("✅ Redis integration for caching working")
 
-        return True
+        # Test completed successfully - no return value needed for pytest
 
     except Exception as e:
         print(f"❌ Error in Statistical Arbitrage test: {e}")
         import traceback
 
         traceback.print_exc()
-        return False
+        assert False, f"Statistical Arbitrage test failed with error: {e}"
 
 
 def show_stat_arb_features():

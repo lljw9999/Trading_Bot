@@ -51,10 +51,10 @@ def test_dashboard_data_loading():
 
         else:
             print("   ❌ API data not available")
-            pytest.fail('Dashboard validation failed; see console output')
+            pytest.fail("Dashboard validation failed; see console output")
     except Exception as e:
         print(f"   ❌ Error checking API data: {e}")
-        pytest.fail('Dashboard validation failed; see console output')
+        pytest.fail("Dashboard validation failed; see console output")
 
     # Test 2: Check performance data
     print("\\n2. Checking performance data...")

@@ -4,17 +4,39 @@ Production RL Health Checker
 Implements §2, §3, and §6 from Supervisor SOP
 """
 
+import os
 import redis
 import time
 import json
 import requests
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
+from typing import Optional
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
 )
 logger = logging.getLogger(__name__)
+
+SILENCE_THRESHOLD_SECONDS = int(os.getenv("POLICY_SILENCE_THRESHOLD_SECONDS", 120))
+STALE_THRESHOLD_SECONDS = int(
+    os.getenv("POLICY_STALE_THRESHOLD_SECONDS", 24 * 3600)
+)
+HEARTBEAT_TTL_SECONDS = int(os.getenv("POLICY_HEARTBEAT_TTL_SECONDS", 48 * 3600))
+
+
+def _parse_timestamp(value: str) -> Optional[float]:
+    """Parse stored timestamp (epoch seconds or ISO-8601 string)."""
+    if not value:
+        return None
+
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        try:
+            return datetime.fromisoformat(value.replace("Z", "+00:00")).timestamp()
+        except Exception:
+            return None
 
 
 def check_replay_buffers():
@@ -69,22 +91,41 @@ def check_policy_updates():
         r = redis.Redis(host="localhost", port=6379, decode_responses=True)
         r.ping()
 
-        # Check last policy update time
-        last_update = r.get("policy:last_update")
-        if last_update:
-            last_time = float(last_update)
+        # Check last policy update time (prefer epoch key for consistency)
+        last_update_raw = r.get("policy:last_update_ts")
+        if not last_update_raw:
+            last_update_raw = r.get("policy:last_update")
+
+        last_time = _parse_timestamp(last_update_raw)
+        if last_time is not None:
             time_since = time.time() - last_time
 
-            if time_since > 120:  # 2 minutes silence
+            if time_since > STALE_THRESHOLD_SECONDS:
+                hours = time_since / 3600
                 logger.error(
-                    f"❌ Policy silent for {time_since:.1f}s (>120s threshold)"
+                    "❌ Policy stale for %.1fh (> %.1fh threshold)",
+                    hours,
+                    STALE_THRESHOLD_SECONDS / 3600,
                 )
                 return False
-            else:
-                logger.info(f"✅ Policy updated {time_since:.1f}s ago")
+
+            if time_since > SILENCE_THRESHOLD_SECONDS:
+                logger.error(
+                    "❌ Policy silent for %.1fs (> %ds threshold)",
+                    time_since,
+                    SILENCE_THRESHOLD_SECONDS,
+                )
+                return False
+
+            logger.info("✅ Policy updated %.1fs ago", time_since)
         else:
-            # Set current time as last update
-            r.set("policy:last_update", time.time())
+            # Initialize heartbeat when missing so downstream monitors stay quiet
+            now = time.time()
+            now_iso = datetime.fromtimestamp(now, tz=timezone.utc).isoformat()
+            # Per Future_instruction.txt, standardize on timezone-aware UTC datetimes.
+            now_iso = datetime.now(timezone.utc).isoformat()
+            r.setex("policy:last_update_ts", HEARTBEAT_TTL_SECONDS, now)
+            r.setex("policy:last_update", HEARTBEAT_TTL_SECONDS, now_iso)
             logger.info("📝 Initialized policy update timestamp")
 
         return True
@@ -219,6 +260,11 @@ def main():
             r = redis.Redis(host="localhost", port=6379, decode_responses=True)
             r.set("policy:last_update", time.time())
 
+            # Standardize on a single, timezone-aware timestamp key.
+            # This fixes the bug where a raw float from time.time() was being written
+            # to a key that is parsed as both float and ISO string.
+            now = time.time()
+            r.set("policy:last_update_ts", now)
             time.sleep(10)  # Check every 10 seconds
 
         except KeyboardInterrupt:

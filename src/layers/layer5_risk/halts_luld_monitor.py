@@ -120,7 +120,9 @@ class HaltLULDMonitor:
         return {
             "is_halted": is_halted,
             "halt_reason": "MOCK_HALT" if is_halted else None,
-            "halt_start_time": datetime.now(timezone.utc).isoformat() if is_halted else None,
+            "halt_start_time": (
+                datetime.now(timezone.utc).isoformat() if is_halted else None
+            ),
             "estimated_resume_time": None,
         }
 

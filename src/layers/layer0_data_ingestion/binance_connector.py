@@ -163,7 +163,9 @@ class BinanceConnector(BaseDataConnector):
             exchange="binance",
             asset_type="crypto",
             timestamp=datetime.now(timezone.utc),
-            exchange_timestamp=datetime.now(timezone.utc),  # Binance bookTicker has no explicit ts
+            exchange_timestamp=datetime.now(
+                timezone.utc
+            ),  # Binance bookTicker has no explicit ts
             bid=Decimal(str(bid)),
             ask=Decimal(str(ask)),
             bid_size=Decimal(str(bid_size)),

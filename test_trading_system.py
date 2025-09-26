@@ -9,7 +9,7 @@ the implementation matches the roadmap specifications.
 import asyncio
 import sys
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 import numpy as np
 
@@ -109,7 +109,7 @@ class TradingSystemTest:
                     symbol=symbol,
                     exchange="test_exchange",
                     asset_type="crypto",
-                    timestamp=datetime.utcnow(),
+                    timestamp=datetime.now(timezone.utc),
                     bid=current_price - Decimal("5"),
                     ask=current_price + Decimal("5"),
                     mid=current_price,
@@ -151,7 +151,7 @@ class TradingSystemTest:
         # Create test feature snapshot
         features = FeatureSnapshot(
             symbol="BTC-USD",
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             mid_price=Decimal("50000"),
             spread_bps=5.0,
             return_1m=0.001,
@@ -200,7 +200,7 @@ class TradingSystemTest:
 
         features = FeatureSnapshot(
             symbol="BTC-USD",
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             mid_price=Decimal("50000"),
             spread_bps=5.0,
             volatility_5m=0.02,
@@ -378,7 +378,7 @@ class TradingSystemTest:
                     asset_type=(
                         "crypto" if "BTC" in symbol or "ETH" in symbol else "stock"
                     ),
-                    timestamp=datetime.utcnow(),
+                    timestamp=datetime.now(timezone.utc),
                     bid=current_price - Decimal("1"),
                     ask=current_price + Decimal("1"),
                     mid=current_price,
@@ -493,7 +493,7 @@ class TradingSystemTest:
             symbol=symbol,
             exchange="test_exchange",
             asset_type="crypto" if symbol.endswith("-USD") else "stock",
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             bid=current_price - Decimal("1"),
             ask=current_price + Decimal("1"),
             mid=current_price,

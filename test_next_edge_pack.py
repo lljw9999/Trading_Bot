@@ -43,11 +43,11 @@ def test_kelly_position_sizing():
         except Exception as e:
             print(f"⚠️ Redis integration failed (expected): {e}")
 
-        return True
+        # Test completed successfully - no return value needed for pytest
 
     except Exception as e:
         print(f"❌ Kelly sizing test failed: {e}")
-        return False
+        assert False, f"Kelly sizing test failed: {e}"
 
 
 def test_spread_optimization():
@@ -81,11 +81,11 @@ def test_spread_optimization():
             f"\n✅ Edge cases: min_offset={min_offset:.2f}, max_offset={max_offset:.2f}"
         )
 
-        return True
+        # Test completed successfully - no return value needed for pytest
 
     except Exception as e:
         print(f"❌ Spread optimization test failed: {e}")
-        return False
+        assert False, f"Spread optimization test failed: {e}"
 
 
 def test_smart_router_integration():
@@ -122,11 +122,11 @@ def test_smart_router_integration():
 
         print(f"⏱️ Total routing time: {result['routing_time_ms']:.1f}ms")
 
-        return True
+        # Test completed successfully - no return value needed for pytest
 
     except Exception as e:
         print(f"❌ Smart router integration test failed: {e}")
-        return False
+        assert False, f"Smart router integration test failed: {e}"
 
 
 def test_audit_logging():
@@ -151,16 +151,16 @@ def test_audit_logging():
         try:
             cid = log_order(test_order_dict)
             print(f"✅ Order logged to IPFS: {cid}")
-            return True
+            # Test completed successfully - no return value needed for pytest
 
         except Exception as e:
             print(f"⚠️ IPFS logging failed (expected without daemon): {e}")
             print("✅ Audit ledger code structure is correct")
-            return True
+            # Test completed successfully - no return value needed for pytest
 
     except Exception as e:
         print(f"❌ Audit logging test failed: {e}")
-        return False
+        assert False, f"Audit logging test failed: {e}"
 
 
 def main():
@@ -215,7 +215,7 @@ def main():
     else:
         print("⚠️ Some features need attention - check logs above")
 
-    return passed == total
+    # Main function completed successfully - no return value needed for pytest
 
 
 if __name__ == "__main__":

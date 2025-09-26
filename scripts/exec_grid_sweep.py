@@ -54,8 +54,7 @@ class ExecutionSimulator:
     def generate_market_data(self, duration_minutes: int) -> pd.DataFrame:
         """Generate synthetic market data for simulation."""
         timestamps = pd.date_range(
-            start=datetime.now()
-            - datetime.timedelta(minutes=duration_minutes),
+            start=datetime.now() - datetime.timedelta(minutes=duration_minutes),
             end=datetime.now(),
             freq="1min",
         )

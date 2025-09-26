@@ -37,9 +37,7 @@ class AlphaMetrics:
 class AlphaAttributor:
     def __init__(self, window_days: int = 14):
         self.window_days = window_days
-        self.cutoff_date = datetime.now() - timedelta(
-            days=window_days
-        )
+        self.cutoff_date = datetime.now() - timedelta(days=window_days)
 
     def load_signal_data(self) -> Dict[str, pd.DataFrame]:
         """Load signal data for all alpha models."""

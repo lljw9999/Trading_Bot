@@ -191,7 +191,7 @@ def test_ensemble_core():
         f"   • Model accuracy: {updated_stats['ensemble_performance']['accuracy']:.3f}"
     )
 
-    return True
+    # Test completed successfully - no return value needed for pytest
 
 
 if __name__ == "__main__":

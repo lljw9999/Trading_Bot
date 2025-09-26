@@ -70,7 +70,7 @@ async def test_copula():
                     print(f'     • Number of simulations: {sim["n_simulations"]}')
         else:
             print("❌ BTC-ETH dependency analysis failed")
-            return False
+            assert False, "BTC-ETH dependency analysis failed"
 
         # Test portfolio dependency analysis
         print("\n💼 Testing portfolio dependency analysis...")
@@ -103,14 +103,14 @@ async def test_copula():
         print("✅ Portfolio-level dependency analysis operational")
         print("✅ Redis integration for caching working")
 
-        return True
+        # Test completed successfully - no return value needed for pytest
 
     except Exception as e:
         print(f"❌ Error in Copula test: {e}")
         import traceback
 
         traceback.print_exc()
-        return False
+        assert False, f"Copula test failed with error: {e}"
 
 
 def show_copula_features():

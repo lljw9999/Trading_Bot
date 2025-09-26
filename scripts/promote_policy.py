@@ -70,9 +70,7 @@ def main():
         r.set("policy:allowed_influence_pct", pct)
 
         # Store audit trail (WORM-style - append only)
-        audit_key = (
-            f"audit:policy_promotion:{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
-        )
+        audit_key = f"audit:policy_promotion:{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
         r.hset(audit_key, mapping=audit_entry)
         r.expire(audit_key, 365 * 24 * 3600)  # 1 year retention
 

@@ -57,7 +57,7 @@ async def test_es_evt():
                     print(f"     • {rec}")
         else:
             print("❌ BTC risk analysis failed")
-            return False
+            assert False, "BTC risk analysis failed"
 
         # Test ETH analysis
         print("\n📈 Testing ETH risk analysis...")
@@ -102,14 +102,14 @@ async def test_es_evt():
         print("✅ Diversification benefit calculation working")
         print("✅ Redis integration for caching working")
 
-        return True
+        # Test completed successfully - no return value needed for pytest
 
     except Exception as e:
         print(f"❌ Error in ES/EVT test: {e}")
         import traceback
 
         traceback.print_exc()
-        return False
+        assert False, f"ES/EVT test failed with error: {e}"
 
 
 def show_es_evt_features():

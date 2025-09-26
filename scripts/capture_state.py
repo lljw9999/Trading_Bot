@@ -458,9 +458,7 @@ class StateCapture:
 
         try:
             tarball_name = Path(tarball_path).name
-            s3_key = (
-                f"incidents/{datetime.now(timezone.utc).strftime('%Y/%m/%d')}/{tarball_name}"
-            )
+            s3_key = f"incidents/{datetime.now(timezone.utc).strftime('%Y/%m/%d')}/{tarball_name}"
 
             self.s3_client.upload_file(tarball_path, self.config["s3_bucket"], s3_key)
 

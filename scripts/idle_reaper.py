@@ -40,9 +40,7 @@ class IdleReaper:
             system_start = self.r.get("system:start_time")
             uptime_hours = 0
             if system_start:
-                start_time = datetime.fromisoformat(
-                    system_start.replace("Z", "+00:00")
-                )
+                start_time = datetime.fromisoformat(system_start.replace("Z", "+00:00"))
                 uptime_hours = (
                     datetime.now(timezone.utc) - start_time
                 ).total_seconds() / 3600
@@ -92,9 +90,7 @@ class IdleReaper:
             idle_conditions["idle_duration_met"] = False
             idle_duration_minutes = 0
         else:
-            last_time = datetime.fromisoformat(
-                last_activity.replace("Z", "+00:00")
-            )
+            last_time = datetime.fromisoformat(last_activity.replace("Z", "+00:00"))
             current_time = datetime.fromisoformat(
                 metrics["timestamp"].replace("Z", "+00:00")
             )

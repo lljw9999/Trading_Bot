@@ -9,6 +9,7 @@ Test all dashboard features including:
 """
 
 import requests
+import pytest
 import webbrowser
 import time
 from datetime import datetime
@@ -37,10 +38,10 @@ def test_complete_dashboard():
             print(f"   ✅ Features: {', '.join(health_data['features'])}")
         else:
             print(f"   ❌ Health check failed: {response.status_code}")
-            return False
+            pytest.fail('Dashboard validation failed; see console output')
     except Exception as e:
         print(f"   ❌ Health check error: {e}")
-        return False
+        pytest.fail('Dashboard validation failed; see console output')
 
     # Test 2: Enhanced Alpha Signals
     print("\n2. Testing enhanced Alpha Signals...")
@@ -78,13 +79,13 @@ def test_complete_dashboard():
 
             else:
                 print(f"   ❌ Expected 8-10 signals, got {len(signals)}")
-                return False
+                pytest.fail('Dashboard validation failed; see console output')
         else:
             print(f"   ❌ Alpha signals failed: {response.status_code}")
-            return False
+            pytest.fail('Dashboard validation failed; see console output')
     except Exception as e:
         print(f"   ❌ Alpha signals error: {e}")
-        return False
+        pytest.fail('Dashboard validation failed; see console output')
 
     # Test 3: Market vs Model comparison endpoints
     print("\n3. Testing Market vs Model comparison data...")
@@ -128,18 +129,18 @@ def test_complete_dashboard():
                         )
                     else:
                         print(f"   ❌ Missing required fields in {timeframe} data")
-                        return False
+                        pytest.fail('Dashboard validation failed; see console output')
                 else:
                     print(
                         f"   ❌ {timeframe} data: expected {expected_points} points, got {len(data) if isinstance(data, list) else 'non-list'}"
                     )
-                    return False
+                    pytest.fail('Dashboard validation failed; see console output')
             else:
                 print(f"   ❌ {timeframe} endpoint failed: {response.status_code}")
-                return False
+                pytest.fail('Dashboard validation failed; see console output')
         except Exception as e:
             print(f"   ❌ {timeframe} endpoint error: {e}")
-            return False
+            pytest.fail('Dashboard validation failed; see console output')
 
     # Test 4: News sentiment integration
     print("\n4. Testing news sentiment integration...")
@@ -164,13 +165,13 @@ def test_complete_dashboard():
                     print(f"   ✅ Market sentiment: {market['market_sentiment']:.3f}")
             else:
                 print("   ❌ Missing BTC/ETH sentiment data")
-                return False
+                pytest.fail('Dashboard validation failed; see console output')
         else:
             print(f"   ❌ News sentiment failed: {response.status_code}")
-            return False
+            pytest.fail('Dashboard validation failed; see console output')
     except Exception as e:
         print(f"   ❌ News sentiment error: {e}")
-        return False
+        pytest.fail('Dashboard validation failed; see console output')
 
     # Test 5: Dashboard HTML structure for new features
     print("\n5. Testing dashboard HTML structure...")
@@ -209,14 +210,14 @@ def test_complete_dashboard():
                 print("   ✅ All new dashboard elements found")
             else:
                 print(f"   ❌ Missing elements: {missing[:5]}...")  # Show first 5
-                return False
+                pytest.fail('Dashboard validation failed; see console output')
 
         else:
             print(f"   ❌ Dashboard HTML failed: {response.status_code}")
-            return False
+            pytest.fail('Dashboard validation failed; see console output')
     except Exception as e:
         print(f"   ❌ Dashboard HTML error: {e}")
-        return False
+        pytest.fail('Dashboard validation failed; see console output')
 
     print("\n" + "=" * 80)
     print("🎉 COMPLETE DASHBOARD TEST RESULTS")
@@ -227,7 +228,7 @@ def test_complete_dashboard():
     print("✅ News sentiment integration functional!")
     print("✅ All dashboard UI elements present!")
 
-    return True
+    # pytest handles pass/fail via assertions
 
 
 def show_complete_features():
@@ -303,25 +304,24 @@ def open_complete_dashboard():
         print("💡 Please manually open: http://localhost:8000")
 
 
-def main():
-    """Main test function."""
-    success = test_complete_dashboard()
+def main():  # pragma: no cover - manual execution helper
+    try:
+        test_complete_dashboard()
+    except Exception as exc:
+        print(f"\n❌ Issues found with complete dashboard: {exc}")
+        raise SystemExit(1)
 
-    if success:
-        show_complete_features()
-        open_complete_dashboard()
+    show_complete_features()
+    open_complete_dashboard()
 
-        print("\n🎉 COMPLETE ENHANCED DASHBOARD READY!")
-        print("✅ 8-10 Alpha Signals with advanced indicators")
-        print("✅ 6 Market vs Model comparison charts")
-        print("✅ Real-time news sentiment analysis")
-        print("✅ Enhanced portfolio management")
-        print("✅ Comprehensive performance analytics")
-        print("💻 Available at: http://localhost:8000")
-
-    else:
-        print("\n❌ Issues found with complete dashboard")
-        print("💡 Please check the logs and try again")
+    print("\n🎉 COMPLETE ENHANCED DASHBOARD READY!")
+    print("✅ 8-10 Alpha Signals with advanced indicators")
+    print("✅ 6 Market vs Model comparison charts")
+    print("✅ Real-time news sentiment analysis")
+    print("✅ Enhanced portfolio management")
+    print("✅ Comprehensive performance analytics")
+    print("💻 Available at: http://localhost:8000")
+    raise SystemExit(0)
 
 
 if __name__ == "__main__":

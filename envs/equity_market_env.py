@@ -7,7 +7,7 @@ Episodes run during market hours only, with equity-specific rewards and observat
 
 import numpy as np
 import redis
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, Any, Optional, Tuple
 import gymnasium as gym
 from gymnasium import spaces
@@ -76,7 +76,7 @@ class EquityMarketEnv(gym.Env):
             return self._get_dummy_observation(), {"market_closed": True}
 
         self.current_step = 0
-        self.episode_start_time = datetime.utcnow()
+        self.episode_start_time = datetime.now(timezone.utc)
         self.positions = np.zeros(len(self.symbols))
         self.cash = 100000.0
         self.last_portfolio_value = self.cash
@@ -109,7 +109,7 @@ class EquityMarketEnv(gym.Env):
         reward = self._calculate_reward(old_positions, self.positions)
 
         # Check if episode should end
-        episode_duration = datetime.utcnow() - self.episode_start_time
+        episode_duration = datetime.now(timezone.utc) - self.episode_start_time
         terminated = episode_duration.total_seconds() > (
             self.episode_length_minutes * 60
         )

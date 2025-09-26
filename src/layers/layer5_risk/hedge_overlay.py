@@ -326,7 +326,10 @@ class TailRiskHedgeOverlay:
                         "type": pos.position_type,
                         "pnl": pos.pnl,
                         "age_minutes": int(
-                            (datetime.now(timezone.utc) - pos.entry_time).total_seconds() / 60
+                            (
+                                datetime.now(timezone.utc) - pos.entry_time
+                            ).total_seconds()
+                            / 60
                         ),
                     }
                     for pos in self.active_hedges.values()

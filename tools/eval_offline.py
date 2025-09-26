@@ -10,7 +10,7 @@ import numpy as np
 import torch
 import sys
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 import importlib.util
 from pathlib import Path
 
@@ -183,7 +183,7 @@ def evaluate_checkpoint(
     steps_total = sum(episode_lengths)
 
     return {
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
         "ckpt_path": ckpt_path,
         "episodes": episodes,
         "return_mean": float(return_mean),

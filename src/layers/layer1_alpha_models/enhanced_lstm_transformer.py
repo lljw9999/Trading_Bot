@@ -26,7 +26,9 @@ from ..layer0_data_ingestion.schemas import FeatureSnapshot, AlphaSignal
 class LoRALinear(nn.Module):
     """Low-Rank Adaptation (LoRA) for parameter-efficient fine-tuning."""
 
-    def __init__(self, in_features: int, out_features: int, rank: int = 16, alpha: float = 32):
+    def __init__(
+        self, in_features: int, out_features: int, rank: int = 16, alpha: float = 32
+    ):
         super().__init__()
         self.in_features = in_features
         self.out_features = out_features
@@ -52,15 +54,19 @@ class LoRALinear(nn.Module):
 class MultiScalePositionalEncoding(nn.Module):
     """Multi-scale positional encoding for different time horizons."""
 
-    def __init__(self, d_model: int, max_len: int = 5000, scales: List[int] = [1, 5, 15, 60]):
+    def __init__(
+        self, d_model: int, max_len: int = 5000, scales: List[int] = [1, 5, 15, 60]
+    ):
         super().__init__()
         self.d_model = d_model
         self.scales = scales
 
         # Create multiple positional encodings for different scales
-        self.register_buffer('pe', self._create_multiscale_pe(d_model, max_len, scales))
+        self.register_buffer("pe", self._create_multiscale_pe(d_model, max_len, scales))
 
-    def _create_multiscale_pe(self, d_model: int, max_len: int, scales: List[int]) -> torch.Tensor:
+    def _create_multiscale_pe(
+        self, d_model: int, max_len: int, scales: List[int]
+    ) -> torch.Tensor:
         """Create multi-scale positional encoding matrix."""
         pe = torch.zeros(max_len, d_model)
 
@@ -73,13 +79,13 @@ class MultiScalePositionalEncoding(nn.Module):
 
             position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
             div_term = torch.exp(
-                torch.arange(0, end_dim - start_dim, 2).float() *
-                (-math.log(10000.0 * scale) / (end_dim - start_dim))
+                torch.arange(0, end_dim - start_dim, 2).float()
+                * (-math.log(10000.0 * scale) / (end_dim - start_dim))
             )
 
             pe[:, start_dim:end_dim:2] = torch.sin(position * div_term)
             if start_dim + 1 < end_dim:
-                pe[:, start_dim + 1:end_dim:2] = torch.cos(position * div_term)
+                pe[:, start_dim + 1 : end_dim : 2] = torch.cos(position * div_term)
 
         return pe
 
@@ -108,17 +114,31 @@ class EnhancedMultiHeadAttention(nn.Module):
         self.layer_norm = nn.LayerNorm(d_model)
 
         # Feature importance tracking
-        self.register_buffer('attention_weights', torch.zeros(1))
+        self.register_buffer("attention_weights", torch.zeros(1))
         self.importance_alpha = 0.95  # EMA decay for importance tracking
 
-    def forward(self, x: torch.Tensor, mask: Optional[torch.Tensor] = None) -> Tuple[torch.Tensor, torch.Tensor]:
+    def forward(
+        self, x: torch.Tensor, mask: Optional[torch.Tensor] = None
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
         """Forward pass with attention weight tracking."""
         batch_size, seq_len, _ = x.size()
 
         # Linear projections
-        Q = self.q_proj(x).view(batch_size, seq_len, self.n_heads, self.d_k).transpose(1, 2)
-        K = self.k_proj(x).view(batch_size, seq_len, self.n_heads, self.d_k).transpose(1, 2)
-        V = self.v_proj(x).view(batch_size, seq_len, self.n_heads, self.d_k).transpose(1, 2)
+        Q = (
+            self.q_proj(x)
+            .view(batch_size, seq_len, self.n_heads, self.d_k)
+            .transpose(1, 2)
+        )
+        K = (
+            self.k_proj(x)
+            .view(batch_size, seq_len, self.n_heads, self.d_k)
+            .transpose(1, 2)
+        )
+        V = (
+            self.v_proj(x)
+            .view(batch_size, seq_len, self.n_heads, self.d_k)
+            .transpose(1, 2)
+        )
 
         # Scaled dot-product attention
         scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(self.d_k)
@@ -131,22 +151,30 @@ class EnhancedMultiHeadAttention(nn.Module):
 
         # Update feature importance (EMA)
         if self.training:
-            current_importance = attention_weights.mean(dim=(0, 1, 2))  # Average across batch, heads, queries
+            current_importance = attention_weights.mean(
+                dim=(0, 1, 2)
+            )  # Average across batch, heads, queries
             if self.attention_weights.numel() > 1:
-                self.attention_weights = (self.importance_alpha * self.attention_weights +
-                                        (1 - self.importance_alpha) * current_importance)
+                self.attention_weights = (
+                    self.importance_alpha * self.attention_weights
+                    + (1 - self.importance_alpha) * current_importance
+                )
             else:
                 self.attention_weights = current_importance
 
         # Apply attention
         context = torch.matmul(attention_weights, V)
-        context = context.transpose(1, 2).contiguous().view(batch_size, seq_len, self.d_model)
+        context = (
+            context.transpose(1, 2).contiguous().view(batch_size, seq_len, self.d_model)
+        )
 
         # Output projection with residual connection
         output = self.out_proj(context)
         output = self.layer_norm(output + x)
 
-        return output, attention_weights.mean(dim=1)  # Return average attention across heads
+        return output, attention_weights.mean(
+            dim=1
+        )  # Return average attention across heads
 
 
 class EnhancedTransformerBlock(nn.Module):
@@ -168,7 +196,9 @@ class EnhancedTransformerBlock(nn.Module):
         # Gated activation for better gradient flow
         self.gate = nn.Linear(d_ff, d_ff)
 
-    def forward(self, x: torch.Tensor, mask: Optional[torch.Tensor] = None) -> Tuple[torch.Tensor, torch.Tensor]:
+    def forward(
+        self, x: torch.Tensor, mask: Optional[torch.Tensor] = None
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
         """Forward pass through transformer block."""
         # Multi-head attention
         attn_output, attn_weights = self.attention(x, mask)
@@ -222,10 +252,14 @@ class EnhancedLSTMTransformerModel(nn.Module):
         self.pos_encoding = MultiScalePositionalEncoding(hidden_size, seq_length * 2)
 
         # Enhanced Transformer layers
-        self.transformer_layers = nn.ModuleList([
-            EnhancedTransformerBlock(hidden_size, num_heads, hidden_size * 4, dropout)
-            for _ in range(num_transformer_layers)
-        ])
+        self.transformer_layers = nn.ModuleList(
+            [
+                EnhancedTransformerBlock(
+                    hidden_size, num_heads, hidden_size * 4, dropout
+                )
+                for _ in range(num_transformer_layers)
+            ]
+        )
 
         # Adaptive pooling for variable sequence lengths
         self.adaptive_pool = nn.AdaptiveAvgPool1d(1)
@@ -235,21 +269,21 @@ class EnhancedLSTMTransformerModel(nn.Module):
             LoRALinear(hidden_size, hidden_size // 2),
             nn.GELU(),
             nn.Dropout(dropout),
-            LoRALinear(hidden_size // 2, 1)
+            LoRALinear(hidden_size // 2, 1),
         )
 
         self.volatility_head = nn.Sequential(
             LoRALinear(hidden_size, hidden_size // 2),
             nn.GELU(),
             nn.Dropout(dropout),
-            LoRALinear(hidden_size // 2, 1)
+            LoRALinear(hidden_size // 2, 1),
         )
 
         self.direction_head = nn.Sequential(
             LoRALinear(hidden_size, hidden_size // 2),
             nn.GELU(),
             nn.Dropout(dropout),
-            LoRALinear(hidden_size // 2, 3)
+            LoRALinear(hidden_size // 2, 3),
         )
 
         # Uncertainty estimation head
@@ -257,11 +291,11 @@ class EnhancedLSTMTransformerModel(nn.Module):
             LoRALinear(hidden_size, hidden_size // 2),
             nn.GELU(),
             nn.Dropout(dropout),
-            LoRALinear(hidden_size // 2, 1)
+            LoRALinear(hidden_size // 2, 1),
         )
 
         # Feature importance tracker
-        self.register_buffer('feature_importance', torch.zeros(input_size))
+        self.register_buffer("feature_importance", torch.zeros(input_size))
 
         self._init_weights()
 
@@ -274,21 +308,25 @@ class EnhancedLSTMTransformerModel(nn.Module):
                     nn.init.zeros_(module.bias)
             elif isinstance(module, nn.LSTM):
                 for name, param in module.named_parameters():
-                    if 'weight_ih' in name:
+                    if "weight_ih" in name:
                         nn.init.xavier_uniform_(param.data)
-                    elif 'weight_hh' in name:
+                    elif "weight_hh" in name:
                         nn.init.orthogonal_(param.data)
-                    elif 'bias' in name:
+                    elif "bias" in name:
                         nn.init.zeros_(param.data)
 
-    def forward(self, x: torch.Tensor, return_attention: bool = False) -> Dict[str, torch.Tensor]:
+    def forward(
+        self, x: torch.Tensor, return_attention: bool = False
+    ) -> Dict[str, torch.Tensor]:
         """Enhanced forward pass with attention visualization."""
         batch_size, seq_len, input_size = x.size()
 
         # Track input feature usage for importance analysis
         if self.training:
             feature_usage = x.abs().mean(dim=(0, 1))
-            self.feature_importance = 0.99 * self.feature_importance + 0.01 * feature_usage
+            self.feature_importance = (
+                0.99 * self.feature_importance + 0.01 * feature_usage
+            )
 
         # Input projection and dropout
         x = self.input_projection(x)
@@ -309,7 +347,9 @@ class EnhancedLSTMTransformerModel(nn.Module):
                 attention_weights.append(attn_weights)
 
         # Adaptive pooling to handle variable lengths
-        pooled_output = self.adaptive_pool(transformer_input.transpose(1, 2)).squeeze(-1)
+        pooled_output = self.adaptive_pool(transformer_input.transpose(1, 2)).squeeze(
+            -1
+        )
 
         # Multi-task predictions
         price_pred = self.price_head(pooled_output)
@@ -318,15 +358,15 @@ class EnhancedLSTMTransformerModel(nn.Module):
         uncertainty = torch.sigmoid(self.uncertainty_head(pooled_output))
 
         results = {
-            'price_prediction': price_pred,
-            'volatility_prediction': volatility_pred,
-            'direction_prediction': direction_pred,
-            'uncertainty': uncertainty,
-            'hidden_representation': pooled_output,
+            "price_prediction": price_pred,
+            "volatility_prediction": volatility_pred,
+            "direction_prediction": direction_pred,
+            "uncertainty": uncertainty,
+            "hidden_representation": pooled_output,
         }
 
         if return_attention:
-            results['attention_weights'] = attention_weights
+            results["attention_weights"] = attention_weights
 
         return results
 
@@ -377,19 +417,19 @@ class EnhancedLSTMTransformerAlpha:
         # Performance metrics
         self.prediction_history = deque(maxlen=1000)
         self.accuracy_metrics = {
-            'mse': 0.0,
-            'mae': 0.0,
-            'directional_accuracy': 0.0,
-            'sharpe_ratio': 0.0,
+            "mse": 0.0,
+            "mae": 0.0,
+            "directional_accuracy": 0.0,
+            "sharpe_ratio": 0.0,
         }
 
         # Feature normalization with exponential smoothing
         self.feature_stats = {
-            'mean': None,
-            'std': None,
-            'min': None,
-            'max': None,
-            'count': 0,
+            "mean": None,
+            "std": None,
+            "min": None,
+            "max": None,
+            "count": 0,
         }
 
         # Model selection and ensembling
@@ -397,41 +437,47 @@ class EnhancedLSTMTransformerAlpha:
         self.ensemble_weights = {}
 
         self.logger = logging.getLogger(f"enhanced_lstm_transformer.{symbol}")
-        self.logger.info(f"Enhanced LSTM/Transformer initialized for {symbol} on {device}")
+        self.logger.info(
+            f"Enhanced LSTM/Transformer initialized for {symbol} on {device}"
+        )
 
     def _adaptive_normalize(self, features: np.ndarray) -> np.ndarray:
         """Adaptive feature normalization with outlier handling."""
-        if self.feature_stats['mean'] is None:
-            self.feature_stats['mean'] = features.copy()
-            self.feature_stats['std'] = np.ones_like(features)
-            self.feature_stats['min'] = features.copy()
-            self.feature_stats['max'] = features.copy()
-            self.feature_stats['count'] = 1
+        if self.feature_stats["mean"] is None:
+            self.feature_stats["mean"] = features.copy()
+            self.feature_stats["std"] = np.ones_like(features)
+            self.feature_stats["min"] = features.copy()
+            self.feature_stats["max"] = features.copy()
+            self.feature_stats["count"] = 1
             return features
 
         # Update statistics with exponential decay
-        alpha = min(0.1, 1.0 / max(self.feature_stats['count'], 10))
+        alpha = min(0.1, 1.0 / max(self.feature_stats["count"], 10))
 
-        self.feature_stats['mean'] = (1 - alpha) * self.feature_stats['mean'] + alpha * features
-        diff = features - self.feature_stats['mean']
-        self.feature_stats['std'] = np.sqrt(
-            (1 - alpha) * self.feature_stats['std']**2 + alpha * diff**2
+        self.feature_stats["mean"] = (1 - alpha) * self.feature_stats[
+            "mean"
+        ] + alpha * features
+        diff = features - self.feature_stats["mean"]
+        self.feature_stats["std"] = np.sqrt(
+            (1 - alpha) * self.feature_stats["std"] ** 2 + alpha * diff**2
         )
 
         # Update min/max with percentile-based outlier handling
-        self.feature_stats['min'] = np.minimum(
-            self.feature_stats['min'],
-            np.percentile(np.vstack([self.feature_stats['min'], features]), 5, axis=0)
+        self.feature_stats["min"] = np.minimum(
+            self.feature_stats["min"],
+            np.percentile(np.vstack([self.feature_stats["min"], features]), 5, axis=0),
         )
-        self.feature_stats['max'] = np.maximum(
-            self.feature_stats['max'],
-            np.percentile(np.vstack([self.feature_stats['max'], features]), 95, axis=0)
+        self.feature_stats["max"] = np.maximum(
+            self.feature_stats["max"],
+            np.percentile(np.vstack([self.feature_stats["max"], features]), 95, axis=0),
         )
 
-        self.feature_stats['count'] += 1
+        self.feature_stats["count"] += 1
 
         # Robust normalization
-        normalized = (features - self.feature_stats['mean']) / (self.feature_stats['std'] + 1e-8)
+        normalized = (features - self.feature_stats["mean"]) / (
+            self.feature_stats["std"] + 1e-8
+        )
 
         # Clip extreme values
         normalized = np.clip(normalized, -4, 4)
@@ -453,20 +499,32 @@ class EnhancedLSTMTransformerAlpha:
         # Enhanced optimizer with weight decay
         if self.use_lora:
             # Only optimize LoRA parameters during fine-tuning
-            lora_params = [p for n, p in self.model.named_parameters() if 'lora' in n]
-            other_params = [p for n, p in self.model.named_parameters() if 'lora' not in n]
+            lora_params = [p for n, p in self.model.named_parameters() if "lora" in n]
+            other_params = [
+                p for n, p in self.model.named_parameters() if "lora" not in n
+            ]
 
-            self.optimizer = torch.optim.AdamW([
-                {'params': lora_params, 'lr': self.learning_rate, 'weight_decay': 0.01},
-                {'params': other_params, 'lr': self.learning_rate * 0.1, 'weight_decay': 0.05}
-            ])
+            self.optimizer = torch.optim.AdamW(
+                [
+                    {
+                        "params": lora_params,
+                        "lr": self.learning_rate,
+                        "weight_decay": 0.01,
+                    },
+                    {
+                        "params": other_params,
+                        "lr": self.learning_rate * 0.1,
+                        "weight_decay": 0.05,
+                    },
+                ]
+            )
         else:
             self.optimizer = torch.optim.AdamW(
                 self.model.parameters(),
                 lr=self.learning_rate,
                 weight_decay=0.02,
                 betas=(0.9, 0.999),
-                eps=1e-8
+                eps=1e-8,
             )
 
         # Learning rate scheduler with warmup
@@ -483,25 +541,37 @@ class EnhancedLSTMTransformerAlpha:
     def get_performance_metrics(self) -> Dict[str, Any]:
         """Get comprehensive performance metrics."""
         return {
-            'model_name': 'enhanced_lstm_transformer',
-            'symbol': self.symbol,
-            'is_trained': self.is_trained,
-            'sample_count': self.sample_count,
-            'sequence_length': self.seq_length,
-            'device': str(self.device),
-            'feature_dimensions': len(self.feature_stats.get('mean', [])) if self.feature_stats['mean'] is not None else 0,
-            'training_losses': list(self.training_losses)[-10:] if self.training_losses else [],
-            'accuracy_metrics': self.accuracy_metrics.copy(),
-            'buffer_utilization': {
-                'features': len(self.feature_buffer) / self.feature_buffer.maxlen,
-                'returns': len(self.return_buffer) / self.return_buffer.maxlen,
+            "model_name": "enhanced_lstm_transformer",
+            "symbol": self.symbol,
+            "is_trained": self.is_trained,
+            "sample_count": self.sample_count,
+            "sequence_length": self.seq_length,
+            "device": str(self.device),
+            "feature_dimensions": (
+                len(self.feature_stats.get("mean", []))
+                if self.feature_stats["mean"] is not None
+                else 0
+            ),
+            "training_losses": (
+                list(self.training_losses)[-10:] if self.training_losses else []
+            ),
+            "accuracy_metrics": self.accuracy_metrics.copy(),
+            "buffer_utilization": {
+                "features": len(self.feature_buffer) / self.feature_buffer.maxlen,
+                "returns": len(self.return_buffer) / self.return_buffer.maxlen,
             },
-            'feature_importance': self.model.get_feature_importance().cpu().numpy().tolist() if self.model else [],
+            "feature_importance": (
+                self.model.get_feature_importance().cpu().numpy().tolist()
+                if self.model
+                else []
+            ),
         }
 
 
 # Factory function with enhanced parameters
-def create_enhanced_lstm_transformer(symbol: str, **kwargs) -> EnhancedLSTMTransformerAlpha:
+def create_enhanced_lstm_transformer(
+    symbol: str, **kwargs
+) -> EnhancedLSTMTransformerAlpha:
     """Create enhanced LSTM/Transformer alpha model with optimizations."""
     return EnhancedLSTMTransformerAlpha(symbol=symbol, **kwargs)
 
@@ -510,7 +580,9 @@ if __name__ == "__main__":
     # Test the enhanced model
     print("Testing Enhanced LSTM/Transformer Model...")
 
-    model = EnhancedLSTMTransformerAlpha("BTCUSDT", seq_length=100, retrain_frequency=200)
+    model = EnhancedLSTMTransformerAlpha(
+        "BTCUSDT", seq_length=100, retrain_frequency=200
+    )
 
     # Create test data
     test_input = torch.randn(4, 100, 20)  # batch_size=4, seq_len=100, features=20
@@ -524,7 +596,7 @@ if __name__ == "__main__":
 
     print(f"Model output shapes:")
     for key, value in results.items():
-        if key != 'attention_weights':
+        if key != "attention_weights":
             print(f"  {key}: {value.shape}")
         else:
             print(f"  {key}: {len(value)} layers")

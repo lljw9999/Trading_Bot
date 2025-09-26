@@ -570,8 +570,6 @@ async def order_event_worker():
             await asyncio.sleep(1)
 
 
-
-
 if __name__ == "__main__":
     uvicorn.run(
         "explain_middleware:app",

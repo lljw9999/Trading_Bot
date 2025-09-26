@@ -6,6 +6,7 @@ Test the updated dashboard with original design and trading controls.
 """
 
 import requests
+import pytest
 import webbrowser
 import time
 
@@ -28,10 +29,10 @@ def test_dashboard_final():
             print(f"   ✅ Features: {', '.join(health_data['features'])}")
         else:
             print(f"   ❌ Health check failed: {response.status_code}")
-            return False
+            pytest.fail('Dashboard validation failed; see console output')
     except Exception as e:
         print(f"   ❌ Health check error: {e}")
-        return False
+        pytest.fail('Dashboard validation failed; see console output')
 
     # Test 2: Portfolio data
     print("\n2. Testing portfolio data...")
@@ -59,13 +60,13 @@ def test_dashboard_final():
                 print(f"   ✅ Total: ${total_value:.2f}, P&L: ${total_pnl:+.2f}")
             else:
                 print("   ❌ Portfolio data incomplete")
-                return False
+                pytest.fail('Dashboard validation failed; see console output')
         else:
             print(f"   ❌ Portfolio data failed: {response.status_code}")
-            return False
+            pytest.fail('Dashboard validation failed; see console output')
     except Exception as e:
         print(f"   ❌ Portfolio data error: {e}")
-        return False
+        pytest.fail('Dashboard validation failed; see console output')
 
     # Test 3: Trading signals
     print("\n3. Testing trading signals...")
@@ -82,13 +83,13 @@ def test_dashboard_final():
                     )
             else:
                 print("   ❌ No trading signals generated")
-                return False
+                pytest.fail('Dashboard validation failed; see console output')
         else:
             print(f"   ❌ Trading signals failed: {response.status_code}")
-            return False
+            pytest.fail('Dashboard validation failed; see console output')
     except Exception as e:
         print(f"   ❌ Trading signals error: {e}")
-        return False
+        pytest.fail('Dashboard validation failed; see console output')
 
     # Test 4: Dashboard HTML structure
     print("\n4. Testing dashboard HTML structure...")
@@ -119,14 +120,14 @@ def test_dashboard_final():
                 print("   ✅ All original design elements found")
             else:
                 print(f"   ❌ Missing elements: {missing}")
-                return False
+                pytest.fail('Dashboard validation failed; see console output')
 
         else:
             print(f"   ❌ Dashboard HTML failed: {response.status_code}")
-            return False
+            pytest.fail('Dashboard validation failed; see console output')
     except Exception as e:
         print(f"   ❌ Dashboard HTML error: {e}")
-        return False
+        pytest.fail('Dashboard validation failed; see console output')
 
     print("\n" + "=" * 60)
     print("🎉 FINAL DASHBOARD TEST RESULTS")
@@ -136,7 +137,7 @@ def test_dashboard_final():
     print("✅ Trading controls are functional!")
     print("✅ Real-time data is working!")
 
-    return True
+    # pytest handles pass/fail via assertions
 
 
 def show_dashboard_features():
@@ -200,18 +201,18 @@ def open_final_dashboard():
 
 
 if __name__ == "__main__":
-    success = test_dashboard_final()
+    try:
+        test_dashboard_final()
+    except Exception as exc:  # pragma: no cover - manual execution helper
+        print(f"\n❌ Issues found with dashboard: {exc}")
+        raise SystemExit(1)
 
-    if success:
-        show_dashboard_features()
-        open_final_dashboard()
+    show_dashboard_features()
+    open_final_dashboard()
 
-        print("\n🎉 DASHBOARD SUCCESSFULLY UPDATED!")
-        print("✅ Original design recreated with modern enhancements")
-        print("📊 All trading controls functional")
-        print("🚀 Smart Order Routing integrated")
-        print("💻 Available at: http://localhost:8000")
-
-    else:
-        print("\n❌ Issues found with dashboard")
-        print("💡 Please check the logs")
+    print("\n🎉 DASHBOARD SUCCESSFULLY UPDATED!")
+    print("✅ Original design recreated with modern enhancements")
+    print("📊 All trading controls functional")
+    print("🚀 Smart Order Routing integrated")
+    print("💻 Available at: http://localhost:8000")
+    raise SystemExit(0)

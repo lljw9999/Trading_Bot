@@ -307,16 +307,17 @@ def main():
         print("- ✅ Metrics exposed on :9090")
         print(f"\n📊 Metrics endpoint: http://localhost:9090/metrics")
 
-        return True
+        # Test completed successfully - no return value needed for pytest
 
     except Exception as e:
         print(f"\n❌ Test failed with error: {e}")
         import traceback
 
         traceback.print_exc()
-        return False
+        assert False, f"Real metrics test failed with error: {e}"
 
 
 if __name__ == "__main__":
-    success = main()
-    exit(0 if success else 1)
+    main()
+    # Note: exit code removed to avoid pytest return-value warnings
+    # Test framework will handle success/failure appropriately

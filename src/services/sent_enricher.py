@@ -354,8 +354,6 @@ async def redis_worker():
             await asyncio.sleep(1)
 
 
-
-
 if __name__ == "__main__":
     uvicorn.run(
         "sent_enricher:app", host="0.0.0.0", port=8002, log_level="info", reload=False
